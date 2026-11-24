@@ -188,6 +188,37 @@ export class WorldAIManager {
             const project = research.startResearch(countryId, pool[0].id, { priority: agent.priorities.technological_progress });
             return { executed: true, action: "research_started", technologyId: project.technologyId, cost: project.cost };
         }
+        if (goal === "diplomatic_security") {
+            const diplomacy = this.systems.diplomacyManager;
+            if (!diplomacy) return { executed: false, reason: "diplomacy_system_unavailable" };
+            const candidates = Object.keys(this.state.world.countries)
+                .filter(otherId => otherId !== countryId && !diplomacy.alliances.areAllied(countryId, otherId))
+                .map(otherId => ({
+                    countryId: otherId,
+                    relation: diplomacy.relations.getValue(countryId, otherId),
+                    reciprocal: diplomacy.relations.getValue(otherId, countryId)
+                }))
+                .filter(item => item.relation >= 65 && item.reciprocal >= 65)
+                .sort((a, b) => Math.min(b.relation, b.reciprocal) - Math.min(a.relation, a.reciprocal)
+                    || a.countryId.localeCompare(b.countryId));
+            const partner = candidates[0];
+            if (!partner) return { executed: false, reason: "no_mutually_trusted_partner" };
+            const members = [countryId, partner.countryId].sort();
+            const allianceId = "ai-alliance-" + members.join("-");
+            if (!diplomacy.alliances.getAlliance(allianceId)) {
+                const alliance = diplomacy.alliances.createAlliance({
+                    id: allianceId,
+                    name: members.join("–") + " Defensive Agreement",
+                    type: "defensive",
+                    founderId: countryId,
+                    members,
+                    createdAt: currentDate(this.state),
+                    description: "Autonomous defensive agreement formed after sustained mutual diplomatic trust."
+                });
+                return { executed: true, action: "defensive_alliance_created", allianceId: alliance.id, partnerCountryId: partner.countryId };
+            }
+            return { executed: false, reason: "alliance_already_exists", allianceId };
+        }
         if (goal === "economic_development") {
             const economy = this.systems.economyManager;
             const budget = economy?.budgets.getBudget(countryId);
