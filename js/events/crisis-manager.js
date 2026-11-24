@@ -1,1 +1,12 @@
-
+import { markGameStateDirty } from "../core/game-state.js";
+import { GAME_EVENTS, gameEventBus } from "../core/event-bus.js";
+export class CrisisManager{
+ constructor(state,eventBus=gameEventBus){if(!state?.world?.countries||!state?.events)throw new TypeError("CrisisManager requires world and events state.");this.state=state;this.eventBus=eventBus;this.crises=state.events.crises;this.destroyed=false;}
+ start({id,countryId,type="national_crisis",severity=1,title=null,date=null,description=""}={}){if(this.destroyed)throw new Error("CrisisManager destroyed.");const key=String(id??""),owner=String(countryId??"");if(!key||this.crises[key]||!this.state.world.countries[owner])throw new RangeError("Unique crisis ID and valid country are required.");if(!Number.isInteger(severity)||severity<1||severity>5)throw new RangeError("Crisis severity must be 1–5.");const crisis={id:key,countryId:owner,type,severity,title:String(title??type),description,status:"active",startedAt:date,updatedAt:date,resolvedAt:null,history:[{action:"started",date,severity}]};this.crises[key]=crisis;this.#sync();this.eventBus?.emit?.(GAME_EVENTS.CRISIS_STARTED,{crisis:{...crisis}});return {...crisis,history:[...crisis.history]};}
+ escalate(id,{date=null,amount=1,reason="escalation"}={}){const c=this.crises[String(id)];if(!c||c.status!=="active")throw new RangeError("Active crisis not found.");if(!Number.isInteger(amount)||amount<1)throw new RangeError("Escalation amount must be a positive integer.");const previous=c.severity;c.severity=Math.min(5,c.severity+amount);c.updatedAt=date;c.history.push({action:"escalated",date,previous,severity:c.severity,reason});markGameStateDirty(this.state);return {...c,history:[...c.history]};}
+ resolve(id,{date=null,resolution="resolved"}={}){const c=this.crises[String(id)];if(!c||c.status!=="active")return false;c.status="resolved";c.resolvedAt=date;c.history.push({action:"resolved",date,resolution});this.#sync();this.eventBus?.emit?.(GAME_EVENTS.CRISIS_ENDED,{crisis:{...c}});return {...c,history:[...c.history]};}
+ list({countryId=null,status="active"}={}){return Object.values(this.crises).filter(c=>(!countryId||c.countryId===countryId)&&(!status||c.status===status)).map(c=>({...c,history:[...c.history]}));}
+ #sync(){this.state.events.statistics.activeCrises=Object.values(this.crises).filter(c=>c.status==="active").length;markGameStateDirty(this.state);}
+ destroy(){this.destroyed=true;this.state=null;this.eventBus=null;this.crises=null;}
+}
+export default CrisisManager;
