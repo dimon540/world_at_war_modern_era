@@ -36,3 +36,18 @@
 .message-panel .game-message[data-type="error"]{border-color:rgba(212,125,117,.22);background:rgba(212,125,117,.06);color:#ef9990}
 .panel-note{color:#81939d;font-size:10px}
 @media(max-width:760px){.sidebar .panel{padding:14px}.sidebar .panel-heading{margin-bottom:11px;padding-bottom:8px}.system-list li{min-height:29px}}
+
+
+/* National command panels */
+.management-panel-shell { min-height: 260px; }
+.panel-tabs { display: flex; flex-wrap: wrap; gap: 5px; margin: 0 0 14px; }
+.panel-tabs button { border: 1px solid rgba(154,178,194,.2); background: #142532; color: #aebfca; border-radius: 4px; padding: 6px 8px; font: 600 11px Inter, sans-serif; cursor: pointer; }
+.panel-tabs button[aria-selected="true"] { color: #f3d18b; border-color: #9b7945; background: #293440; }
+.management-row { display: flex; justify-content: space-between; gap: 12px; margin: 0; padding: 7px 0; border-bottom: 1px solid rgba(154,178,194,.12); color: #b8c7d0; font-size: 12px; }
+.management-row b { color: #718695; font-weight: 500; }
+.management-row span { text-align: right; color: #e2e9ed; overflow-wrap: anywhere; }
+.management-item { display: flex; flex-direction: column; gap: 3px; padding: 9px 10px; margin: 7px 0; border: 1px solid rgba(154,178,194,.15); border-radius: 4px; background: rgba(20,37,50,.55); }
+.management-item strong { color: #e5edf1; font-size: 12px; }
+.management-item span { color: #91a4b1; font-size: 11px; }
+.management-select { width: 100%; margin: 7px 0; padding: 9px; border: 1px solid #405463; border-radius: 4px; background: #142532; color: #e2e9ed; font: 12px Inter, sans-serif; }
+.management-panel-shell [hidden] { display: none !important; }
