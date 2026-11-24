@@ -1,4 +1,3 @@
-
 {
   "metadata": {
     "dataset": "WORLD AT WAR - Historical Countries",
@@ -405,16 +404,6 @@
       "status": "sovereign_state"
     },
     {
-      "id": "COG",
-      "name": "Republic of the Congo",
-      "officialName": "Republic of the Congo",
-      "capital": "Brazzaville",
-      "iso2": "CG",
-      "iso3": "COG",
-      "region": "Africa",
-      "status": "sovereign_state"
-    },
-    {
       "id": "CRI",
       "name": "Costa Rica",
       "officialName": "Republic of Costa Rica",
@@ -472,16 +461,6 @@
       "iso2": "CZ",
       "iso3": "CZE",
       "region": "Europe",
-      "status": "sovereign_state"
-    },
-    {
-      "id": "PRK",
-      "name": "North Korea",
-      "officialName": "Democratic People's Republic of Korea",
-      "capital": "Pyongyang",
-      "iso2": "KP",
-      "iso3": "PRK",
-      "region": "Asia",
       "status": "sovereign_state"
     },
     {
@@ -602,6 +581,16 @@
       "iso2": "ET",
       "iso3": "ETH",
       "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "YUG",
+      "name": "Federal Republic of Yugoslavia",
+      "officialName": "Federal Republic of Yugoslavia",
+      "capital": "Belgrade",
+      "iso2": "YU",
+      "iso3": "YUG",
+      "region": "Europe",
       "status": "sovereign_state"
     },
     {
@@ -1025,6 +1014,16 @@
       "status": "sovereign_state"
     },
     {
+      "id": "MKD",
+      "name": "Macedonia",
+      "officialName": "Republic of Macedonia",
+      "capital": "Skopje",
+      "iso2": "MK",
+      "iso3": "MKD",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
       "id": "MDG",
       "name": "Madagascar",
       "officialName": "Republic of Madagascar",
@@ -1275,6 +1274,16 @@
       "status": "sovereign_state"
     },
     {
+      "id": "PRK",
+      "name": "North Korea",
+      "officialName": "Democratic People's Republic of Korea",
+      "capital": "Pyongyang",
+      "iso2": "KP",
+      "iso3": "PRK",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
       "id": "NOR",
       "name": "Norway",
       "officialName": "Kingdom of Norway",
@@ -1313,6 +1322,16 @@
       "iso3": "PLW",
       "region": "Oceania",
       "status": "sovereign_state"
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "officialName": "Palestinian territories",
+      "capital": "East Jerusalem",
+      "iso2": "PS",
+      "iso3": "PSE",
+      "region": "Asia",
+      "status": "disputed_entity"
     },
     {
       "id": "PAN",
@@ -1395,13 +1414,13 @@
       "status": "sovereign_state"
     },
     {
-      "id": "KOR",
-      "name": "South Korea",
-      "officialName": "Republic of Korea",
-      "capital": "Seoul",
-      "iso2": "KR",
-      "iso3": "KOR",
-      "region": "Asia",
+      "id": "COG",
+      "name": "Republic of the Congo",
+      "officialName": "Republic of the Congo",
+      "capital": "Brazzaville",
+      "iso2": "CG",
+      "iso3": "COG",
+      "region": "Africa",
       "status": "sovereign_state"
     },
     {
@@ -1595,6 +1614,16 @@
       "status": "sovereign_state"
     },
     {
+      "id": "KOR",
+      "name": "South Korea",
+      "officialName": "Republic of Korea",
+      "capital": "Seoul",
+      "iso2": "KR",
+      "iso3": "KOR",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
       "id": "ESP",
       "name": "Spain",
       "officialName": "Kingdom of Spain",
@@ -1665,6 +1694,16 @@
       "status": "sovereign_state"
     },
     {
+      "id": "TWN",
+      "name": "Taiwan",
+      "officialName": "Republic of China",
+      "capital": "Taipei",
+      "iso2": "TW",
+      "iso3": "TWN",
+      "region": "Asia",
+      "status": "disputed_entity"
+    },
+    {
       "id": "TJK",
       "name": "Tajikistan",
       "officialName": "Republic of Tajikistan",
@@ -1672,6 +1711,16 @@
       "iso2": "TJ",
       "iso3": "TJK",
       "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "TZA",
+      "name": "Tanzania",
+      "officialName": "United Republic of Tanzania",
+      "capital": "Dodoma",
+      "iso2": "TZ",
+      "iso3": "TZA",
+      "region": "Africa",
       "status": "sovereign_state"
     },
     {
@@ -1785,16 +1834,6 @@
       "status": "sovereign_state"
     },
     {
-      "id": "TZA",
-      "name": "Tanzania",
-      "officialName": "United Republic of Tanzania",
-      "capital": "Dodoma",
-      "iso2": "TZ",
-      "iso3": "TZA",
-      "region": "Africa",
-      "status": "sovereign_state"
-    },
-    {
       "id": "USA",
       "name": "United States",
       "officialName": "United States of America",
@@ -1833,6 +1872,16 @@
       "iso3": "VUT",
       "region": "Oceania",
       "status": "sovereign_state"
+    },
+    {
+      "id": "VAT",
+      "name": "Vatican City",
+      "officialName": "State of the Vatican City",
+      "capital": "Vatican City",
+      "iso2": "VA",
+      "iso3": "VAT",
+      "region": "Europe",
+      "status": "observer_state"
     },
     {
       "id": "VEN",
@@ -1883,46 +1932,6 @@
       "iso3": "ZWE",
       "region": "Africa",
       "status": "sovereign_state"
-    },
-    {
-      "id": "YUG",
-      "name": "Federal Republic of Yugoslavia",
-      "officialName": "Federal Republic of Yugoslavia",
-      "capital": "Belgrade",
-      "iso2": "YU",
-      "iso3": "YUG",
-      "region": "Europe",
-      "status": "sovereign_state"
-    },
-    {
-      "id": "VAT",
-      "name": "Vatican City",
-      "officialName": "State of the Vatican City",
-      "capital": "Vatican City",
-      "iso2": "VA",
-      "iso3": "VAT",
-      "region": "Europe",
-      "status": "observer_state"
-    },
-    {
-      "id": "PSE",
-      "name": "Palestine",
-      "officialName": "Palestinian territories",
-      "capital": "East Jerusalem",
-      "iso2": "PS",
-      "iso3": "PSE",
-      "region": "Asia",
-      "status": "disputed_entity"
-    },
-    {
-      "id": "TWN",
-      "name": "Taiwan",
-      "officialName": "Republic of China",
-      "capital": "Taipei",
-      "iso2": "TW",
-      "iso3": "TWN",
-      "region": "Asia",
-      "status": "disputed_entity"
     }
   ]
 }
