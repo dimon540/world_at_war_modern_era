@@ -1,0 +1,38 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { createInitialGameState } from "../js/core/game-state.js";
+import { EconomyManager } from "../js/economy/economy-manager.js";
+
+function makeState(){const state=createInitialGameState();state.world.countries.AAA={id:"AAA",name:"Alpha"};state.world.countries.BBB={id:"BBB",name:"Bravo"};return state;}
+
+test("factories, resources and production consume inputs and create outputs",()=>{
+ const state=makeState(),economy=new EconomyManager(state);
+ economy.factories.create({id:"f1",countryId:"AAA",type:"civilian",level:2});
+ economy.resources.setStockpile("AAA","steel",20);
+ economy.production.createLine({id:"line-1",countryId:"AAA",factoryId:"f1",inputs:{steel:2},outputs:{tools:3}});
+ const reports=economy.production.processMonthly();
+ assert.equal(reports[0].success,true);
+ assert.equal(economy.resources.getStockpiles("AAA").steel,16);
+ assert.equal(economy.resources.getStockpiles("AAA").tools,6);
+ economy.destroy();
+});
+
+test("construction completion creates a working factory",()=>{
+ const state=makeState(),economy=new EconomyManager(state);
+ economy.construction.start({id:"project-1",countryId:"AAA",factoryType:"military",cost:10});
+ const reports=economy.construction.processMonthly({AAA:10});
+ assert.equal(reports[0].completed,true);
+ assert.equal(economy.factories.list({countryId:"AAA",type:"military"}).length,1);
+ economy.destroy();
+});
+
+test("trade routes transfer available resources between countries",()=>{
+ const state=makeState(),economy=new EconomyManager(state);
+ economy.resources.setStockpile("AAA","oil",25);
+ economy.trade.createRoute({id:"route-1",fromCountryId:"AAA",toCountryId:"BBB",resource:"oil",quantity:10});
+ const reports=economy.trade.processMonthly();
+ assert.equal(reports[0].success,true);
+ assert.equal(economy.resources.getStockpiles("AAA").oil,15);
+ assert.equal(economy.resources.getStockpiles("BBB").oil,10);
+ economy.destroy();
+});
