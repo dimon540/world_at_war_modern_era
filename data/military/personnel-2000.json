@@ -1,0 +1,2497 @@
+{
+  "metadata": {
+    "dataset": "WORLD AT WAR historical military personnel and expenditure",
+    "scenario": "modern_2000",
+    "referenceYear": 2000,
+    "source": "World Bank World Development Indicators",
+    "militaryPersonnelSource": "International Institute for Strategic Studies, The Military Balance",
+    "militaryPersonnelDefinition": "Active-duty armed forces personnel; the source series may include paramilitary forces and does not represent reserve manpower.",
+    "sourceUrl": "https://databank.worldbank.org/metadataglossary/world-development-indicators/series/MS.MIL.TOTL.P1",
+    "license": "CC BY 4.0",
+    "retrievedAt": "2026-11-24T19:28:01.081Z",
+    "missingValues": "Preserved as null; no interpolation or modern-value substitution.",
+    "indicators": {
+      "activePersonnel": {
+        "code": "MS.MIL.TOTL.P1",
+        "unit": "persons"
+      }
+    }
+  },
+  "countries": {
+    "AFG": {
+      "countryId": "AFG",
+      "iso3": "AFG",
+      "name": "Afghanistan",
+      "year": 2000,
+      "activePersonnel": 400000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "ALB": {
+      "countryId": "ALB",
+      "iso3": "ALB",
+      "name": "Albania",
+      "year": 2000,
+      "activePersonnel": 67500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "DZA": {
+      "countryId": "DZA",
+      "iso3": "DZA",
+      "name": "Algeria",
+      "year": 2000,
+      "activePersonnel": 305200,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "AGO": {
+      "countryId": "AGO",
+      "iso3": "AGO",
+      "name": "Angola",
+      "year": 2000,
+      "activePersonnel": 117500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "ATG": {
+      "countryId": "ATG",
+      "iso3": "ATG",
+      "name": "Antigua and Barbuda",
+      "year": 2000,
+      "activePersonnel": 200,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "ARG": {
+      "countryId": "ARG",
+      "iso3": "ARG",
+      "name": "Argentina",
+      "year": 2000,
+      "activePersonnel": 102300,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "ARM": {
+      "countryId": "ARM",
+      "iso3": "ARM",
+      "name": "Armenia",
+      "year": 2000,
+      "activePersonnel": 42300,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "AUS": {
+      "countryId": "AUS",
+      "iso3": "AUS",
+      "name": "Australia",
+      "year": 2000,
+      "activePersonnel": 51600,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "AUT": {
+      "countryId": "AUT",
+      "iso3": "AUT",
+      "name": "Austria",
+      "year": 2000,
+      "activePersonnel": 40500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "AZE": {
+      "countryId": "AZE",
+      "iso3": "AZE",
+      "name": "Azerbaijan",
+      "year": 2000,
+      "activePersonnel": 87100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BHS": {
+      "countryId": "BHS",
+      "iso3": "BHS",
+      "name": "Bahamas",
+      "year": 2000,
+      "activePersonnel": 3200,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BHR": {
+      "countryId": "BHR",
+      "iso3": "BHR",
+      "name": "Bahrain",
+      "year": 2000,
+      "activePersonnel": 21200,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BGD": {
+      "countryId": "BGD",
+      "iso3": "BGD",
+      "name": "Bangladesh",
+      "year": 2000,
+      "activePersonnel": 137000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BRB": {
+      "countryId": "BRB",
+      "iso3": "BRB",
+      "name": "Barbados",
+      "year": 2000,
+      "activePersonnel": 600,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BLR": {
+      "countryId": "BLR",
+      "iso3": "BLR",
+      "name": "Belarus",
+      "year": 2000,
+      "activePersonnel": 91100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BEL": {
+      "countryId": "BEL",
+      "iso3": "BEL",
+      "name": "Belgium",
+      "year": 2000,
+      "activePersonnel": 39300,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BLZ": {
+      "countryId": "BLZ",
+      "iso3": "BLZ",
+      "name": "Belize",
+      "year": 2000,
+      "activePersonnel": 1100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BEN": {
+      "countryId": "BEN",
+      "iso3": "BEN",
+      "name": "Benin",
+      "year": 2000,
+      "activePersonnel": 7300,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BTN": {
+      "countryId": "BTN",
+      "iso3": "BTN",
+      "name": "Bhutan",
+      "year": 2000,
+      "activePersonnel": 6000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BOL": {
+      "countryId": "BOL",
+      "iso3": "BOL",
+      "name": "Bolivia",
+      "year": 2000,
+      "activePersonnel": 69600,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BIH": {
+      "countryId": "BIH",
+      "iso3": "BIH",
+      "name": "Bosnia and Herzegovina",
+      "year": 2000,
+      "activePersonnel": 76000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BWA": {
+      "countryId": "BWA",
+      "iso3": "BWA",
+      "name": "Botswana",
+      "year": 2000,
+      "activePersonnel": 10000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BRA": {
+      "countryId": "BRA",
+      "iso3": "BRA",
+      "name": "Brazil",
+      "year": 2000,
+      "activePersonnel": 673200,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BRN": {
+      "countryId": "BRN",
+      "iso3": "BRN",
+      "name": "Brunei",
+      "year": 2000,
+      "activePersonnel": 8800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BGR": {
+      "countryId": "BGR",
+      "iso3": "BGR",
+      "name": "Bulgaria",
+      "year": 2000,
+      "activePersonnel": 113800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BFA": {
+      "countryId": "BFA",
+      "iso3": "BFA",
+      "name": "Burkina Faso",
+      "year": 2000,
+      "activePersonnel": 11300,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "BDI": {
+      "countryId": "BDI",
+      "iso3": "BDI",
+      "name": "Burundi",
+      "year": 2000,
+      "activePersonnel": 45500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "CPV": {
+      "countryId": "CPV",
+      "iso3": "CPV",
+      "name": "Cape Verde",
+      "year": 2000,
+      "activePersonnel": 1200,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "KHM": {
+      "countryId": "KHM",
+      "iso3": "KHM",
+      "name": "Cambodia",
+      "year": 2000,
+      "activePersonnel": 360000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "CMR": {
+      "countryId": "CMR",
+      "iso3": "CMR",
+      "name": "Cameroon",
+      "year": 2000,
+      "activePersonnel": 22100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "CAN": {
+      "countryId": "CAN",
+      "iso3": "CAN",
+      "name": "Canada",
+      "year": 2000,
+      "activePersonnel": 68500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "CAF": {
+      "countryId": "CAF",
+      "iso3": "CAF",
+      "name": "Central African Republic",
+      "year": 2000,
+      "activePersonnel": 5400,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "TCD": {
+      "countryId": "TCD",
+      "iso3": "TCD",
+      "name": "Chad",
+      "year": 2000,
+      "activePersonnel": 34600,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "CHL": {
+      "countryId": "CHL",
+      "iso3": "CHL",
+      "name": "Chile",
+      "year": 2000,
+      "activePersonnel": 116500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "CHN": {
+      "countryId": "CHN",
+      "iso3": "CHN",
+      "name": "China",
+      "year": 2000,
+      "activePersonnel": 3910000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "COL": {
+      "countryId": "COL",
+      "iso3": "COL",
+      "name": "Colombia",
+      "year": 2000,
+      "activePersonnel": 247000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "COD": {
+      "countryId": "COD",
+      "iso3": "COD",
+      "name": "Democratic Republic of the Congo",
+      "year": 2000,
+      "activePersonnel": 92900,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "COG": {
+      "countryId": "COG",
+      "iso3": "COG",
+      "name": "Republic of the Congo",
+      "year": 2000,
+      "activePersonnel": 15000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "CRI": {
+      "countryId": "CRI",
+      "iso3": "CRI",
+      "name": "Costa Rica",
+      "year": 2000,
+      "activePersonnel": 15400,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "HRV": {
+      "countryId": "HRV",
+      "iso3": "HRV",
+      "name": "Croatia",
+      "year": 2000,
+      "activePersonnel": 101000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "CUB": {
+      "countryId": "CUB",
+      "iso3": "CUB",
+      "name": "Cuba",
+      "year": 2000,
+      "activePersonnel": 84500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "CYP": {
+      "countryId": "CYP",
+      "iso3": "CYP",
+      "name": "Cyprus",
+      "year": 2000,
+      "activePersonnel": 10800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "CZE": {
+      "countryId": "CZE",
+      "iso3": "CZE",
+      "name": "Czech Republic",
+      "year": 2000,
+      "activePersonnel": 63300,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "DNK": {
+      "countryId": "DNK",
+      "iso3": "DNK",
+      "name": "Denmark",
+      "year": 2000,
+      "activePersonnel": 21800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "DJI": {
+      "countryId": "DJI",
+      "iso3": "DJI",
+      "name": "Djibouti",
+      "year": 2000,
+      "activePersonnel": 12600,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "DOM": {
+      "countryId": "DOM",
+      "iso3": "DOM",
+      "name": "Dominican Republic",
+      "year": 2000,
+      "activePersonnel": 39500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "ECU": {
+      "countryId": "ECU",
+      "iso3": "ECU",
+      "name": "Ecuador",
+      "year": 2000,
+      "activePersonnel": 57800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "EGY": {
+      "countryId": "EGY",
+      "iso3": "EGY",
+      "name": "Egypt",
+      "year": 2000,
+      "activePersonnel": 678500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "SLV": {
+      "countryId": "SLV",
+      "iso3": "SLV",
+      "name": "El Salvador",
+      "year": 2000,
+      "activePersonnel": 28800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "GNQ": {
+      "countryId": "GNQ",
+      "iso3": "GNQ",
+      "name": "Equatorial Guinea",
+      "year": 2000,
+      "activePersonnel": 1600,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "ERI": {
+      "countryId": "ERI",
+      "iso3": "ERI",
+      "name": "Eritrea",
+      "year": 2000,
+      "activePersonnel": 200000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "EST": {
+      "countryId": "EST",
+      "iso3": "EST",
+      "name": "Estonia",
+      "year": 2000,
+      "activePersonnel": 7600,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "ETH": {
+      "countryId": "ETH",
+      "iso3": "ETH",
+      "name": "Ethiopia",
+      "year": 2000,
+      "activePersonnel": 352500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "FJI": {
+      "countryId": "FJI",
+      "iso3": "FJI",
+      "name": "Fiji",
+      "year": 2000,
+      "activePersonnel": 3500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "FIN": {
+      "countryId": "FIN",
+      "iso3": "FIN",
+      "name": "Finland",
+      "year": 2000,
+      "activePersonnel": 35100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "FRA": {
+      "countryId": "FRA",
+      "iso3": "FRA",
+      "name": "France",
+      "year": 2000,
+      "activePersonnel": 389400,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "GAB": {
+      "countryId": "GAB",
+      "iso3": "GAB",
+      "name": "Gabon",
+      "year": 2000,
+      "activePersonnel": 6700,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "GMB": {
+      "countryId": "GMB",
+      "iso3": "GMB",
+      "name": "Gambia",
+      "year": 2000,
+      "activePersonnel": 800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "GEO": {
+      "countryId": "GEO",
+      "iso3": "GEO",
+      "name": "Georgia",
+      "year": 2000,
+      "activePersonnel": 33400,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "DEU": {
+      "countryId": "DEU",
+      "iso3": "DEU",
+      "name": "Germany",
+      "year": 2000,
+      "activePersonnel": 221100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "GHA": {
+      "countryId": "GHA",
+      "iso3": "GHA",
+      "name": "Ghana",
+      "year": 2000,
+      "activePersonnel": 8000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "GRC": {
+      "countryId": "GRC",
+      "iso3": "GRC",
+      "name": "Greece",
+      "year": 2000,
+      "activePersonnel": 163200,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "GTM": {
+      "countryId": "GTM",
+      "iso3": "GTM",
+      "name": "Guatemala",
+      "year": 2000,
+      "activePersonnel": 52900,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "GIN": {
+      "countryId": "GIN",
+      "iso3": "GIN",
+      "name": "Guinea",
+      "year": 2000,
+      "activePersonnel": 19300,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "GNB": {
+      "countryId": "GNB",
+      "iso3": "GNB",
+      "name": "Guinea-Bissau",
+      "year": 2000,
+      "activePersonnel": 9300,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "GUY": {
+      "countryId": "GUY",
+      "iso3": "GUY",
+      "name": "Guyana",
+      "year": 2000,
+      "activePersonnel": 3100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "HTI": {
+      "countryId": "HTI",
+      "iso3": "HTI",
+      "name": "Haiti",
+      "year": 2000,
+      "activePersonnel": 5300,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "HND": {
+      "countryId": "HND",
+      "iso3": "HND",
+      "name": "Honduras",
+      "year": 2000,
+      "activePersonnel": 14300,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "HUN": {
+      "countryId": "HUN",
+      "iso3": "HUN",
+      "name": "Hungary",
+      "year": 2000,
+      "activePersonnel": 57800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "ISL": {
+      "countryId": "ISL",
+      "iso3": "ISL",
+      "name": "Iceland",
+      "year": 2000,
+      "activePersonnel": 100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "IND": {
+      "countryId": "IND",
+      "iso3": "IND",
+      "name": "India",
+      "year": 2000,
+      "activePersonnel": 2372000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "IDN": {
+      "countryId": "IDN",
+      "iso3": "IDN",
+      "name": "Indonesia",
+      "year": 2000,
+      "activePersonnel": 492000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "IRN": {
+      "countryId": "IRN",
+      "iso3": "IRN",
+      "name": "Iran",
+      "year": 2000,
+      "activePersonnel": 753000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "IRQ": {
+      "countryId": "IRQ",
+      "iso3": "IRQ",
+      "name": "Iraq",
+      "year": 2000,
+      "activePersonnel": 479000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "IRL": {
+      "countryId": "IRL",
+      "iso3": "IRL",
+      "name": "Ireland",
+      "year": 2000,
+      "activePersonnel": 11500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "ISR": {
+      "countryId": "ISR",
+      "iso3": "ISR",
+      "name": "Israel",
+      "year": 2000,
+      "activePersonnel": 180500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "ITA": {
+      "countryId": "ITA",
+      "iso3": "ITA",
+      "name": "Italy",
+      "year": 2000,
+      "activePersonnel": 503100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "JAM": {
+      "countryId": "JAM",
+      "iso3": "JAM",
+      "name": "Jamaica",
+      "year": 2000,
+      "activePersonnel": 3000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "JPN": {
+      "countryId": "JPN",
+      "iso3": "JPN",
+      "name": "Japan",
+      "year": 2000,
+      "activePersonnel": 248700,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "JOR": {
+      "countryId": "JOR",
+      "iso3": "JOR",
+      "name": "Jordan",
+      "year": 2000,
+      "activePersonnel": 148900,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "KAZ": {
+      "countryId": "KAZ",
+      "iso3": "KAZ",
+      "name": "Kazakhstan",
+      "year": 2000,
+      "activePersonnel": 98500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "KEN": {
+      "countryId": "KEN",
+      "iso3": "KEN",
+      "name": "Kenya",
+      "year": 2000,
+      "activePersonnel": 27200,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "KOR": {
+      "countryId": "KOR",
+      "iso3": "KOR",
+      "name": "South Korea",
+      "year": 2000,
+      "activePersonnel": 687500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "KWT": {
+      "countryId": "KWT",
+      "iso3": "KWT",
+      "name": "Kuwait",
+      "year": 2000,
+      "activePersonnel": 20300,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "KGZ": {
+      "countryId": "KGZ",
+      "iso3": "KGZ",
+      "name": "Kyrgyzstan",
+      "year": 2000,
+      "activePersonnel": 14000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "LAO": {
+      "countryId": "LAO",
+      "iso3": "LAO",
+      "name": "Laos",
+      "year": 2000,
+      "activePersonnel": 129100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "LVA": {
+      "countryId": "LVA",
+      "iso3": "LVA",
+      "name": "Latvia",
+      "year": 2000,
+      "activePersonnel": 8500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "LBN": {
+      "countryId": "LBN",
+      "iso3": "LBN",
+      "name": "Lebanon",
+      "year": 2000,
+      "activePersonnel": 76600,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "LSO": {
+      "countryId": "LSO",
+      "iso3": "LSO",
+      "name": "Lesotho",
+      "year": 2000,
+      "activePersonnel": 2000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "LBR": {
+      "countryId": "LBR",
+      "iso3": "LBR",
+      "name": "Liberia",
+      "year": 2000,
+      "activePersonnel": 15000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "LBY": {
+      "countryId": "LBY",
+      "iso3": "LBY",
+      "name": "Libya",
+      "year": 2000,
+      "activePersonnel": 76500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "LTU": {
+      "countryId": "LTU",
+      "iso3": "LTU",
+      "name": "Lithuania",
+      "year": 2000,
+      "activePersonnel": 16600,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "LUX": {
+      "countryId": "LUX",
+      "iso3": "LUX",
+      "name": "Luxembourg",
+      "year": 2000,
+      "activePersonnel": 1400,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "MDG": {
+      "countryId": "MDG",
+      "iso3": "MDG",
+      "name": "Madagascar",
+      "year": 2000,
+      "activePersonnel": 28500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "MWI": {
+      "countryId": "MWI",
+      "iso3": "MWI",
+      "name": "Malawi",
+      "year": 2000,
+      "activePersonnel": 6000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "MYS": {
+      "countryId": "MYS",
+      "iso3": "MYS",
+      "name": "Malaysia",
+      "year": 2000,
+      "activePersonnel": 116100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "MDV": {
+      "countryId": "MDV",
+      "iso3": "MDV",
+      "name": "Maldives",
+      "year": 2000,
+      "activePersonnel": 5000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "MLI": {
+      "countryId": "MLI",
+      "iso3": "MLI",
+      "name": "Mali",
+      "year": 2000,
+      "activePersonnel": 15200,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "MLT": {
+      "countryId": "MLT",
+      "iso3": "MLT",
+      "name": "Malta",
+      "year": 2000,
+      "activePersonnel": 2100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "MRT": {
+      "countryId": "MRT",
+      "iso3": "MRT",
+      "name": "Mauritania",
+      "year": 2000,
+      "activePersonnel": 20700,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "MUS": {
+      "countryId": "MUS",
+      "iso3": "MUS",
+      "name": "Mauritius",
+      "year": 2000,
+      "activePersonnel": 1800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "MEX": {
+      "countryId": "MEX",
+      "iso3": "MEX",
+      "name": "Mexico",
+      "year": 2000,
+      "activePersonnel": 207800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "MDA": {
+      "countryId": "MDA",
+      "iso3": "MDA",
+      "name": "Moldova",
+      "year": 2000,
+      "activePersonnel": 12900,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "MNG": {
+      "countryId": "MNG",
+      "iso3": "MNG",
+      "name": "Mongolia",
+      "year": 2000,
+      "activePersonnel": 16300,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "MAR": {
+      "countryId": "MAR",
+      "iso3": "MAR",
+      "name": "Morocco",
+      "year": 2000,
+      "activePersonnel": 240500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "MOZ": {
+      "countryId": "MOZ",
+      "iso3": "MOZ",
+      "name": "Mozambique",
+      "year": 2000,
+      "activePersonnel": 6100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "MMR": {
+      "countryId": "MMR",
+      "iso3": "MMR",
+      "name": "Myanmar",
+      "year": 2000,
+      "activePersonnel": 429100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "NAM": {
+      "countryId": "NAM",
+      "iso3": "NAM",
+      "name": "Namibia",
+      "year": 2000,
+      "activePersonnel": 9100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "NPL": {
+      "countryId": "NPL",
+      "iso3": "NPL",
+      "name": "Nepal",
+      "year": 2000,
+      "activePersonnel": 90000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "NLD": {
+      "countryId": "NLD",
+      "iso3": "NLD",
+      "name": "Netherlands",
+      "year": 2000,
+      "activePersonnel": 57100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "NZL": {
+      "countryId": "NZL",
+      "iso3": "NZL",
+      "name": "New Zealand",
+      "year": 2000,
+      "activePersonnel": 9200,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "NIC": {
+      "countryId": "NIC",
+      "iso3": "NIC",
+      "name": "Nicaragua",
+      "year": 2000,
+      "activePersonnel": 16000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "NER": {
+      "countryId": "NER",
+      "iso3": "NER",
+      "name": "Niger",
+      "year": 2000,
+      "activePersonnel": 10700,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "NGA": {
+      "countryId": "NGA",
+      "iso3": "NGA",
+      "name": "Nigeria",
+      "year": 2000,
+      "activePersonnel": 106500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "MKD": {
+      "countryId": "MKD",
+      "iso3": "MKD",
+      "name": "Macedonia",
+      "year": 2000,
+      "activePersonnel": 23500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "NOR": {
+      "countryId": "NOR",
+      "iso3": "NOR",
+      "name": "Norway",
+      "year": 2000,
+      "activePersonnel": 27000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "OMN": {
+      "countryId": "OMN",
+      "iso3": "OMN",
+      "name": "Oman",
+      "year": 2000,
+      "activePersonnel": 47900,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "PAK": {
+      "countryId": "PAK",
+      "iso3": "PAK",
+      "name": "Pakistan",
+      "year": 2000,
+      "activePersonnel": 900000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "PAN": {
+      "countryId": "PAN",
+      "iso3": "PAN",
+      "name": "Panama",
+      "year": 2000,
+      "activePersonnel": 11800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "PNG": {
+      "countryId": "PNG",
+      "iso3": "PNG",
+      "name": "Papua New Guinea",
+      "year": 2000,
+      "activePersonnel": 4400,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "PRY": {
+      "countryId": "PRY",
+      "iso3": "PRY",
+      "name": "Paraguay",
+      "year": 2000,
+      "activePersonnel": 35000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "PER": {
+      "countryId": "PER",
+      "iso3": "PER",
+      "name": "Peru",
+      "year": 2000,
+      "activePersonnel": 193000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "PHL": {
+      "countryId": "PHL",
+      "iso3": "PHL",
+      "name": "Philippines",
+      "year": 2000,
+      "activePersonnel": 148500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "POL": {
+      "countryId": "POL",
+      "iso3": "POL",
+      "name": "Poland",
+      "year": 2000,
+      "activePersonnel": 238800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "PRT": {
+      "countryId": "PRT",
+      "iso3": "PRT",
+      "name": "Portugal",
+      "year": 2000,
+      "activePersonnel": 90500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "QAT": {
+      "countryId": "QAT",
+      "iso3": "QAT",
+      "name": "Qatar",
+      "year": 2000,
+      "activePersonnel": 12300,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "ROU": {
+      "countryId": "ROU",
+      "iso3": "ROU",
+      "name": "Romania",
+      "year": 2000,
+      "activePersonnel": 282900,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "RUS": {
+      "countryId": "RUS",
+      "iso3": "RUS",
+      "name": "Russia",
+      "year": 2000,
+      "activePersonnel": 1427100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "RWA": {
+      "countryId": "RWA",
+      "iso3": "RWA",
+      "name": "Rwanda",
+      "year": 2000,
+      "activePersonnel": 76000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "SAU": {
+      "countryId": "SAU",
+      "iso3": "SAU",
+      "name": "Saudi Arabia",
+      "year": 2000,
+      "activePersonnel": 217000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "SEN": {
+      "countryId": "SEN",
+      "iso3": "SEN",
+      "name": "Senegal",
+      "year": 2000,
+      "activePersonnel": 15400,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "SYC": {
+      "countryId": "SYC",
+      "iso3": "SYC",
+      "name": "Seychelles",
+      "year": 2000,
+      "activePersonnel": 500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "SLE": {
+      "countryId": "SLE",
+      "iso3": "SLE",
+      "name": "Sierra Leone",
+      "year": 2000,
+      "activePersonnel": 3800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "SGP": {
+      "countryId": "SGP",
+      "iso3": "SGP",
+      "name": "Singapore",
+      "year": 2000,
+      "activePersonnel": 168500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "SVK": {
+      "countryId": "SVK",
+      "iso3": "SVK",
+      "name": "Slovakia",
+      "year": 2000,
+      "activePersonnel": 41200,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "SVN": {
+      "countryId": "SVN",
+      "iso3": "SVN",
+      "name": "Slovenia",
+      "year": 2000,
+      "activePersonnel": 13500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "SOM": {
+      "countryId": "SOM",
+      "iso3": "SOM",
+      "name": "Somalia",
+      "year": 2000,
+      "activePersonnel": 50000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "ZAF": {
+      "countryId": "ZAF",
+      "iso3": "ZAF",
+      "name": "South Africa",
+      "year": 2000,
+      "activePersonnel": 71600,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "ESP": {
+      "countryId": "ESP",
+      "iso3": "ESP",
+      "name": "Spain",
+      "year": 2000,
+      "activePersonnel": 241800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "LKA": {
+      "countryId": "LKA",
+      "iso3": "LKA",
+      "name": "Sri Lanka",
+      "year": 2000,
+      "activePersonnel": 203600,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "SDN": {
+      "countryId": "SDN",
+      "iso3": "SDN",
+      "name": "Sudan",
+      "year": 2000,
+      "activePersonnel": 119500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "SUR": {
+      "countryId": "SUR",
+      "iso3": "SUR",
+      "name": "Suriname",
+      "year": 2000,
+      "activePersonnel": 2000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "SWE": {
+      "countryId": "SWE",
+      "iso3": "SWE",
+      "name": "Sweden",
+      "year": 2000,
+      "activePersonnel": 88300,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "SYR": {
+      "countryId": "SYR",
+      "iso3": "SYR",
+      "name": "Syria",
+      "year": 2000,
+      "activePersonnel": 424800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "TJK": {
+      "countryId": "TJK",
+      "iso3": "TJK",
+      "name": "Tajikistan",
+      "year": 2000,
+      "activePersonnel": 7200,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "TZA": {
+      "countryId": "TZA",
+      "iso3": "TZA",
+      "name": "Tanzania",
+      "year": 2000,
+      "activePersonnel": 35400,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "THA": {
+      "countryId": "THA",
+      "iso3": "THA",
+      "name": "Thailand",
+      "year": 2000,
+      "activePersonnel": 416600,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "TGO": {
+      "countryId": "TGO",
+      "iso3": "TGO",
+      "name": "Togo",
+      "year": 2000,
+      "activePersonnel": 7800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "TTO": {
+      "countryId": "TTO",
+      "iso3": "TTO",
+      "name": "Trinidad and Tobago",
+      "year": 2000,
+      "activePersonnel": 7500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "TUN": {
+      "countryId": "TUN",
+      "iso3": "TUN",
+      "name": "Tunisia",
+      "year": 2000,
+      "activePersonnel": 47000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "TUR": {
+      "countryId": "TUR",
+      "iso3": "TUR",
+      "name": "Turkey",
+      "year": 2000,
+      "activePersonnel": 827700,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "TKM": {
+      "countryId": "TKM",
+      "iso3": "TKM",
+      "name": "Turkmenistan",
+      "year": 2000,
+      "activePersonnel": 14500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "UGA": {
+      "countryId": "UGA",
+      "iso3": "UGA",
+      "name": "Uganda",
+      "year": 2000,
+      "activePersonnel": 50600,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "UKR": {
+      "countryId": "UKR",
+      "iso3": "UKR",
+      "name": "Ukraine",
+      "year": 2000,
+      "activePersonnel": 420400,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "ARE": {
+      "countryId": "ARE",
+      "iso3": "ARE",
+      "name": "United Arab Emirates",
+      "year": 2000,
+      "activePersonnel": 66000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "GBR": {
+      "countryId": "GBR",
+      "iso3": "GBR",
+      "name": "United Kingdom",
+      "year": 2000,
+      "activePersonnel": 212500,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "USA": {
+      "countryId": "USA",
+      "iso3": "USA",
+      "name": "United States",
+      "year": 2000,
+      "activePersonnel": 1454800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "URY": {
+      "countryId": "URY",
+      "iso3": "URY",
+      "name": "Uruguay",
+      "year": 2000,
+      "activePersonnel": 24600,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "UZB": {
+      "countryId": "UZB",
+      "iso3": "UZB",
+      "name": "Uzbekistan",
+      "year": 2000,
+      "activePersonnel": 79100,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "VEN": {
+      "countryId": "VEN",
+      "iso3": "VEN",
+      "name": "Venezuela",
+      "year": 2000,
+      "activePersonnel": 79000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "VNM": {
+      "countryId": "VNM",
+      "iso3": "VNM",
+      "name": "Vietnam",
+      "year": 2000,
+      "activePersonnel": 524000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "YEM": {
+      "countryId": "YEM",
+      "iso3": "YEM",
+      "name": "Yemen",
+      "year": 2000,
+      "activePersonnel": 136300,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "ZMB": {
+      "countryId": "ZMB",
+      "iso3": "ZMB",
+      "name": "Zambia",
+      "year": 2000,
+      "activePersonnel": 23000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "ZWE": {
+      "countryId": "ZWE",
+      "iso3": "ZWE",
+      "name": "Zimbabwe",
+      "year": 2000,
+      "activePersonnel": 61800,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "PRK": {
+      "countryId": "PRK",
+      "iso3": "PRK",
+      "name": "North Korea",
+      "year": 2000,
+      "activePersonnel": 1244000,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    }
+  }
+}
