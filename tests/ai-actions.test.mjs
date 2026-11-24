@@ -133,3 +133,25 @@ test("AI domestic stability priority sets a modifier used by monthly politics", 
     ai.destroy();
     politics.destroy();
 });
+
+test("AI never issues autonomous orders for the human-controlled country", () => {
+    const state = makeState();
+    state.world.countries.BBB = { id: "BBB", name: "Bravo" };
+    state.player.countryId = "AAA";
+    state.player.isCountrySelected = true;
+    const ai = new WorldAIManager(state);
+    const research = new ResearchManager(state);
+    ai.setSystems({ researchManager: research });
+    ai.initializeAgents();
+    forceGoal(ai, "AAA", "technological_progress");
+    forceGoal(ai, "BBB", "technological_progress");
+
+    const reports = ai.runDailyCycle();
+
+    assert.deepEqual(reports.map(item => item.countryId), ["BBB"]);
+    assert.equal(research.getCountryResearch("AAA").projects.length, 0);
+    assert.equal(research.getCountryResearch("BBB").projects.length, 1);
+
+    ai.destroy();
+    research.destroy();
+});
