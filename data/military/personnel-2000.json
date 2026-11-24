@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "dataset": "WORLD AT WAR historical military personnel and expenditure",
+    "dataset": "WORLD AT WAR historical military personnel baselines",
     "scenario": "modern_2000",
     "referenceYear": 2000,
     "source": "World Bank World Development Indicators",
@@ -8,7 +8,7 @@
     "militaryPersonnelDefinition": "Active-duty armed forces personnel; the source series may include paramilitary forces and does not represent reserve manpower.",
     "sourceUrl": "https://databank.worldbank.org/metadataglossary/world-development-indicators/series/MS.MIL.TOTL.P1",
     "license": "CC BY 4.0",
-    "retrievedAt": "2026-11-24T19:28:01.081Z",
+    "retrievedAt": "2026-11-24T19:28:39.144Z",
     "missingValues": "Preserved as null; no interpolation or modern-value substitution.",
     "indicators": {
       "activePersonnel": {

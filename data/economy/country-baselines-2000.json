@@ -6,7 +6,7 @@
     "source": "World Bank World Development Indicators",
     "sourceUrl": "https://api.worldbank.org/v2/country/all/indicator/",
     "license": "CC BY 4.0",
-    "retrievedAt": "2026-11-24T19:28:01.081Z",
+    "retrievedAt": "2026-11-24T19:28:39.144Z",
     "missingValues": "Preserved as null; no interpolation or modern-value substitution.",
     "indicators": {
       "nominalGDP": {
