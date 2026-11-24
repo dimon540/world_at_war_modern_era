@@ -5,6 +5,9 @@ import { WorldAIManager } from "../js/ai/world-ai-manager.js";
 import { ResearchManager } from "../js/technology/research-manager.js";
 import { EconomyManager } from "../js/economy/economy-manager.js";
 import { DiplomacyManager } from "../js/diplomacy/diplomacy-manager.js";
+import { DivisionManager } from "../js/military/divisions.js";
+import { ArmyManager } from "../js/military/army-manager.js";
+import { PoliticsManager } from "../js/politics/politics-manager.js";
 
 function makeState() {
     const state = createInitialGameState();
@@ -87,4 +90,46 @@ test("AI diplomatic priority creates a defensive alliance from reciprocal trust"
 
     ai.destroy();
     diplomacy.destroy();
+});
+
+test("AI military priority organizes existing divisions into an army", () => {
+    const state = makeState();
+    const ai = new WorldAIManager(state);
+    const divisions = new DivisionManager(state);
+    const armies = new ArmyManager(state);
+    const division = divisions.createDivision("AAA", "1st Infantry", { infantry: 1 }).division;
+    ai.setSystems({ divisionManager: divisions, armyManager: armies });
+    ai.initializeAgents();
+    forceGoal(ai, "AAA", "military_modernization");
+
+    const report = ai.runDailyCycle()[0];
+
+    assert.equal(report.action.action, "army_formation_created");
+    assert.equal(state.military.divisions[division.id].armyId, report.action.armyId);
+    assert.equal(armies.getArmy(report.action.armyId).divisionIds.length, 1);
+
+    ai.destroy();
+    armies.destroy();
+    divisions.destroy();
+});
+
+test("AI domestic stability priority sets a modifier used by monthly politics", () => {
+    const state = makeState();
+    const ai = new WorldAIManager(state);
+    const politics = new PoliticsManager(state);
+    politics.governments.setGovernment("AAA", { type: "republic", stability: 30 });
+    ai.setSystems({ politicsManager: politics });
+    ai.initializeAgents();
+    forceGoal(ai, "AAA", "domestic_stability");
+
+    const report = ai.runDailyCycle()[0];
+
+    assert.equal(report.action.action, "stability_policy_set");
+    assert.equal(state.politics.stabilityModifiers.AAA.government, 0.75);
+    const changes = politics.processMonthly();
+    assert.equal(changes[0].countryId, "AAA");
+    assert.equal(politics.governments.getGovernment("AAA").stability, 30.75);
+
+    ai.destroy();
+    politics.destroy();
 });
