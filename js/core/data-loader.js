@@ -57,13 +57,30 @@ function getFeatureId(feature, index) {
     return value === undefined ? `province_${index + 1}` : String(value);
 }
 
-function toRegistry(items, idResolver) {
+function toRegistry(items, idResolver, label) {
     const registry = Object.create(null);
+
     items.forEach((item, index) => {
-        if (!isObject(item)) return;
-        const id = idResolver(item, index);
-        if (id) registry[String(id)] = item;
+        if (!isObject(item)) {
+            throw new TypeError(`Invalid ${label} record at index ${index}.`);
+        }
+
+        const rawId = idResolver(item, index);
+        const id = rawId === undefined || rawId === null
+            ? ""
+            : String(rawId).trim();
+
+        if (!id) {
+            throw new Error(`Missing unique ID for ${label} record at index ${index}.`);
+        }
+
+        if (Object.prototype.hasOwnProperty.call(registry, id)) {
+            throw new Error(`Duplicate ${label} ID detected: "${id}".`);
+        }
+
+        registry[id] = item;
     });
+
     return registry;
 }
 
@@ -138,15 +155,36 @@ export class DataLoader {
                 throw new Error("Province dataset contains no features.");
             }
 
-            this.#applyWorldData(countryItems, provinceItems, countriesData, provincesData);
+            const previousWorld = {
+                countries: this.state.world.countries,
+                provinces: this.state.world.provinces,
+                worldStatistics: this.state.world.statistics,
+                mapGeoJSON: this.state.map.geoJSON,
+                mapCountryData: this.state.map.countryData,
+                ownership: this.state.world.ownership,
+                statistics: this.state.statistics
+            };
 
-            if (this.config.validateState) {
-                const validation = validateGameState(this.state);
-                if (!validation.valid) {
-                    throw new Error(
-                        "Game state validation failed: " + validation.errors.join(" ")
-                    );
+            try {
+                this.#applyWorldData(countryItems, provinceItems, countriesData, provincesData);
+
+                if (this.config.validateState) {
+                    const validation = validateGameState(this.state);
+                    if (!validation.valid) {
+                        throw new Error(
+                            "Game state validation failed: " + validation.errors.join(" ")
+                        );
+                    }
                 }
+            } catch (error) {
+                this.state.world.countries = previousWorld.countries;
+                this.state.world.provinces = previousWorld.provinces;
+                this.state.world.statistics = previousWorld.worldStatistics;
+                this.state.map.geoJSON = previousWorld.mapGeoJSON;
+                this.state.map.countryData = previousWorld.mapCountryData;
+                this.state.world.ownership = previousWorld.ownership;
+                this.state.statistics = previousWorld.statistics;
+                throw error;
             }
 
             this.state.status.isInitialized = true;
@@ -255,25 +293,53 @@ export class DataLoader {
     }
 
     #applyWorldData(countries, provinces, countriesSource, provincesSource) {
-        this.state.world.countries = toRegistry(
+        if (!Array.isArray(countries) || countries.length === 0) {
+            throw new Error("Country dataset must be a non-empty array.");
+        }
+        if (!Array.isArray(provinces) || provinces.length === 0) {
+            throw new Error("Province dataset must be a non-empty array.");
+        }
+
+        if (provincesSource?.type === "FeatureCollection") {
+            if (!Array.isArray(provincesSource.features)) {
+                throw new Error("GeoJSON FeatureCollection has no valid features array.");
+            }
+
+            provincesSource.features.forEach((feature, index) => {
+                if (!isObject(feature) || feature.type !== "Feature") {
+                    throw new TypeError(`Invalid GeoJSON feature at index ${index}.`);
+                }
+                if (!isObject(feature.properties)) {
+                    throw new TypeError(`GeoJSON feature at index ${index} has invalid properties.`);
+                }
+                if (!isObject(feature.geometry)) {
+                    throw new TypeError(`GeoJSON feature at index ${index} has invalid geometry.`);
+                }
+            });
+        }
+
+        // Build and validate both registries before changing the live game state.
+        const countryRegistry = toRegistry(
             countries,
-            (country, index) => country.id ?? country.iso3 ?? country.iso2 ?? country.tag ?? `country_${index + 1}`
+            country => country.id ?? country.iso3 ?? country.iso2 ?? country.tag,
+            "country"
         );
-
-        this.state.world.provinces = toRegistry(
+        const provinceRegistry = toRegistry(
             provinces,
-            (feature, index) => getFeatureId(feature, index)
+            (feature, index) => getFeatureId(feature, index),
+            "province"
         );
 
-        this.state.world.statistics.totalCountries =
-            Object.keys(this.state.world.countries).length;
-        this.state.world.statistics.totalProvinces =
-            Object.keys(this.state.world.provinces).length;
+        const totalCountries = Object.keys(countryRegistry).length;
+        const totalProvinces = Object.keys(provinceRegistry).length;
 
-        this.state.statistics.totalCountries =
-            this.state.world.statistics.totalCountries;
-        this.state.statistics.totalProvinces =
-            this.state.world.statistics.totalProvinces;
+        this.state.world.countries = countryRegistry;
+        this.state.world.provinces = provinceRegistry;
+
+        this.state.world.statistics.totalCountries = totalCountries;
+        this.state.world.statistics.totalProvinces = totalProvinces;
+        this.state.statistics.totalCountries = totalCountries;
+        this.state.statistics.totalProvinces = totalProvinces;
 
         this.state.map.geoJSON = provincesSource;
         this.state.map.countryData = countriesSource;
