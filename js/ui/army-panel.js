@@ -106,8 +106,9 @@ export class ArmyPanel {
                     refreshAvailability();
                     return;
                 }
-                const existing = this.game.divisionManager.getDivisionsForCountry?.(countryId) ?? [];
-                const divisionName = `${type.name} ${existing.length + 1}`;
+                const existingCount = Object.values(this.game.state.military.divisions)
+                    .filter(item => item.countryId === countryId).length;
+                const divisionName = `${type.name} ${existingCount + 1}`;
                 const result = this.game.divisionManager.createDivision(
                     countryId,
                     divisionName,
