@@ -2,6 +2,11 @@
 import { gameEventBus, GAME_EVENTS } from "../core/event-bus.js";
 import { GDPManager } from "./gdp.js";
 import { BudgetManager } from "./budget.js";
+import { FactoryManager } from "./factories.js";
+import { ResourceManager } from "./resources.js";
+import { ProductionManager } from "./production.js";
+import { ConstructionManager } from "./construction.js";
+import { TradeManager } from "./trade.js";
 
 export class EconomyManager {
     constructor(state, eventBus = gameEventBus, options = {}) {
@@ -10,6 +15,11 @@ export class EconomyManager {
         this.eventBus = eventBus;
         this.gdp = new GDPManager(state, eventBus, options.gdp);
         this.budgets = new BudgetManager(state, eventBus, options.budget);
+        this.factories = new FactoryManager(state);
+        this.resources = new ResourceManager(state);
+        this.production = new ProductionManager(state, this.resources, this.factories);
+        this.construction = new ConstructionManager(state, this.factories, options.construction);
+        this.trade = new TradeManager(state, this.resources, options.sanctions ?? null);
         this.destroyed = false;
     }
     #assertActive() { if (this.destroyed) throw new Error("EconomyManager has been destroyed."); }
@@ -42,7 +52,7 @@ export class EconomyManager {
             budget: this.budgets.getWorldStatistics()
         };
         this.eventBus?.emit?.(GAME_EVENTS.WORLD_UPDATED, { reason: "monthly_economy_processed", report });
-        return { ...report, budgetReports };
+        return { ...report, budgetReports, productionReports, constructionReports, tradeReports };
     }
     getCountryOverview(countryId) {
         this.#assertActive();
