@@ -35,6 +35,12 @@ Natural Earth is not a complete historical border database.
 Modern country boundaries must be checked against historical sources
 before being used as borders for January 2000.
 
+Current technical map ownership overrides are limited to a few known
+post-2000 state changes (Serbia, Montenegro and Kosovo mapped to the
+Federal Republic of Yugoslavia; South Sudan mapped to Sudan). These
+overrides are provisional historical corrections, not a complete
+January 2000 ownership dataset.
+
 ### geoBoundaries
 Website: https://www.geoboundaries.org/
 
