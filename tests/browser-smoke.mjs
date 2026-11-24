@@ -64,6 +64,8 @@ try {
     await page.locator("#country-select").selectOption(firstCountry);
     assert.equal((await page.locator("#selected-country").textContent()).trim(), firstCountryName.trim());
     assert.ok((await page.locator("#panel-country").textContent()).includes(firstCountryName.trim()));
+    assert.equal(Number(await page.locator("#ai-count").textContent()), countryOptions - 2,
+        "The selected player nation must not be counted as AI-controlled.");
 
     await page.locator("#start-game").click();
     await page.waitForFunction(
