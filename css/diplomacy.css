@@ -1,1 +1,365 @@
+/* WORLD AT WAR: MODERN ERA — Diplomacy interface
+   Unified navy / graphite / steel palette with restrained gold accents. */
 
+.diplomacy-panel,
+.diplomacy-overview,
+.diplomacy-section,
+.relations-panel,
+.treaty-panel {
+  color: var(--text-primary, #e8edf4);
+}
+
+.diplomacy-panel,
+.relations-panel,
+.treaty-panel {
+  background: var(--panel-bg, #111c2b);
+  border: 1px solid var(--border-color, #29394d);
+  border-radius: var(--radius-md, 8px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
+}
+
+.diplomacy-panel__header,
+.diplomacy-section__header,
+.relations-panel__header,
+.treaty-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-color, #29394d);
+}
+
+.diplomacy-panel__title,
+.diplomacy-section__title,
+.relations-panel__title,
+.treaty-panel__title {
+  margin: 0;
+  color: var(--text-primary, #e8edf4);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.diplomacy-panel__body,
+.diplomacy-section__body,
+.relations-panel__body,
+.treaty-panel__body {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.diplomacy-summary,
+.diplomacy-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.diplomacy-stat {
+  min-width: 0;
+  padding: 10px;
+  background: rgb(5 13 23 / 42%);
+  border: 1px solid var(--border-color, #29394d);
+  border-radius: 6px;
+}
+
+.diplomacy-stat__label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--text-muted, #8e9caf);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.diplomacy-stat__value {
+  display: block;
+  color: var(--text-primary, #e8edf4);
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.diplomacy-stat__value--accent {
+  color: var(--accent-gold, #d2ad62);
+}
+
+.diplomacy-country-list,
+.relations-list,
+.alliance-list,
+.organization-list,
+.sanction-list,
+.war-list,
+.treaty-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.diplomacy-country-card,
+.relation-card,
+.alliance-card,
+.organization-card,
+.sanction-card,
+.war-card,
+.treaty-card {
+  display: grid;
+  gap: 9px;
+  padding: 11px;
+  background: linear-gradient(135deg, rgb(28 43 61 / 88%), rgb(15 25 38 / 94%));
+  border: 1px solid var(--border-color, #29394d);
+  border-radius: 6px;
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.diplomacy-country-card:hover,
+.relation-card:hover,
+.alliance-card:hover,
+.organization-card:hover,
+.sanction-card:hover,
+.war-card:hover,
+.treaty-card:hover {
+  border-color: var(--accent-gold, #d2ad62);
+}
+
+.diplomacy-country-card.is-selected,
+.relation-card.is-selected {
+  border-left: 3px solid var(--accent-gold, #d2ad62);
+  background: rgb(39 54 71 / 92%);
+}
+
+.diplomacy-country-card__top,
+.relation-card__top,
+.alliance-card__top,
+.organization-card__top,
+.war-card__top,
+.treaty-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.diplomacy-country-card__name,
+.relation-card__name,
+.alliance-card__name,
+.organization-card__name,
+.war-card__name,
+.treaty-card__name {
+  color: var(--text-primary, #e8edf4);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.diplomacy-country-card__meta,
+.relation-card__meta,
+.alliance-card__meta,
+.organization-card__meta,
+.war-card__meta,
+.treaty-card__meta {
+  color: var(--text-muted, #8e9caf);
+  font-size: 0.7rem;
+}
+
+.relation-value {
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.relation-value--positive {
+  color: #9bd3ad;
+}
+
+.relation-value--negative {
+  color: #e49a9a;
+}
+
+.relation-value--neutral {
+  color: #b8c7d8;
+}
+
+.diplomacy-status,
+.alliance-status,
+.war-status,
+.treaty-status {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 3px 7px;
+  color: #b8c7d8;
+  background: rgb(100 127 157 / 16%);
+  border: 1px solid rgb(100 127 157 / 35%);
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.diplomacy-status--active,
+.alliance-status--active,
+.war-status--active {
+  color: #e3c17d;
+  border-color: rgb(210 173 98 / 42%);
+  background: rgb(160 116 35 / 14%);
+}
+
+.diplomacy-status--good,
+.treaty-status--valid {
+  color: #9bd3ad;
+  border-color: rgb(91 166 116 / 42%);
+  background: rgb(49 117 73 / 16%);
+}
+
+.diplomacy-status--danger,
+.war-status--escalated,
+.treaty-status--violated {
+  color: #e49a9a;
+  border-color: rgb(190 85 85 / 42%);
+  background: rgb(150 49 49 / 15%);
+}
+
+.diplomacy-toolbar,
+.diplomacy-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.diplomacy-button {
+  min-height: 32px;
+  padding: 7px 10px;
+  color: #dce5ef;
+  background: #1b2b3e;
+  border: 1px solid #3a5069;
+  border-radius: 5px;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.diplomacy-button:hover {
+  color: #fff;
+  background: #263b53;
+  border-color: var(--accent-gold, #d2ad62);
+}
+
+.diplomacy-button--primary {
+  color: #171b21;
+  background: var(--accent-gold, #d2ad62);
+  border-color: #e0c27f;
+}
+
+.diplomacy-button--primary:hover {
+  color: #101820;
+  background: #e0c27f;
+}
+
+.diplomacy-button--danger {
+  color: #f0caca;
+  background: rgb(126 47 47 / 25%);
+  border-color: #8e4b4b;
+}
+
+.diplomacy-button--danger:hover {
+  background: rgb(150 49 49 / 42%);
+  border-color: #c16c6c;
+}
+
+.diplomacy-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.diplomacy-form,
+.diplomacy-field {
+  display: grid;
+  gap: 6px;
+}
+
+.diplomacy-form label,
+.diplomacy-field label {
+  color: var(--text-muted, #a0adbd);
+  font-size: 0.69rem;
+  font-weight: 650;
+}
+
+.diplomacy-form input,
+.diplomacy-form select,
+.diplomacy-form textarea,
+.diplomacy-field input,
+.diplomacy-field select,
+.diplomacy-field textarea {
+  width: 100%;
+  min-height: 35px;
+  padding: 8px 10px;
+  color: var(--text-primary, #e8edf4);
+  background: #0b1522;
+  border: 1px solid #35485e;
+  border-radius: 5px;
+  font: inherit;
+  font-size: 0.76rem;
+}
+
+.diplomacy-form input:focus,
+.diplomacy-form select:focus,
+.diplomacy-form textarea:focus,
+.diplomacy-field input:focus,
+.diplomacy-field select:focus,
+.diplomacy-field textarea:focus {
+  outline: 2px solid rgb(210 173 98 / 35%);
+  border-color: var(--accent-gold, #d2ad62);
+}
+
+.diplomacy-empty {
+  padding: 18px 12px;
+  color: var(--text-muted, #8e9caf);
+  background: rgb(5 13 23 / 28%);
+  border: 1px dashed var(--border-color, #29394d);
+  border-radius: 6px;
+  font-size: 0.76rem;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .diplomacy-summary,
+  .diplomacy-stat-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .diplomacy-panel__header,
+  .diplomacy-section__header,
+  .relations-panel__header,
+  .treaty-panel__header {
+    padding: 10px 11px;
+  }
+
+  .diplomacy-panel__body,
+  .diplomacy-section__body,
+  .relations-panel__body,
+  .treaty-panel__body {
+    padding: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .diplomacy-country-card,
+  .relation-card,
+  .alliance-card,
+  .organization-card,
+  .sanction-card,
+  .war-card,
+  .treaty-card,
+  .diplomacy-button {
+    transition: none;
+  }
+}
