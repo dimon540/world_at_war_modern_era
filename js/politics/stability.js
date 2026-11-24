@@ -1,1 +1,9 @@
-
+import { markGameStateDirty } from "../core/game-state.js";
+import { GAME_EVENTS, gameEventBus } from "../core/event-bus.js";
+const clamp=n=>Math.max(0,Math.min(100,n));
+export class StabilityManager {
+ constructor(state,governmentManager,eventBus=gameEventBus,options={}){if(!state?.world?.countries||!governmentManager)throw new TypeError("StabilityManager requires world state and GovernmentManager.");this.state=state;this.governments=governmentManager;this.eventBus=eventBus;this.options={monthlyDrift:0,maxMonthlyChange:3,...options};this.destroyed=false;}
+ processMonthly(modifiersByCountry={}){if(this.destroyed)throw new Error("StabilityManager has been destroyed.");const changes=[];for(const [id,country] of Object.entries(this.state.world.countries)){const current=this.governments.getGovernment(id);if(!current)continue;const modifiers=modifiersByCountry[id]??this.state.politics.stabilityModifiers?.[id]??{};const raw=this.options.monthlyDrift+(Number.isFinite(modifiers.economic)?modifiers.economic:0)+(Number.isFinite(modifiers.war)?modifiers.war:0)+(Number.isFinite(modifiers.unrest)?modifiers.unrest:0)+(Number.isFinite(modifiers.government)?modifiers.government:0);const delta=Math.max(-this.options.maxMonthlyChange,Math.min(this.options.maxMonthlyChange,raw));if(delta===0)continue;const previous=current.stability,next=clamp(previous+delta);if(next!==previous){this.governments.setStability(id,next,{source:"monthly_stability_simulation"});changes.push({countryId:id,previous,value:next,delta:next-previous});if(next<20)this.eventBus?.emit?.(GAME_EVENTS.WORLD_EVENT,{type:"political_instability",countryId:id,stability:next});}}if(changes.length)markGameStateDirty(this.state);return changes;}
+ destroy(){if(this.destroyed)return;this.destroyed=true;this.state=null;this.governments=null;this.eventBus=null;}
+}
+export default StabilityManager;
