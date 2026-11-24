@@ -1126,6 +1126,10 @@ export class Game {
         this.unregisterPoliticsTasks = [];
         for (const unregister of this.unregisterEventTasks) unregister();
         this.unregisterEventTasks = [];
+        if (this.unregisterHistoricalCountryData) {
+            this.unregisterHistoricalCountryData();
+            this.unregisterHistoricalCountryData = null;
+        }
 
         if (this.worldAIManager) this.worldAIManager.destroy();
         if (this.equipmentProductionManager) this.equipmentProductionManager.destroy();
