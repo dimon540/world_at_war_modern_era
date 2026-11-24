@@ -36,6 +36,14 @@ jobs:
       - name: Run military system tests
         run: node --test tests/*.test.mjs
 
+      - name: Install Chromium test runner
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium
+
+      - name: Run single-player browser smoke test
+        run: node tests/browser-smoke.mjs
+
       - name: Validate local JavaScript imports
         shell: bash
         run: |
