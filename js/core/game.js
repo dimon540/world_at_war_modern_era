@@ -402,6 +402,45 @@ export class Game {
        INITIALIZE GAME
     ===================================================== */
 
+    #applyPendingHistoricalCountryData() {
+        let changed = false;
+        const economyPending = this.state.economy.pendingCountryBaselines ?? {};
+        for (const [countryId, baseline] of Object.entries(economyPending)) {
+            if (!this.state.world.countries[countryId]) continue;
+            if (!this.state.economy.countries[countryId] &&
+                Number.isFinite(baseline?.nominalGDP) &&
+                Number.isFinite(baseline?.population)) {
+                this.economyManager.gdp.initializeCountry(countryId, baseline);
+            }
+            delete economyPending[countryId];
+            changed = true;
+        }
+
+        const militaryPending = this.state.military.pendingPersonnelBaselines ?? {};
+        for (const [countryId, baseline] of Object.entries(militaryPending)) {
+            if (!this.state.world.countries[countryId]) continue;
+            if (!this.state.military.nationalPersonnel[countryId] &&
+                Number.isFinite(baseline?.activePersonnel) &&
+                baseline.activePersonnel >= 0) {
+                this.state.military.nationalPersonnel[countryId] = {
+                    activePersonnel: baseline.activePersonnel,
+                    source: baseline.source ?? null,
+                    asOf: baseline.asOf ?? null,
+                    indicatorCode: baseline.indicatorCodes?.activePersonnel ?? "MS.MIL.TOTL.P1"
+                };
+            }
+            delete militaryPending[countryId];
+            changed = true;
+        }
+
+        if (changed) {
+            this.state.military.statistics.nationalActivePersonnel =
+                Object.values(this.state.military.nationalPersonnel)
+                    .reduce((sum, record) => sum + record.activePersonnel, 0);
+            markGameStateDirty(this.state);
+        }
+    }
+
     async initialize(options = {}) {
 
         this.#ensureActive();
