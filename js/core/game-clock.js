@@ -303,10 +303,7 @@ export class GameClock {
 
         this.#requestFrame();
 
-        this.eventBus.emit(GAME_EVENTS.GAME_RESUMED, {
-            date: this.date,
-            speed: this.speed
-        });
+        // Lifecycle events are emitted by the Game controller.
     }
 
     pause() {
@@ -333,10 +330,7 @@ export class GameClock {
 
         this.#cancelFrame();
 
-        this.eventBus.emit(GAME_EVENTS.GAME_PAUSED, {
-            date: this.date,
-            totalTicks: this.totalTicks
-        });
+        // Lifecycle events are emitted by the Game controller.
     }
 
     togglePause() {
