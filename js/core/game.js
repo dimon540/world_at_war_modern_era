@@ -34,6 +34,7 @@ import { WorldAIManager } from "../ai/world-ai-manager.js";
 import { EconomyManager } from "../economy/economy-manager.js";
 import { DiplomacyManager } from "../diplomacy/diplomacy-manager.js";
 import { ResearchManager } from "../technology/research-manager.js";
+import { PoliticsManager } from "../politics/politics-manager.js";
 import { SIMULATION_INTERVALS, SIMULATION_PRIORITY } from "./game-loop.js";
 
 /* =========================================================
@@ -93,6 +94,8 @@ export class Game {
         this.economyManager = null;
         this.diplomacyManager = null;
         this.researchManager = null;
+        this.politicsManager = null;
+        this.unregisterPoliticsTasks = [];
         this.unregisterResearchTask = null;
         this.unregisterDiplomacyTask = null;
         this.unregisterEconomyTask = null;
@@ -198,6 +201,30 @@ export class Game {
             this.state,
             this.eventBus
         );
+
+        this.politicsManager = new PoliticsManager(
+            this.state,
+            this.eventBus
+        );
+
+        this.unregisterPoliticsTasks = [
+            this.loop.registerTask({
+                id: "politics.elections_daily",
+                name: "Scheduled national elections",
+                interval: SIMULATION_INTERVALS.DAILY,
+                priority: SIMULATION_PRIORITY.NORMAL,
+                description: "Resolves scheduled elections using registered party support.",
+                execute: () => this.politicsManager.processDaily(this.clock.getSnapshot().date)
+            }),
+            this.loop.registerTask({
+                id: "politics.stability_monthly",
+                name: "National stability simulation",
+                interval: SIMULATION_INTERVALS.MONTHLY,
+                priority: SIMULATION_PRIORITY.NORMAL,
+                description: "Applies explicit national stability modifiers.",
+                execute: () => this.politicsManager.processMonthly()
+            })
+        ];
 
         this.unregisterResearchTask = this.loop.registerTask({
             id: "technology.research_monthly",
@@ -922,11 +949,14 @@ export class Game {
             this.unregisterResearchTask();
             this.unregisterResearchTask = null;
         }
+        for (const unregister of this.unregisterPoliticsTasks) unregister();
+        this.unregisterPoliticsTasks = [];
 
         if (this.worldAIManager) this.worldAIManager.destroy();
         if (this.economyManager) this.economyManager.destroy();
         if (this.diplomacyManager) this.diplomacyManager.destroy();
         if (this.researchManager) this.researchManager.destroy();
+        if (this.politicsManager) this.politicsManager.destroy();
         if (this.supplyManager) this.supplyManager.destroy();
         if (this.battlePlanManager) this.battlePlanManager.destroy();
         if (this.combatManager) this.combatManager.destroy();
