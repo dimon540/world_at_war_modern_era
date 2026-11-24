@@ -11,6 +11,8 @@ import { CombatManager } from "../js/military/combat.js";
 import { FrontlineManager } from "../js/military/frontlines.js";
 import { SupplyManager } from "../js/military/supply.js";
 import { WorldAIManager } from "../js/ai/world-ai-manager.js";
+import { GDPManager } from "../js/economy/gdp.js";
+import { BudgetManager } from "../js/economy/budget.js";
 import { BattlePlanManager } from "../js/military/battle-plans.js";
 
 function makeState() {
@@ -244,4 +246,37 @@ test("real scenario dataset creates an independent AI agent for every country", 
     assert.equal(ai.getSnapshot().activeAgents, dataset.countries.length);
     assert.equal(daily.length, dataset.countries.length);
     assert.equal(ai.getSnapshot().totalDecisions, dataset.countries.length);
+});
+
+test("GDP and budget systems preserve sourced baselines and calculate changes", () => {
+    const state = makeState();
+    const gdp = new GDPManager(state);
+    const budget = new BudgetManager(state);
+
+    gdp.initializeCountry("AAA", {
+        nominalGDP: 1000,
+        realGDP: 900,
+        population: 100,
+        annualGrowthRate: 0.02,
+        currency: "USD",
+        source: "test_fixture",
+        asOf: "2000-01-01"
+    });
+    const grown = gdp.applyGrowth("AAA", 0.1, { days: 365 });
+    assert.equal(grown.nominalGDP, 1100);
+    assert.equal(gdp.getWorldStatistics().countriesWithGDPData, 1);
+    assert.equal(gdp.getWorldStatistics().weightedGDPPerCapita, 11);
+
+    budget.initializeCountry("AAA", {
+        treasury: 100,
+        monthlyRevenue: 100,
+        debt: 20,
+        allocations: { civilian: 0.6, military: 0.6 }
+    });
+    const monthly = budget.processMonthly("AAA");
+    assert.equal(monthly.totalSpending, 120);
+    assert.equal(monthly.deficit, 20);
+    assert.equal(monthly.treasury, 80);
+    assert.equal(monthly.debt, 40);
+    assert.throws(() => budget.setAllocations("AAA", { civilian: 1.6 }), /150%/);
 });
