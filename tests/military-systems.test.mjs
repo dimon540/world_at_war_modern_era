@@ -360,3 +360,27 @@ test("equipment production consumes industrial resources and updates national st
 
     game.destroy();
 });
+
+test("division recruitment respects sourced national active personnel", () => {
+    const state = makeState();
+    const divisions = new DivisionManager(state);
+    state.military.nationalPersonnel.AAA = {
+        activePersonnel: 1000,
+        source: "World Bank WDI / IISS The Military Balance",
+        asOf: "2000-01-01"
+    };
+
+    const first = divisions.createDivision("AAA", "1st Infantry", { infantry: 1 }, { requireManpower: true });
+    assert.equal(first.success, true);
+    const second = divisions.createDivision("AAA", "2nd Infantry", { infantry: 1 }, { requireManpower: true });
+    assert.equal(second.success, false);
+    assert.equal(second.reason, "insufficient_manpower");
+    assert.equal(second.available, 0);
+
+    state.world.countries.BBB = { id: "BBB", name: "Bravo" };
+    const missing = divisions.createDivision("BBB", "Unverified Infantry", { infantry: 1 }, { requireManpower: true });
+    assert.equal(missing.success, false);
+    assert.equal(missing.reason, "manpower_baseline_unavailable");
+
+    divisions.destroy();
+});
