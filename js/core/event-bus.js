@@ -2,7 +2,7 @@
 /* =====================================================
    WORLD AT WAR: MODERN ERA
    CORE EVENT BUS
-   Version: 1.0.0
+   Version: 1.0.1
 
    Central event communication system.
 
@@ -121,6 +121,9 @@ export const GAME_EVENTS = Object.freeze({
     LOAD_STARTED: "load:started",
     LOAD_COMPLETED: "load:completed",
     LOAD_FAILED: "load:failed",
+    GAME_SAVED: "save:game_saved",
+    GAME_LOADED: "load:game_loaded",
+    SAVE_DELETED: "save:deleted",
 
     // Errors
     SYSTEM_ERROR: "system:error"
