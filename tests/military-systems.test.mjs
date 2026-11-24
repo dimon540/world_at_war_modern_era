@@ -8,6 +8,7 @@ import { CommanderManager } from "../js/military/commanders.js";
 import { MovementManager } from "../js/military/movement.js";
 import { CombatManager } from "../js/military/combat.js";
 import { FrontlineManager } from "../js/military/frontlines.js";
+import { SupplyManager } from "../js/military/supply.js";
 
 function makeState() {
     const state = createInitialGameState();
@@ -116,4 +117,26 @@ test("frontlines track assigned armies and release them when disbanded", () => {
     armies.disbandArmy(army.id);
     assert.deepEqual(state.military.fronts[front.id].armyIds, []);
     assert.equal(state.military.armies[army.id].frontlineId, undefined);
+});
+
+test("supply networks allocate stockpiles to assigned divisions", () => {
+    const state = makeState();
+    const divisions = new DivisionManager(state);
+    const supply = new SupplyManager(state, divisions);
+    const division = divisions.createDivision("AAA", "Supplied Infantry", { infantry: 1 }, { provinceId: "P1" }).division;
+    const network = supply.createNetwork({
+        countryId: "AAA",
+        name: "Capital Supply Line",
+        provinceIds: ["P1", "P2"],
+        stockpiles: { supplies: 100, fuel: 100 },
+        dailyThroughput: 100
+    }).network;
+
+    supply.assignDivision(network.id, division.id);
+    const report = supply.processDaily();
+
+    assert.equal(report.length, 1);
+    assert.equal(report[0].supplyLevel, 1);
+    assert.equal(state.military.divisions[division.id].supplyLevel, 1);
+    assert.ok(state.military.supplyNetworks[network.id].stockpiles.supplies < 100);
 });
