@@ -1,1 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101b25">
+    <meta name="description" content="WORLD AT WAR: MODERN ERA — global strategy campaign beginning on 1 January 2000.">
+    <title>WORLD AT WAR: MODERN ERA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/interface.css">
+    <link rel="stylesheet" href="./css/topbar.css">
+    <link rel="stylesheet" href="./css/map.css">
+    <link rel="stylesheet" href="./css/panels.css">
+    <link rel="stylesheet" href="./css/country.css">
+    <link rel="stylesheet" href="./css/military.css">
+    <link rel="stylesheet" href="./css/economy.css">
+    <link rel="stylesheet" href="./css/diplomacy.css">
+    <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body>
+    <div class="game-shell" id="app">
+        <header class="topbar">
+            <a class="brand" href="./" aria-label="WORLD AT WAR home">
+                <span class="brand-mark">W</span>
+                <span class="brand-copy">
+                    <strong>WORLD AT WAR</strong>
+                    <small>MODERN ERA</small>
+                </span>
+            </a>
 
+            <div class="campaign-meta">
+                <span class="meta-label">CAMPAIGN DATE</span>
+                <strong id="game-date">01 Jan 2000</strong>
+            </div>
+
+            <div class="topbar-status">
+                <span class="status-dot" aria-hidden="true"></span>
+                <span id="game-status" data-state="loading">Loading world…</span>
+            </div>
+
+            <div class="time-controls" aria-label="Time controls">
+                <button class="icon-button" id="speed-down" type="button" title="Decrease speed" aria-label="Decrease speed">−</button>
+                <span class="speed-value" id="game-speed">×1</span>
+                <button class="icon-button" id="speed-up" type="button" title="Increase speed" aria-label="Increase speed">+</button>
+                <button class="control-button control-primary" id="start-game" type="button" disabled>▶ Start</button>
+                <button class="control-button" id="pause-game" type="button" disabled>Ⅱ Pause</button>
+            </div>
+        </header>
+
+        <main class="main-layout">
+            <aside class="sidebar sidebar-left">
+                <section class="panel country-selector-panel">
+                    <div class="panel-heading">
+                        <span class="eyebrow">CAMPAIGN</span>
+                        <h1>Choose your nation</h1>
+                    </div>
+                    <label class="field-label" for="country-select">Playable countries</label>
+                    <select id="country-select" class="country-select">
+                        <option value="">Loading countries…</option>
+                    </select>
+                    <div class="country-summary">
+                        <span class="summary-label">YOUR COUNTRY</span>
+                        <strong id="selected-country">None</strong>
+                    </div>
+                </section>
+
+                <section class="panel country-details-panel">
+                    <div class="panel-heading">
+                        <span class="eyebrow">NATIONAL OVERVIEW</span>
+                        <h2 id="country-name">No country selected</h2>
+                    </div>
+                    <dl class="details-list">
+                        <div><dt>Capital</dt><dd id="country-capital">—</dd></div>
+                        <div><dt>Region</dt><dd id="country-region">—</dd></div>
+                        <div><dt>Status</dt><dd id="country-status">Choose a country</dd></div>
+                    </dl>
+                </section>
+
+                <section class="panel world-statistics-panel">
+                    <div class="panel-heading">
+                        <span class="eyebrow">WORLD DATABASE</span>
+                        <h2>Scenario data</h2>
+                    </div>
+                    <div class="stat-grid">
+                        <div class="stat-card">
+                            <strong id="country-count">—</strong>
+                            <span>Countries</span>
+                        </div>
+                        <div class="stat-card">
+                            <strong id="province-count">—</strong>
+                            <span>Map regions</span>
+                        </div>
+                    </div>
+                    <p class="panel-note">Historical campaign start: 1 January 2000.</p>
+                </section>
+            </aside>
+
+            <section class="map-section" aria-label="World map">
+                <div class="map-toolbar">
+                    <div>
+                        <span class="eyebrow">GLOBAL THEATER</span>
+                        <strong>Political map</strong>
+                    </div>
+                    <div class="map-legend"><span class="legend-swatch"></span> Country borders</div>
+                </div>
+                <div class="map-frame">
+                    <canvas id="world-map" aria-label="Interactive world map. Click a country to select it."></canvas>
+                    <div class="map-loading" id="map-loading">Loading world map…</div>
+                    <div class="map-hint">SELECT A COUNTRY ON THE MAP OR FROM THE LIST</div>
+                </div>
+                <div class="map-footer">
+                    <span>WORLD AT WAR: MODERN ERA</span>
+                    <span>SCENARIO 2000.01.01</span>
+                </div>
+            </section>
+
+            <aside class="sidebar sidebar-right">
+                <section class="panel actions-panel">
+                    <div class="panel-heading">
+                        <span class="eyebrow">COMMAND</span>
+                        <h2>Campaign actions</h2>
+                    </div>
+                    <button class="action-button" id="save-game" type="button">Save campaign</button>
+                    <button class="action-button action-secondary" id="load-game" type="button">Load campaign</button>
+                    <p class="panel-note">Saves are stored locally in this browser.</p>
+                </section>
+
+                <section class="panel world-systems-panel">
+                    <div class="panel-heading">
+                        <span class="eyebrow">SIMULATION</span>
+                        <h2>World systems</h2>
+                    </div>
+                    <ul class="system-list">
+                        <li><span class="system-indicator"></span> World clock</li>
+                        <li><span class="system-indicator"></span> Country database</li>
+                        <li><span class="system-indicator"></span> Geographic map</li>
+                        <li class="system-pending"><span class="system-indicator"></span> Autonomous AI</li>
+                        <li class="system-pending"><span class="system-indicator"></span> Economy & industry</li>
+                        <li class="system-pending"><span class="system-indicator"></span> Military & diplomacy</li>
+                    </ul>
+                </section>
+
+                <section class="panel message-panel" aria-live="polite">
+                    <div class="panel-heading">
+                        <span class="eyebrow">COMMAND LOG</span>
+                        <h2>Notifications</h2>
+                    </div>
+                    <p id="game-message" class="game-message" data-type="info">Preparing campaign…</p>
+                </section>
+            </aside>
+        </main>
+
+        <footer class="game-footer">
+            <span>WORLD AT WAR <b>·</b> MODERN ERA</span>
+            <span>EARLY DEVELOPMENT BUILD</span>
+        </footer>
+    </div>
+
+    <script type="module" src="./js/main.js"></script>
+</body>
+</html>
