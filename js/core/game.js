@@ -30,6 +30,7 @@ import { CombatManager } from "../military/combat.js";
 import { FrontlineManager } from "../military/frontlines.js";
 import { SupplyManager } from "../military/supply.js";
 import { BattlePlanManager } from "../military/battle-plans.js";
+import { WorldAIManager } from "../ai/world-ai-manager.js";
 import { SIMULATION_INTERVALS, SIMULATION_PRIORITY } from "./game-loop.js";
 
 /* =========================================================
@@ -85,6 +86,8 @@ export class Game {
         this.frontlineManager = null;
         this.supplyManager = null;
         this.battlePlanManager = null;
+        this.worldAIManager = null;
+        this.unregisterAITasks = [];
         this.unregisterMovementTask = null;
         this.unregisterSupplyTask = null;
         this.unregisterCombatTask = null;
@@ -165,6 +168,12 @@ export class Game {
             this.eventBus
         );
 
+        this.worldAIManager = new WorldAIManager(
+            this.state,
+            this.eventBus,
+            { enabled: GAME_CONFIG.simulation?.aiEnabled !== false }
+        );
+
         this.combatManager = new CombatManager(
             this.state,
             this.divisionManager,
@@ -197,6 +206,33 @@ export class Game {
             description: "Allocates stockpiled supplies and fuel to assigned divisions.",
             execute: () => this.supplyManager.processDaily()
         });
+
+        this.unregisterAITasks = [
+            this.loop.registerTask({
+                id: "ai.country_daily",
+                name: "Autonomous country AI decisions",
+                interval: SIMULATION_INTERVALS.DAILY,
+                priority: SIMULATION_PRIORITY.NORMAL,
+                description: "Evaluates independent national priorities for every active country.",
+                execute: () => this.worldAIManager.runDailyCycle()
+            }),
+            this.loop.registerTask({
+                id: "ai.country_weekly",
+                name: "Country AI strategic review",
+                interval: SIMULATION_INTERVALS.WEEKLY,
+                priority: SIMULATION_PRIORITY.LOW,
+                description: "Reviews and adjusts each country's strategic priorities.",
+                execute: () => this.worldAIManager.runWeeklyReview()
+            }),
+            this.loop.registerTask({
+                id: "ai.country_monthly",
+                name: "Country AI national planning",
+                interval: SIMULATION_INTERVALS.MONTHLY,
+                priority: SIMULATION_PRIORITY.LOW,
+                description: "Refreshes long-term plans for all country AI agents.",
+                execute: () => this.worldAIManager.runMonthlyReview()
+            })
+        ];
     }
 
     /* =====================================================
@@ -263,6 +299,7 @@ export class Game {
                 }
 
                 worldLoaded = true;
+                this.worldAIManager.initializeAgents();
             }
 
             await this.saveManager.initialize();
@@ -731,7 +768,8 @@ export class Game {
             combatManager: this.combatManager,
             frontlineManager: this.frontlineManager,
             supplyManager: this.supplyManager,
-            battlePlanManager: this.battlePlanManager
+            battlePlanManager: this.battlePlanManager,
+            worldAIManager: this.worldAIManager
         };
     }
 
@@ -817,7 +855,10 @@ export class Game {
             this.unregisterSupplyTask();
             this.unregisterSupplyTask = null;
         }
+        for (const unregister of this.unregisterAITasks) unregister();
+        this.unregisterAITasks = [];
 
+        if (this.worldAIManager) this.worldAIManager.destroy();
         if (this.supplyManager) this.supplyManager.destroy();
         if (this.battlePlanManager) this.battlePlanManager.destroy();
         if (this.combatManager) this.combatManager.destroy();
