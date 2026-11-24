@@ -95,12 +95,16 @@ try {
     await page.locator('[data-panel-tab="economy"]').click();
     assert.equal(await page.locator("#panel-economy").isVisible(), true);
     assert.ok((await page.locator("#panel-economy").textContent()).includes("Industrial construction"));
+    assert.ok((await page.locator("#panel-economy").textContent()).includes("3,521,418,059"),
+        "The 2000 World Bank GDP baseline must load into the selected country.");
     assert.equal(await page.locator("#panel-economy button").isDisabled(), true,
         "Construction must be unavailable without a civilian factory.");
 
     await page.locator('[data-panel-tab="army"]').click();
     assert.equal(await page.locator("#panel-army").isVisible(), true);
     assert.ok((await page.locator("#panel-army").textContent()).includes("Equipment stockpiles"));
+    assert.ok((await page.locator("#panel-army").textContent()).includes("400,000"),
+        "The IISS-sourced 2000 active personnel baseline must load into the selected country.");
     assert.equal(await page.locator("#panel-army button").isDisabled(), true,
         "Recruitment must be unavailable without the required equipment.");
 
