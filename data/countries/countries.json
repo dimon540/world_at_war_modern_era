@@ -1,0 +1,1928 @@
+
+{
+  "metadata": {
+    "dataset": "WORLD AT WAR - Historical Countries",
+    "version": "1.0.0",
+    "scenario": "modern_2000",
+    "validAt": "2000-01-01",
+    "description": "Historical country definitions for the world on 1 January 2000",
+    "capitalPolicy": "Capital city at scenario start",
+    "notes": [
+      "Historical country identities must not be replaced with modern political entities.",
+      "Dependent territories will be stored separately.",
+      "Country ownership and borders will be defined in scenario and map datasets."
+    ]
+  },
+  "schema": {
+    "id": "ISO alpha-3 or historical code",
+    "name": "English short name",
+    "officialName": "Official state name",
+    "capital": "Capital city on 2000-01-01",
+    "iso2": "ISO alpha-2 code when applicable",
+    "iso3": "ISO alpha-3 code when applicable",
+    "region": "World region",
+    "status": "political status on 2000-01-01"
+  },
+  "countries": [
+    {
+      "id": "AFG",
+      "name": "Afghanistan",
+      "officialName": "Islamic State of Afghanistan",
+      "capital": "Kabul",
+      "iso2": "AF",
+      "iso3": "AFG",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "officialName": "Republic of Albania",
+      "capital": "Tirana",
+      "iso2": "AL",
+      "iso3": "ALB",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "officialName": "People's Democratic Republic of Algeria",
+      "capital": "Algiers",
+      "iso2": "DZ",
+      "iso3": "DZA",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "AND",
+      "name": "Andorra",
+      "officialName": "Principality of Andorra",
+      "capital": "Andorra la Vella",
+      "iso2": "AD",
+      "iso3": "AND",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "AGO",
+      "name": "Angola",
+      "officialName": "Republic of Angola",
+      "capital": "Luanda",
+      "iso2": "AO",
+      "iso3": "AGO",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "ATG",
+      "name": "Antigua and Barbuda",
+      "officialName": "Antigua and Barbuda",
+      "capital": "Saint John's",
+      "iso2": "AG",
+      "iso3": "ATG",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "officialName": "Argentine Republic",
+      "capital": "Buenos Aires",
+      "iso2": "AR",
+      "iso3": "ARG",
+      "region": "South America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "officialName": "Republic of Armenia",
+      "capital": "Yerevan",
+      "iso2": "AM",
+      "iso3": "ARM",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "officialName": "Commonwealth of Australia",
+      "capital": "Canberra",
+      "iso2": "AU",
+      "iso3": "AUS",
+      "region": "Oceania",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "officialName": "Republic of Austria",
+      "capital": "Vienna",
+      "iso2": "AT",
+      "iso3": "AUT",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "AZE",
+      "name": "Azerbaijan",
+      "officialName": "Republic of Azerbaijan",
+      "capital": "Baku",
+      "iso2": "AZ",
+      "iso3": "AZE",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BHS",
+      "name": "Bahamas",
+      "officialName": "Commonwealth of The Bahamas",
+      "capital": "Nassau",
+      "iso2": "BS",
+      "iso3": "BHS",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BHR",
+      "name": "Bahrain",
+      "officialName": "State of Bahrain",
+      "capital": "Manama",
+      "iso2": "BH",
+      "iso3": "BHR",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "officialName": "People's Republic of Bangladesh",
+      "capital": "Dhaka",
+      "iso2": "BD",
+      "iso3": "BGD",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BRB",
+      "name": "Barbados",
+      "officialName": "Barbados",
+      "capital": "Bridgetown",
+      "iso2": "BB",
+      "iso3": "BRB",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "officialName": "Republic of Belarus",
+      "capital": "Minsk",
+      "iso2": "BY",
+      "iso3": "BLR",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "officialName": "Kingdom of Belgium",
+      "capital": "Brussels",
+      "iso2": "BE",
+      "iso3": "BEL",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BLZ",
+      "name": "Belize",
+      "officialName": "Belize",
+      "capital": "Belmopan",
+      "iso2": "BZ",
+      "iso3": "BLZ",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BEN",
+      "name": "Benin",
+      "officialName": "Republic of Benin",
+      "capital": "Porto-Novo",
+      "iso2": "BJ",
+      "iso3": "BEN",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "officialName": "Kingdom of Bhutan",
+      "capital": "Thimphu",
+      "iso2": "BT",
+      "iso3": "BTN",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "officialName": "Republic of Bolivia",
+      "capital": "Sucre",
+      "iso2": "BO",
+      "iso3": "BOL",
+      "region": "South America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia and Herzegovina",
+      "officialName": "Bosnia and Herzegovina",
+      "capital": "Sarajevo",
+      "iso2": "BA",
+      "iso3": "BIH",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BWA",
+      "name": "Botswana",
+      "officialName": "Republic of Botswana",
+      "capital": "Gaborone",
+      "iso2": "BW",
+      "iso3": "BWA",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "officialName": "Federative Republic of Brazil",
+      "capital": "Brasilia",
+      "iso2": "BR",
+      "iso3": "BRA",
+      "region": "South America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BRN",
+      "name": "Brunei",
+      "officialName": "Brunei Darussalam",
+      "capital": "Bandar Seri Begawan",
+      "iso2": "BN",
+      "iso3": "BRN",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "officialName": "Republic of Bulgaria",
+      "capital": "Sofia",
+      "iso2": "BG",
+      "iso3": "BGR",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BFA",
+      "name": "Burkina Faso",
+      "officialName": "Burkina Faso",
+      "capital": "Ouagadougou",
+      "iso2": "BF",
+      "iso3": "BFA",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "BDI",
+      "name": "Burundi",
+      "officialName": "Republic of Burundi",
+      "capital": "Bujumbura",
+      "iso2": "BI",
+      "iso3": "BDI",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "KHM",
+      "name": "Cambodia",
+      "officialName": "Kingdom of Cambodia",
+      "capital": "Phnom Penh",
+      "iso2": "KH",
+      "iso3": "KHM",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "CMR",
+      "name": "Cameroon",
+      "officialName": "Republic of Cameroon",
+      "capital": "Yaounde",
+      "iso2": "CM",
+      "iso3": "CMR",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "officialName": "Canada",
+      "capital": "Ottawa",
+      "iso2": "CA",
+      "iso3": "CAN",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "CPV",
+      "name": "Cape Verde",
+      "officialName": "Republic of Cape Verde",
+      "capital": "Praia",
+      "iso2": "CV",
+      "iso3": "CPV",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "CAF",
+      "name": "Central African Republic",
+      "officialName": "Central African Republic",
+      "capital": "Bangui",
+      "iso2": "CF",
+      "iso3": "CAF",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "TCD",
+      "name": "Chad",
+      "officialName": "Republic of Chad",
+      "capital": "N'Djamena",
+      "iso2": "TD",
+      "iso3": "TCD",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "officialName": "Republic of Chile",
+      "capital": "Santiago",
+      "iso2": "CL",
+      "iso3": "CHL",
+      "region": "South America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "officialName": "People's Republic of China",
+      "capital": "Beijing",
+      "iso2": "CN",
+      "iso3": "CHN",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "officialName": "Republic of Colombia",
+      "capital": "Bogota",
+      "iso2": "CO",
+      "iso3": "COL",
+      "region": "South America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "COM",
+      "name": "Comoros",
+      "officialName": "Federal Islamic Republic of the Comoros",
+      "capital": "Moroni",
+      "iso2": "KM",
+      "iso3": "COM",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "COG",
+      "name": "Republic of the Congo",
+      "officialName": "Republic of the Congo",
+      "capital": "Brazzaville",
+      "iso2": "CG",
+      "iso3": "COG",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "officialName": "Republic of Costa Rica",
+      "capital": "San Jose",
+      "iso2": "CR",
+      "iso3": "CRI",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "CIV",
+      "name": "Cote d'Ivoire",
+      "officialName": "Republic of Cote d'Ivoire",
+      "capital": "Yamoussoukro",
+      "iso2": "CI",
+      "iso3": "CIV",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "officialName": "Republic of Croatia",
+      "capital": "Zagreb",
+      "iso2": "HR",
+      "iso3": "HRV",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "CUB",
+      "name": "Cuba",
+      "officialName": "Republic of Cuba",
+      "capital": "Havana",
+      "iso2": "CU",
+      "iso3": "CUB",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "officialName": "Republic of Cyprus",
+      "capital": "Nicosia",
+      "iso2": "CY",
+      "iso3": "CYP",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "CZE",
+      "name": "Czech Republic",
+      "officialName": "Czech Republic",
+      "capital": "Prague",
+      "iso2": "CZ",
+      "iso3": "CZE",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "PRK",
+      "name": "North Korea",
+      "officialName": "Democratic People's Republic of Korea",
+      "capital": "Pyongyang",
+      "iso2": "KP",
+      "iso3": "PRK",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "COD",
+      "name": "Democratic Republic of the Congo",
+      "officialName": "Democratic Republic of the Congo",
+      "capital": "Kinshasa",
+      "iso2": "CD",
+      "iso3": "COD",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "officialName": "Kingdom of Denmark",
+      "capital": "Copenhagen",
+      "iso2": "DK",
+      "iso3": "DNK",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "DJI",
+      "name": "Djibouti",
+      "officialName": "Republic of Djibouti",
+      "capital": "Djibouti",
+      "iso2": "DJ",
+      "iso3": "DJI",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "DMA",
+      "name": "Dominica",
+      "officialName": "Commonwealth of Dominica",
+      "capital": "Roseau",
+      "iso2": "DM",
+      "iso3": "DMA",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Republic",
+      "officialName": "Dominican Republic",
+      "capital": "Santo Domingo",
+      "iso2": "DO",
+      "iso3": "DOM",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "officialName": "Republic of Ecuador",
+      "capital": "Quito",
+      "iso2": "EC",
+      "iso3": "ECU",
+      "region": "South America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "officialName": "Arab Republic of Egypt",
+      "capital": "Cairo",
+      "iso2": "EG",
+      "iso3": "EGY",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "officialName": "Republic of El Salvador",
+      "capital": "San Salvador",
+      "iso2": "SV",
+      "iso3": "SLV",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "GNQ",
+      "name": "Equatorial Guinea",
+      "officialName": "Republic of Equatorial Guinea",
+      "capital": "Malabo",
+      "iso2": "GQ",
+      "iso3": "GNQ",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "ERI",
+      "name": "Eritrea",
+      "officialName": "State of Eritrea",
+      "capital": "Asmara",
+      "iso2": "ER",
+      "iso3": "ERI",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "officialName": "Republic of Estonia",
+      "capital": "Tallinn",
+      "iso2": "EE",
+      "iso3": "EST",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "officialName": "Federal Democratic Republic of Ethiopia",
+      "capital": "Addis Ababa",
+      "iso2": "ET",
+      "iso3": "ETH",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "FJI",
+      "name": "Fiji",
+      "officialName": "Republic of Fiji",
+      "capital": "Suva",
+      "iso2": "FJ",
+      "iso3": "FJI",
+      "region": "Oceania",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "officialName": "Republic of Finland",
+      "capital": "Helsinki",
+      "iso2": "FI",
+      "iso3": "FIN",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "officialName": "French Republic",
+      "capital": "Paris",
+      "iso2": "FR",
+      "iso3": "FRA",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "GAB",
+      "name": "Gabon",
+      "officialName": "Gabonese Republic",
+      "capital": "Libreville",
+      "iso2": "GA",
+      "iso3": "GAB",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "GMB",
+      "name": "Gambia",
+      "officialName": "Republic of The Gambia",
+      "capital": "Banjul",
+      "iso2": "GM",
+      "iso3": "GMB",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "officialName": "Georgia",
+      "capital": "Tbilisi",
+      "iso2": "GE",
+      "iso3": "GEO",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "officialName": "Federal Republic of Germany",
+      "capital": "Berlin",
+      "iso2": "DE",
+      "iso3": "DEU",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "GHA",
+      "name": "Ghana",
+      "officialName": "Republic of Ghana",
+      "capital": "Accra",
+      "iso2": "GH",
+      "iso3": "GHA",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "officialName": "Hellenic Republic",
+      "capital": "Athens",
+      "iso2": "GR",
+      "iso3": "GRC",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "GRD",
+      "name": "Grenada",
+      "officialName": "Grenada",
+      "capital": "Saint George's",
+      "iso2": "GD",
+      "iso3": "GRD",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "officialName": "Republic of Guatemala",
+      "capital": "Guatemala City",
+      "iso2": "GT",
+      "iso3": "GTM",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "GIN",
+      "name": "Guinea",
+      "officialName": "Republic of Guinea",
+      "capital": "Conakry",
+      "iso2": "GN",
+      "iso3": "GIN",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "GNB",
+      "name": "Guinea-Bissau",
+      "officialName": "Republic of Guinea-Bissau",
+      "capital": "Bissau",
+      "iso2": "GW",
+      "iso3": "GNB",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "GUY",
+      "name": "Guyana",
+      "officialName": "Co-operative Republic of Guyana",
+      "capital": "Georgetown",
+      "iso2": "GY",
+      "iso3": "GUY",
+      "region": "South America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "officialName": "Republic of Haiti",
+      "capital": "Port-au-Prince",
+      "iso2": "HT",
+      "iso3": "HTI",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "officialName": "Republic of Honduras",
+      "capital": "Tegucigalpa",
+      "iso2": "HN",
+      "iso3": "HND",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "officialName": "Republic of Hungary",
+      "capital": "Budapest",
+      "iso2": "HU",
+      "iso3": "HUN",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "officialName": "Republic of Iceland",
+      "capital": "Reykjavik",
+      "iso2": "IS",
+      "iso3": "ISL",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "officialName": "Republic of India",
+      "capital": "New Delhi",
+      "iso2": "IN",
+      "iso3": "IND",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "officialName": "Republic of Indonesia",
+      "capital": "Jakarta",
+      "iso2": "ID",
+      "iso3": "IDN",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "officialName": "Islamic Republic of Iran",
+      "capital": "Tehran",
+      "iso2": "IR",
+      "iso3": "IRN",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "officialName": "Republic of Iraq",
+      "capital": "Baghdad",
+      "iso2": "IQ",
+      "iso3": "IRQ",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "officialName": "Ireland",
+      "capital": "Dublin",
+      "iso2": "IE",
+      "iso3": "IRL",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "officialName": "State of Israel",
+      "capital": "Jerusalem",
+      "iso2": "IL",
+      "iso3": "ISR",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "officialName": "Italian Republic",
+      "capital": "Rome",
+      "iso2": "IT",
+      "iso3": "ITA",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "JAM",
+      "name": "Jamaica",
+      "officialName": "Jamaica",
+      "capital": "Kingston",
+      "iso2": "JM",
+      "iso3": "JAM",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "officialName": "Japan",
+      "capital": "Tokyo",
+      "iso2": "JP",
+      "iso3": "JPN",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "officialName": "Hashemite Kingdom of Jordan",
+      "capital": "Amman",
+      "iso2": "JO",
+      "iso3": "JOR",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "officialName": "Republic of Kazakhstan",
+      "capital": "Astana",
+      "iso2": "KZ",
+      "iso3": "KAZ",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "officialName": "Republic of Kenya",
+      "capital": "Nairobi",
+      "iso2": "KE",
+      "iso3": "KEN",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "KIR",
+      "name": "Kiribati",
+      "officialName": "Republic of Kiribati",
+      "capital": "Tarawa",
+      "iso2": "KI",
+      "iso3": "KIR",
+      "region": "Oceania",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "KWT",
+      "name": "Kuwait",
+      "officialName": "State of Kuwait",
+      "capital": "Kuwait City",
+      "iso2": "KW",
+      "iso3": "KWT",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "officialName": "Kyrgyz Republic",
+      "capital": "Bishkek",
+      "iso2": "KG",
+      "iso3": "KGZ",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "officialName": "Lao People's Democratic Republic",
+      "capital": "Vientiane",
+      "iso2": "LA",
+      "iso3": "LAO",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "officialName": "Republic of Latvia",
+      "capital": "Riga",
+      "iso2": "LV",
+      "iso3": "LVA",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "officialName": "Lebanese Republic",
+      "capital": "Beirut",
+      "iso2": "LB",
+      "iso3": "LBN",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "LSO",
+      "name": "Lesotho",
+      "officialName": "Kingdom of Lesotho",
+      "capital": "Maseru",
+      "iso2": "LS",
+      "iso3": "LSO",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "LBR",
+      "name": "Liberia",
+      "officialName": "Republic of Liberia",
+      "capital": "Monrovia",
+      "iso2": "LR",
+      "iso3": "LBR",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "LBY",
+      "name": "Libya",
+      "officialName": "Great Socialist People's Libyan Arab Jamahiriya",
+      "capital": "Tripoli",
+      "iso2": "LY",
+      "iso3": "LBY",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "LIE",
+      "name": "Liechtenstein",
+      "officialName": "Principality of Liechtenstein",
+      "capital": "Vaduz",
+      "iso2": "LI",
+      "iso3": "LIE",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "officialName": "Republic of Lithuania",
+      "capital": "Vilnius",
+      "iso2": "LT",
+      "iso3": "LTU",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "officialName": "Grand Duchy of Luxembourg",
+      "capital": "Luxembourg",
+      "iso2": "LU",
+      "iso3": "LUX",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "MDG",
+      "name": "Madagascar",
+      "officialName": "Republic of Madagascar",
+      "capital": "Antananarivo",
+      "iso2": "MG",
+      "iso3": "MDG",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "MWI",
+      "name": "Malawi",
+      "officialName": "Republic of Malawi",
+      "capital": "Lilongwe",
+      "iso2": "MW",
+      "iso3": "MWI",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "officialName": "Malaysia",
+      "capital": "Kuala Lumpur",
+      "iso2": "MY",
+      "iso3": "MYS",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "MDV",
+      "name": "Maldives",
+      "officialName": "Republic of Maldives",
+      "capital": "Male",
+      "iso2": "MV",
+      "iso3": "MDV",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "MLI",
+      "name": "Mali",
+      "officialName": "Republic of Mali",
+      "capital": "Bamako",
+      "iso2": "ML",
+      "iso3": "MLI",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "officialName": "Republic of Malta",
+      "capital": "Valletta",
+      "iso2": "MT",
+      "iso3": "MLT",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "MHL",
+      "name": "Marshall Islands",
+      "officialName": "Republic of the Marshall Islands",
+      "capital": "Majuro",
+      "iso2": "MH",
+      "iso3": "MHL",
+      "region": "Oceania",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "MRT",
+      "name": "Mauritania",
+      "officialName": "Islamic Republic of Mauritania",
+      "capital": "Nouakchott",
+      "iso2": "MR",
+      "iso3": "MRT",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "MUS",
+      "name": "Mauritius",
+      "officialName": "Republic of Mauritius",
+      "capital": "Port Louis",
+      "iso2": "MU",
+      "iso3": "MUS",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "officialName": "United Mexican States",
+      "capital": "Mexico City",
+      "iso2": "MX",
+      "iso3": "MEX",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "FSM",
+      "name": "Micronesia",
+      "officialName": "Federated States of Micronesia",
+      "capital": "Palikir",
+      "iso2": "FM",
+      "iso3": "FSM",
+      "region": "Oceania",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "officialName": "Republic of Moldova",
+      "capital": "Chisinau",
+      "iso2": "MD",
+      "iso3": "MDA",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "MCO",
+      "name": "Monaco",
+      "officialName": "Principality of Monaco",
+      "capital": "Monaco",
+      "iso2": "MC",
+      "iso3": "MCO",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "officialName": "Mongolia",
+      "capital": "Ulaanbaatar",
+      "iso2": "MN",
+      "iso3": "MNG",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "officialName": "Kingdom of Morocco",
+      "capital": "Rabat",
+      "iso2": "MA",
+      "iso3": "MAR",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "MOZ",
+      "name": "Mozambique",
+      "officialName": "Republic of Mozambique",
+      "capital": "Maputo",
+      "iso2": "MZ",
+      "iso3": "MOZ",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "officialName": "Union of Myanmar",
+      "capital": "Yangon",
+      "iso2": "MM",
+      "iso3": "MMR",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "NAM",
+      "name": "Namibia",
+      "officialName": "Republic of Namibia",
+      "capital": "Windhoek",
+      "iso2": "NA",
+      "iso3": "NAM",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "NRU",
+      "name": "Nauru",
+      "officialName": "Republic of Nauru",
+      "capital": "Yaren",
+      "iso2": "NR",
+      "iso3": "NRU",
+      "region": "Oceania",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "officialName": "Kingdom of Nepal",
+      "capital": "Kathmandu",
+      "iso2": "NP",
+      "iso3": "NPL",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "officialName": "Kingdom of the Netherlands",
+      "capital": "Amsterdam",
+      "iso2": "NL",
+      "iso3": "NLD",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "NZL",
+      "name": "New Zealand",
+      "officialName": "New Zealand",
+      "capital": "Wellington",
+      "iso2": "NZ",
+      "iso3": "NZL",
+      "region": "Oceania",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "officialName": "Republic of Nicaragua",
+      "capital": "Managua",
+      "iso2": "NI",
+      "iso3": "NIC",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "NER",
+      "name": "Niger",
+      "officialName": "Republic of Niger",
+      "capital": "Niamey",
+      "iso2": "NE",
+      "iso3": "NER",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "officialName": "Federal Republic of Nigeria",
+      "capital": "Abuja",
+      "iso2": "NG",
+      "iso3": "NGA",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "officialName": "Kingdom of Norway",
+      "capital": "Oslo",
+      "iso2": "NO",
+      "iso3": "NOR",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "OMN",
+      "name": "Oman",
+      "officialName": "Sultanate of Oman",
+      "capital": "Muscat",
+      "iso2": "OM",
+      "iso3": "OMN",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "officialName": "Islamic Republic of Pakistan",
+      "capital": "Islamabad",
+      "iso2": "PK",
+      "iso3": "PAK",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "PLW",
+      "name": "Palau",
+      "officialName": "Republic of Palau",
+      "capital": "Ngerulmud",
+      "iso2": "PW",
+      "iso3": "PLW",
+      "region": "Oceania",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "officialName": "Republic of Panama",
+      "capital": "Panama City",
+      "iso2": "PA",
+      "iso3": "PAN",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "PNG",
+      "name": "Papua New Guinea",
+      "officialName": "Independent State of Papua New Guinea",
+      "capital": "Port Moresby",
+      "iso2": "PG",
+      "iso3": "PNG",
+      "region": "Oceania",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "officialName": "Republic of Paraguay",
+      "capital": "Asuncion",
+      "iso2": "PY",
+      "iso3": "PRY",
+      "region": "South America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "officialName": "Republic of Peru",
+      "capital": "Lima",
+      "iso2": "PE",
+      "iso3": "PER",
+      "region": "South America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "officialName": "Republic of the Philippines",
+      "capital": "Manila",
+      "iso2": "PH",
+      "iso3": "PHL",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "officialName": "Republic of Poland",
+      "capital": "Warsaw",
+      "iso2": "PL",
+      "iso3": "POL",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "officialName": "Portuguese Republic",
+      "capital": "Lisbon",
+      "iso2": "PT",
+      "iso3": "PRT",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "QAT",
+      "name": "Qatar",
+      "officialName": "State of Qatar",
+      "capital": "Doha",
+      "iso2": "QA",
+      "iso3": "QAT",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "officialName": "Republic of Korea",
+      "capital": "Seoul",
+      "iso2": "KR",
+      "iso3": "KOR",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "officialName": "Romania",
+      "capital": "Bucharest",
+      "iso2": "RO",
+      "iso3": "ROU",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "officialName": "Russian Federation",
+      "capital": "Moscow",
+      "iso2": "RU",
+      "iso3": "RUS",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "RWA",
+      "name": "Rwanda",
+      "officialName": "Republic of Rwanda",
+      "capital": "Kigali",
+      "iso2": "RW",
+      "iso3": "RWA",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "KNA",
+      "name": "Saint Kitts and Nevis",
+      "officialName": "Federation of Saint Kitts and Nevis",
+      "capital": "Basseterre",
+      "iso2": "KN",
+      "iso3": "KNA",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "LCA",
+      "name": "Saint Lucia",
+      "officialName": "Saint Lucia",
+      "capital": "Castries",
+      "iso2": "LC",
+      "iso3": "LCA",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "VCT",
+      "name": "Saint Vincent and the Grenadines",
+      "officialName": "Saint Vincent and the Grenadines",
+      "capital": "Kingstown",
+      "iso2": "VC",
+      "iso3": "VCT",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "WSM",
+      "name": "Samoa",
+      "officialName": "Independent State of Samoa",
+      "capital": "Apia",
+      "iso2": "WS",
+      "iso3": "WSM",
+      "region": "Oceania",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "SMR",
+      "name": "San Marino",
+      "officialName": "Republic of San Marino",
+      "capital": "San Marino",
+      "iso2": "SM",
+      "iso3": "SMR",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "STP",
+      "name": "Sao Tome and Principe",
+      "officialName": "Democratic Republic of Sao Tome and Principe",
+      "capital": "Sao Tome",
+      "iso2": "ST",
+      "iso3": "STP",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "SAU",
+      "name": "Saudi Arabia",
+      "officialName": "Kingdom of Saudi Arabia",
+      "capital": "Riyadh",
+      "iso2": "SA",
+      "iso3": "SAU",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "SEN",
+      "name": "Senegal",
+      "officialName": "Republic of Senegal",
+      "capital": "Dakar",
+      "iso2": "SN",
+      "iso3": "SEN",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "SYC",
+      "name": "Seychelles",
+      "officialName": "Republic of Seychelles",
+      "capital": "Victoria",
+      "iso2": "SC",
+      "iso3": "SYC",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "SLE",
+      "name": "Sierra Leone",
+      "officialName": "Republic of Sierra Leone",
+      "capital": "Freetown",
+      "iso2": "SL",
+      "iso3": "SLE",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "SGP",
+      "name": "Singapore",
+      "officialName": "Republic of Singapore",
+      "capital": "Singapore",
+      "iso2": "SG",
+      "iso3": "SGP",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "officialName": "Slovak Republic",
+      "capital": "Bratislava",
+      "iso2": "SK",
+      "iso3": "SVK",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "officialName": "Republic of Slovenia",
+      "capital": "Ljubljana",
+      "iso2": "SI",
+      "iso3": "SVN",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "SLB",
+      "name": "Solomon Islands",
+      "officialName": "Solomon Islands",
+      "capital": "Honiara",
+      "iso2": "SB",
+      "iso3": "SLB",
+      "region": "Oceania",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "SOM",
+      "name": "Somalia",
+      "officialName": "Somali Republic",
+      "capital": "Mogadishu",
+      "iso2": "SO",
+      "iso3": "SOM",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "officialName": "Republic of South Africa",
+      "capital": "Pretoria",
+      "iso2": "ZA",
+      "iso3": "ZAF",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "officialName": "Kingdom of Spain",
+      "capital": "Madrid",
+      "iso2": "ES",
+      "iso3": "ESP",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "officialName": "Democratic Socialist Republic of Sri Lanka",
+      "capital": "Colombo",
+      "iso2": "LK",
+      "iso3": "LKA",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "SDN",
+      "name": "Sudan",
+      "officialName": "Republic of the Sudan",
+      "capital": "Khartoum",
+      "iso2": "SD",
+      "iso3": "SDN",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "SUR",
+      "name": "Suriname",
+      "officialName": "Republic of Suriname",
+      "capital": "Paramaribo",
+      "iso2": "SR",
+      "iso3": "SUR",
+      "region": "South America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "SWZ",
+      "name": "Swaziland",
+      "officialName": "Kingdom of Swaziland",
+      "capital": "Mbabane",
+      "iso2": "SZ",
+      "iso3": "SWZ",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "officialName": "Kingdom of Sweden",
+      "capital": "Stockholm",
+      "iso2": "SE",
+      "iso3": "SWE",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "SYR",
+      "name": "Syria",
+      "officialName": "Syrian Arab Republic",
+      "capital": "Damascus",
+      "iso2": "SY",
+      "iso3": "SYR",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "officialName": "Republic of Tajikistan",
+      "capital": "Dushanbe",
+      "iso2": "TJ",
+      "iso3": "TJK",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "officialName": "Kingdom of Thailand",
+      "capital": "Bangkok",
+      "iso2": "TH",
+      "iso3": "THA",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "TGO",
+      "name": "Togo",
+      "officialName": "Togolese Republic",
+      "capital": "Lome",
+      "iso2": "TG",
+      "iso3": "TGO",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "TON",
+      "name": "Tonga",
+      "officialName": "Kingdom of Tonga",
+      "capital": "Nuku'alofa",
+      "iso2": "TO",
+      "iso3": "TON",
+      "region": "Oceania",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "TTO",
+      "name": "Trinidad and Tobago",
+      "officialName": "Republic of Trinidad and Tobago",
+      "capital": "Port of Spain",
+      "iso2": "TT",
+      "iso3": "TTO",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "TUN",
+      "name": "Tunisia",
+      "officialName": "Republic of Tunisia",
+      "capital": "Tunis",
+      "iso2": "TN",
+      "iso3": "TUN",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "officialName": "Republic of Turkey",
+      "capital": "Ankara",
+      "iso2": "TR",
+      "iso3": "TUR",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "TKM",
+      "name": "Turkmenistan",
+      "officialName": "Turkmenistan",
+      "capital": "Ashgabat",
+      "iso2": "TM",
+      "iso3": "TKM",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "UGA",
+      "name": "Uganda",
+      "officialName": "Republic of Uganda",
+      "capital": "Kampala",
+      "iso2": "UG",
+      "iso3": "UGA",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "officialName": "Ukraine",
+      "capital": "Kyiv",
+      "iso2": "UA",
+      "iso3": "UKR",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "ARE",
+      "name": "United Arab Emirates",
+      "officialName": "United Arab Emirates",
+      "capital": "Abu Dhabi",
+      "iso2": "AE",
+      "iso3": "ARE",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "officialName": "United Kingdom of Great Britain and Northern Ireland",
+      "capital": "London",
+      "iso2": "GB",
+      "iso3": "GBR",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "TZA",
+      "name": "Tanzania",
+      "officialName": "United Republic of Tanzania",
+      "capital": "Dodoma",
+      "iso2": "TZ",
+      "iso3": "TZA",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "USA",
+      "name": "United States",
+      "officialName": "United States of America",
+      "capital": "Washington, D.C.",
+      "iso2": "US",
+      "iso3": "USA",
+      "region": "North America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "officialName": "Oriental Republic of Uruguay",
+      "capital": "Montevideo",
+      "iso2": "UY",
+      "iso3": "URY",
+      "region": "South America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "UZB",
+      "name": "Uzbekistan",
+      "officialName": "Republic of Uzbekistan",
+      "capital": "Tashkent",
+      "iso2": "UZ",
+      "iso3": "UZB",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "VUT",
+      "name": "Vanuatu",
+      "officialName": "Republic of Vanuatu",
+      "capital": "Port Vila",
+      "iso2": "VU",
+      "iso3": "VUT",
+      "region": "Oceania",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "VEN",
+      "name": "Venezuela",
+      "officialName": "Bolivarian Republic of Venezuela",
+      "capital": "Caracas",
+      "iso2": "VE",
+      "iso3": "VEN",
+      "region": "South America",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "officialName": "Socialist Republic of Vietnam",
+      "capital": "Hanoi",
+      "iso2": "VN",
+      "iso3": "VNM",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "officialName": "Republic of Yemen",
+      "capital": "Sanaa",
+      "iso2": "YE",
+      "iso3": "YEM",
+      "region": "Asia",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "ZMB",
+      "name": "Zambia",
+      "officialName": "Republic of Zambia",
+      "capital": "Lusaka",
+      "iso2": "ZM",
+      "iso3": "ZMB",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "ZWE",
+      "name": "Zimbabwe",
+      "officialName": "Republic of Zimbabwe",
+      "capital": "Harare",
+      "iso2": "ZW",
+      "iso3": "ZWE",
+      "region": "Africa",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "YUG",
+      "name": "Federal Republic of Yugoslavia",
+      "officialName": "Federal Republic of Yugoslavia",
+      "capital": "Belgrade",
+      "iso2": "YU",
+      "iso3": "YUG",
+      "region": "Europe",
+      "status": "sovereign_state"
+    },
+    {
+      "id": "VAT",
+      "name": "Vatican City",
+      "officialName": "State of the Vatican City",
+      "capital": "Vatican City",
+      "iso2": "VA",
+      "iso3": "VAT",
+      "region": "Europe",
+      "status": "observer_state"
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "officialName": "Palestinian territories",
+      "capital": "East Jerusalem",
+      "iso2": "PS",
+      "iso3": "PSE",
+      "region": "Asia",
+      "status": "disputed_entity"
+    },
+    {
+      "id": "TWN",
+      "name": "Taiwan",
+      "officialName": "Republic of China",
+      "capital": "Taipei",
+      "iso2": "TW",
+      "iso3": "TWN",
+      "region": "Asia",
+      "status": "disputed_entity"
+    }
+  ]
+}
