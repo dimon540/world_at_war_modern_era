@@ -1,1 +1,14 @@
-
+import { markGameStateDirty } from "../core/game-state.js";
+const DEFAULT_DECISIONS=Object.freeze([
+{id:"economic_reform",name:"Economic Reform",category:"economy",cost:50,cooldownDays:365,effect:{stability:2,gdpGrowth:0.01}},
+{id:"anti_corruption_drive",name:"Anti-Corruption Campaign",category:"domestic",cost:35,cooldownDays:180,effect:{stability:3}},
+{id:"military_modernization",name:"Military Modernization",category:"military",cost:60,cooldownDays:365,effect:{militaryReadiness:0.05}},
+{id:"diplomatic_initiative",name:"Diplomatic Initiative",category:"diplomacy",cost:25,cooldownDays:90,effect:{relations:5}}
+]);
+export class DecisionManager{
+ constructor(state,options={}){if(!state?.world?.countries||!state?.politics)throw new TypeError("DecisionManager requires world and politics state.");this.state=state;this.decisions=new Map((options.decisions??DEFAULT_DECISIONS).map(x=>[x.id,Object.freeze({...x,effect:{...x.effect}})]));this.options={defaultPoliticalPower:100,...options};if(!state.politics.nationalDecisions)state.politics.nationalDecisions=Object.create(null);this.destroyed=false;}
+ list(){if(this.destroyed)throw new Error("DecisionManager has been destroyed.");return [...this.decisions.values()].map(x=>({...x,effect:{...x.effect}}));}
+ execute(countryId,decisionId,{date=null,politicalPower=null}={}){if(this.destroyed)throw new Error("DecisionManager has been destroyed.");const id=String(countryId),decision=this.decisions.get(String(decisionId));if(!this.state.world.countries[id])throw new RangeError("Unknown country: "+id);if(!decision)throw new RangeError("Unknown national decision: "+decisionId);const registry=this.state.politics.nationalDecisions[id]??(this.state.politics.nationalDecisions[id]={});const old=registry[decision.id];if(old?.availableAt&&date&&date<old.availableAt)throw new Error("Decision is on cooldown.");const power=Number.isFinite(politicalPower)?politicalPower:(this.state.politics.politicalPower?.[id]??this.options.defaultPoliticalPower);if(power<decision.cost)throw new RangeError("Insufficient political power.");if(this.state.politics.politicalPower)this.state.politics.politicalPower[id]=power-decision.cost;const nextDate=date?new Date(date+"T00:00:00Z"):null;if(nextDate)nextDate.setUTCDate(nextDate.getUTCDate()+decision.cooldownDays);const record={decisionId:decision.id,executedAt:date,availableAt:nextDate?nextDate.toISOString().slice(0,10):null,effect:{...decision.effect}};registry[decision.id]=record;const gov=this.state.politics.governments?.[id];if(gov&&Number.isFinite(decision.effect.stability))gov.stability=Math.max(0,Math.min(100,gov.stability+decision.effect.stability));markGameStateDirty(this.state);return {...record};}
+ destroy(){this.destroyed=true;this.state=null;this.decisions.clear();}
+}
+export default DecisionManager;
