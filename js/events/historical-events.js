@@ -1,9 +1,11 @@
 import { EventManager } from "./event-manager.js";
 import { markGameStateDirty } from "../core/game-state.js";
+import { GAME_EVENTS } from "../core/event-bus.js";
 
 export class HistoricalEventManager {
     constructor(state, eventBus, options = {}) {
         this.state = state;
+        this.eventBus = eventBus;
         this.events = new EventManager(state, eventBus);
         this.definitions = options.definitions ?? [];
         this.loaded = false;
@@ -100,12 +102,21 @@ export class HistoricalEventManager {
             this.state.world.statistics.totalCountries = Object.keys(this.state.world.countries).length;
             markGameStateDirty(this.state);
         }
+        return changed;
     }
 
     processDaily(date) {
         if (this.destroyed) throw new Error("HistoricalEventManager destroyed.");
         const fired = this.events.processDaily(date).filter(event => event.historical);
-        for (const event of fired) this.#applyVerifiedChange(event);
+        for (const event of fired) {
+            if (this.#applyVerifiedChange(event)) {
+                this.eventBus?.emit?.(GAME_EVENTS.WORLD_UPDATED, {
+                    reason: "historical_country_registry_changed",
+                    eventId: event.id,
+                    date: event.date
+                });
+            }
+        }
         return fired;
     }
 
@@ -113,6 +124,7 @@ export class HistoricalEventManager {
         if (this.destroyed) return;
         this.events.destroy();
         this.state = null;
+        this.eventBus = null;
         this.destroyed = true;
     }
 }
