@@ -1,8 +1,7 @@
-
 /* =========================================================
    WORLD AT WAR: MODERN ERA
    CORE GAME ENGINE
-   Version: 1.0.0
+   Version: 1.1.0
 
    Main controller connecting all core systems.
 ========================================================= */
@@ -10,12 +9,11 @@
 import { GAME_CONFIG } from "../config.js";
 
 import {
-    GameState,
+    createInitialGameState,
     GAME_PHASES
 } from "./game-state.js";
 
 import {
-    EventBus,
     gameEventBus,
     GAME_EVENTS
 } from "./event-bus.js";
@@ -57,7 +55,7 @@ export class Game {
 
         this.status = GAME_STATUS.CREATED;
 
-        this.state = new GameState();
+        this.state = createInitialGameState();
 
         this.eventBus =
             this.options.eventBus ??
@@ -75,7 +73,6 @@ export class Game {
         this.initializationPromise = null;
 
         this.destroyed = false;
-
         this.lastError = null;
 
         this.#createSystems();
@@ -142,10 +139,14 @@ export class Game {
         this.state.status.phase =
             GAME_PHASES.INITIALIZING;
 
+        this.state.status.isInitialized = false;
+        this.state.status.isRunning = false;
+        this.state.status.isPaused = true;
+
         this.#emit(
             GAME_EVENTS.GAME_INITIALIZING,
             {
-                scenario: GAME_CONFIG.scenario?.id
+                scenarioId: GAME_CONFIG.scenario?.id ?? null
             }
         );
 
@@ -155,16 +156,20 @@ export class Game {
                 options.loadWorld ??
                 this.options.autoLoadWorld;
 
+            let worldLoaded = false;
+
             if (shouldLoadWorld) {
 
                 const report =
                     await this.dataLoader.loadWorldData();
 
-                if (!report.success) {
+                if (!report || !report.success) {
                     throw new Error(
                         "World data initialization failed."
                     );
                 }
+
+                worldLoaded = true;
             }
 
             await this.saveManager.initialize();
@@ -176,14 +181,16 @@ export class Game {
             this.state.status.phase =
                 GAME_PHASES.READY;
 
+            this.state.status.isRunning = false;
+            this.state.status.isPaused = true;
+
             this.#emit(
                 GAME_EVENTS.GAME_INITIALIZED,
                 {
                     scenarioId:
-                        this.state.metadata?.scenarioId ??
-                        GAME_CONFIG.scenario?.id,
+                        this.state.metadata.scenarioId,
 
-                    worldLoaded: shouldLoadWorld
+                    worldLoaded
                 }
             );
 
@@ -205,7 +212,10 @@ export class Game {
             this.lastError = error.message;
 
             this.state.status.phase =
-                GAME_PHASES.ERROR;
+                GAME_PHASES.INITIALIZING;
+
+            this.state.status.isRunning = false;
+            this.state.status.isPaused = true;
 
             this.#emit(
                 GAME_EVENTS.SYSTEM_ERROR,
@@ -246,6 +256,8 @@ export class Game {
             this.setSpeed(options.speed);
         }
 
+        this.loop.start();
+
         this.clock.start();
 
         this.status = GAME_STATUS.RUNNING;
@@ -253,11 +265,14 @@ export class Game {
         this.state.status.phase =
             GAME_PHASES.RUNNING;
 
+        this.state.status.isRunning = true;
+        this.state.status.isPaused = false;
+
         this.#emit(
             GAME_EVENTS.GAME_STARTED,
             {
-                date: this.clock.getDate(),
-                speed: this.clock.getSpeed()
+                date: this.clock.date,
+                speed: this.clock.speed
             }
         );
 
@@ -276,6 +291,8 @@ export class Game {
             return false;
         }
 
+        this.loop.stop();
+
         this.clock.pause();
 
         this.status = GAME_STATUS.PAUSED;
@@ -283,12 +300,8 @@ export class Game {
         this.state.status.phase =
             GAME_PHASES.PAUSED;
 
-        this.#emit(
-            GAME_EVENTS.GAME_PAUSED,
-            {
-                date: this.clock.getDate()
-            }
-        );
+        this.state.status.isRunning = false;
+        this.state.status.isPaused = true;
 
         return true;
     }
@@ -305,6 +318,14 @@ export class Game {
             return false;
         }
 
+        if (!this.state.status.isInitialized) {
+            throw new Error(
+                "Cannot resume without loaded world data."
+            );
+        }
+
+        this.loop.start();
+
         this.clock.start();
 
         this.status = GAME_STATUS.RUNNING;
@@ -312,10 +333,14 @@ export class Game {
         this.state.status.phase =
             GAME_PHASES.RUNNING;
 
+        this.state.status.isRunning = true;
+        this.state.status.isPaused = false;
+
         this.#emit(
             GAME_EVENTS.GAME_RESUMED,
             {
-                date: this.clock.getDate()
+                date: this.clock.date,
+                speed: this.clock.speed
             }
         );
 
@@ -337,19 +362,17 @@ export class Game {
             return false;
         }
 
+        this.loop.stop();
+
         this.clock.pause();
 
         this.status = GAME_STATUS.STOPPED;
 
         this.state.status.phase =
-            GAME_PHASES.STOPPED;
+            GAME_PHASES.PAUSED;
 
-        this.#emit(
-            GAME_EVENTS.GAME_STOPPED,
-            {
-                date: this.clock.getDate()
-            }
-        );
+        this.state.status.isRunning = false;
+        this.state.status.isPaused = true;
 
         return true;
     }
@@ -367,33 +390,66 @@ export class Game {
             [1, 2, 4, 8];
 
         if (!availableSpeeds.includes(speed)) {
-            throw new Error(
+            throw new RangeError(
                 `Unsupported game speed: ${speed}`
             );
         }
 
         this.clock.setSpeed(speed);
 
-        this.#emit(
-            GAME_EVENTS.SPEED_CHANGED,
-            { speed }
-        );
-
-        return speed;
+        return this.clock.speed;
     }
 
     getSpeed() {
 
         this.#ensureActive();
 
-        return this.clock.getSpeed();
+        return this.clock.speed;
     }
 
     getDate() {
 
         this.#ensureActive();
 
-        return this.clock.getDate();
+        return this.clock.date;
+    }
+
+    getClockSnapshot() {
+
+        this.#ensureActive();
+
+        return this.clock.getSnapshot();
+    }
+
+    /* =====================================================
+       MANUAL SIMULATION
+    ===================================================== */
+
+    executeSimulationStep(interval) {
+
+        this.#ensureActive();
+
+        if (!this.initialized) {
+            throw new Error(
+                "Game engine is not initialized."
+            );
+        }
+
+        return this.loop.executeManualStep(interval);
+    }
+
+    getSimulationStatus() {
+
+        this.#ensureActive();
+
+        return this.loop.getStatus();
+    }
+
+    getSimulationTasks() {
+
+        this.#ensureActive();
+
+        return this.loop.getRegisteredTasks();
     }
 
     /* =====================================================
@@ -418,6 +474,12 @@ export class Game {
 
         this.#ensureActive();
 
+        if (!this.initialized) {
+            await this.initialize({
+                loadWorld: false
+            });
+        }
+
         const wasRunning =
             this.status === GAME_STATUS.RUNNING;
 
@@ -430,23 +492,24 @@ export class Game {
             const result =
                 await this.saveManager.loadGame(slot);
 
-            if (this.clock.recalculate) {
-                this.clock.recalculate();
-            }
+            this.clock.validateClock();
+
+            this.status = GAME_STATUS.PAUSED;
+
+            this.state.status.phase =
+                GAME_PHASES.PAUSED;
+
+            this.state.status.isRunning = false;
+            this.state.status.isPaused = true;
 
             this.#emit(
                 GAME_EVENTS.WORLD_UPDATED,
                 {
                     type: "campaign_restored",
                     slot,
-                    date: this.getDate()
+                    date: this.clock.date
                 }
             );
-
-            this.status = GAME_STATUS.PAUSED;
-
-            this.state.status.phase =
-                GAME_PHASES.PAUSED;
 
             return result;
 
@@ -501,6 +564,17 @@ export class Game {
         );
     }
 
+    once(eventName, callback, options = {}) {
+
+        this.#ensureActive();
+
+        return this.eventBus.once(
+            eventName,
+            callback,
+            options
+        );
+    }
+
     off(eventName, listenerId) {
 
         this.#ensureActive();
@@ -532,6 +606,8 @@ export class Game {
 
     getSystems() {
 
+        this.#ensureActive();
+
         return {
             state: this.state,
             eventBus: this.eventBus,
@@ -550,14 +626,22 @@ export class Game {
 
         return {
             status: this.status,
+
             initialized: this.initialized,
+
+            worldLoaded:
+                Boolean(this.state.status.isInitialized),
+
             destroyed: this.destroyed,
+
             date: this.clock
-                ? this.clock.getDate()
+                ? this.clock.date
                 : null,
+
             speed: this.clock
-                ? this.clock.getSpeed()
+                ? this.clock.speed
                 : null,
+
             lastError: this.lastError
         };
     }
@@ -596,12 +680,12 @@ export class Game {
             return;
         }
 
-        if (this.clock) {
-            this.clock.pause();
-        }
-
         if (this.loop) {
             this.loop.stop();
+        }
+
+        if (this.clock) {
+            this.clock.pause();
         }
 
         if (this.saveManager) {
@@ -612,11 +696,11 @@ export class Game {
             this.dataLoader.destroy();
         }
 
-        if (this.clock?.destroy) {
+        if (this.clock) {
             this.clock.destroy();
         }
 
-        if (this.loop?.destroy) {
+        if (this.loop) {
             this.loop.destroy();
         }
 
@@ -633,18 +717,18 @@ export class Game {
     }
 }
 
-/* =====================================================
+/* =========================================================
    FACTORY
-===================================================== */
+========================================================= */
 
 export function createGame(options = {}) {
 
     return new Game(options);
 }
 
-/* =====================================================
+/* =========================================================
    MODULE INITIALIZATION
-===================================================== */
+========================================================= */
 
 console.log(
     "WORLD AT WAR: Game Engine module loaded."
