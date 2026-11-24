@@ -31,6 +31,7 @@ import { FrontlineManager } from "../military/frontlines.js";
 import { SupplyManager } from "../military/supply.js";
 import { BattlePlanManager } from "../military/battle-plans.js";
 import { WorldAIManager } from "../ai/world-ai-manager.js";
+import { EconomyManager } from "../economy/economy-manager.js";
 import { SIMULATION_INTERVALS, SIMULATION_PRIORITY } from "./game-loop.js";
 
 /* =========================================================
@@ -87,6 +88,17 @@ export class Game {
         this.supplyManager = null;
         this.battlePlanManager = null;
         this.worldAIManager = null;
+        this.economyManager = null;
+        this.unregisterEconomyTask = null;
+        this.unregisterEconomyTask = this.loop.registerTask({
+            id: "economy.monthly",
+            name: "National economic update",
+            interval: SIMULATION_INTERVALS.MONTHLY,
+            priority: SIMULATION_PRIORITY.NORMAL,
+            description: "Processes sourced GDP baselines and national budget accounts.",
+            execute: () => this.economyManager.processMonthly()
+        });
+
         this.unregisterAITasks = [];
         this.unregisterMovementTask = null;
         this.unregisterSupplyTask = null;
@@ -172,6 +184,11 @@ export class Game {
             this.state,
             this.eventBus,
             { enabled: GAME_CONFIG.simulation?.aiEnabled !== false }
+        );
+
+        this.economyManager = new EconomyManager(
+            this.state,
+            this.eventBus
         );
 
         this.combatManager = new CombatManager(
@@ -769,7 +786,8 @@ export class Game {
             frontlineManager: this.frontlineManager,
             supplyManager: this.supplyManager,
             battlePlanManager: this.battlePlanManager,
-            worldAIManager: this.worldAIManager
+            worldAIManager: this.worldAIManager,
+            economyManager: this.economyManager
         };
     }
 
@@ -857,8 +875,13 @@ export class Game {
         }
         for (const unregister of this.unregisterAITasks) unregister();
         this.unregisterAITasks = [];
+        if (this.unregisterEconomyTask) {
+            this.unregisterEconomyTask();
+            this.unregisterEconomyTask = null;
+        }
 
         if (this.worldAIManager) this.worldAIManager.destroy();
+        if (this.economyManager) this.economyManager.destroy();
         if (this.supplyManager) this.supplyManager.destroy();
         if (this.battlePlanManager) this.battlePlanManager.destroy();
         if (this.combatManager) this.combatManager.destroy();
