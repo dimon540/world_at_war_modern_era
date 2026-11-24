@@ -55,13 +55,31 @@ try {
         { timeout: 90000 }
     );
 
-    const countryOptions = await page.locator("#country-select option").count();
-    assert.ok(countryOptions > 100, `Expected a global country list, received ${countryOptions} options.`);
-    const firstCountry = await page.locator("#country-select option").nth(1).getAttribute("value");
-    assert.ok(firstCountry, "The country selector must contain a playable country.");
+    assert.equal(await page.locator("#main-menu").isVisible(), true,
+        "The game must open on a separate main menu.");
+    assert.equal(await page.locator("#game-screen").isVisible(), false,
+        "The campaign interface must remain hidden until a campaign starts.");
+    assert.equal(await page.locator("#campaign-setup").isVisible(), false);
 
-    const firstCountryName = await page.locator("#country-select option").nth(1).textContent();
-    await page.locator("#country-select").selectOption(firstCountry);
+    await page.locator("#menu-new-game").click();
+    assert.equal(await page.locator("#campaign-setup").isVisible(), true,
+        "New Game must open the separate campaign setup screen.");
+    assert.equal(await page.locator("#game-screen").isVisible(), false);
+
+    const countryOptions = await page.locator("#campaign-country-select option").count();
+    assert.ok(countryOptions > 100, `Expected a global country list, received ${countryOptions} options.`);
+    const firstCountry = await page.locator("#campaign-country-select option").nth(1).getAttribute("value");
+    assert.ok(firstCountry, "The campaign setup must contain a playable country.");
+    const firstCountryName = await page.locator("#campaign-country-select option").nth(1).textContent();
+    await page.locator("#campaign-country-select").selectOption(firstCountry);
+    assert.equal((await page.locator("#setup-country-name").textContent()).trim(), firstCountryName.trim());
+    assert.equal(await page.locator("#launch-campaign").isDisabled(), false);
+    await page.locator("#launch-campaign").click();
+    assert.equal(await page.locator("#game-screen").isVisible(), true,
+        "Launching a campaign must reveal the in-game interface.");
+    assert.equal(await page.locator("#main-menu").isVisible(), false);
+    assert.equal(await page.locator("#country-select").inputValue(), firstCountry);
+    
     assert.equal((await page.locator("#selected-country").textContent()).trim(), firstCountryName.trim());
     assert.ok((await page.locator("#panel-country").textContent()).includes(firstCountryName.trim()));
     assert.equal(Number(await page.locator("#ai-count").textContent()), countryOptions - 2,
@@ -110,9 +128,20 @@ try {
 
     await page.locator('[data-panel-tab="research"]').click();
     assert.equal(await page.locator("#panel-research").isVisible(), true);
-    assert.deepEqual(pageErrors, [], "The game must not throw uncaught browser errors.");
 
-    console.log(`Browser smoke test passed: ${countryOptions - 1} playable countries, country selection, campaign start/pause and research panel.`);
+    await page.locator("#return-to-menu").click();
+    assert.equal(await page.locator("#main-menu").isVisible(), true,
+        "The in-game menu control must return to the main menu.");
+    assert.equal(await page.locator("#game-screen").isVisible(), false);
+    await page.locator("#menu-settings").click();
+    assert.equal(await page.locator("#settings-screen").isVisible(), true);
+    await page.locator("#reduce-motion-setting").check();
+    assert.equal(await page.locator("#app").evaluate(node => node.classList.contains("reduced-motion")), true);
+    await page.locator("#settings-back-menu").click();
+    assert.equal(await page.locator("#main-menu").isVisible(), true);
+
+    assert.deepEqual(pageErrors, [], "The game must not throw uncaught browser errors.");
+    console.log(`Browser smoke test passed: main menu, campaign setup, ${countryOptions - 1} playable countries, campaign start/pause, in-game navigation and settings.`);
 } finally {
     if (browser) await browser.close();
     await new Promise(resolveClose => server.close(resolveClose));
