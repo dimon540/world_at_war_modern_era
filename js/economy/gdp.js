@@ -42,7 +42,7 @@ export class GDPManager {
             source: String(baseline.source ?? "").trim() || null,
             asOf: baseline.asOf ?? null,
             nominalGDP,
-            realGDP: finite(baseline.realGDP ?? nominalGDP, "Real GDP"),
+            realGDP: baseline.realGDP == null ? null : finite(baseline.realGDP, "Real GDP"),
             population,
             gdpPerCapita: nominalGDP / population,
             annualGrowthRate: baseline.annualGrowthRate == null ? null : finite(baseline.annualGrowthRate, "Annual growth rate", -1),
@@ -65,7 +65,7 @@ export class GDPManager {
         const next = { ...current };
         for (const key of ["nominalGDP", "realGDP", "population", "annualGrowthRate", "inflationRate", "unemploymentRate"]) {
             if (changes[key] === undefined) continue;
-            if (["unemploymentRate", "annualGrowthRate", "inflationRate"].includes(key) && changes[key] === null) next[key] = null;
+            if (["realGDP", "unemploymentRate", "annualGrowthRate", "inflationRate"].includes(key) && changes[key] === null) next[key] = null;
             else next[key] = finite(changes[key], key, ["annualGrowthRate", "inflationRate"].includes(key) ? -1 : 0);
         }
         if (next.nominalGDP <= 0 || next.population <= 0) throw new RangeError("GDP and population must remain greater than zero.");
@@ -96,7 +96,7 @@ export class GDPManager {
         const nominalFactor = Math.pow(1 + nominalRate, days / 365);
         return this.setIndicators(id, {
             nominalGDP: current.nominalGDP * nominalFactor,
-            realGDP: current.realGDP * realFactor,
+            realGDP: current.realGDP == null ? null : current.realGDP * realFactor,
             annualGrowthRate: annualGrowthRate == null ? null : rate
         }, { reason });
     }
