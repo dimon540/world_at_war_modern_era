@@ -550,16 +550,6 @@ export class GameClock {
             this.#notifyCallbacks("year", payload);
         }
 
-        if (date.day === 1) {
-
-            this.eventBus.emit(
-                GAME_EVENTS.MONTH_CHANGED,
-                {
-                    date: this.date,
-                    isFirstDay: true
-                }
-            );
-        }
     }
 
     /* ===============================================
