@@ -54,15 +54,16 @@ export class MovementManager {
         }
         const hoursPerProvince = options.hoursPerProvince ?? this.defaultHoursPerProvince;
         if (!Number.isFinite(hoursPerProvince) || hoursPerProvince <= 0) throw new RangeError("hoursPerProvince must be a positive finite number.");
+        const initialIndex = currentProvinceId ? 0 : -1;
         const order = {
             id: `move_${id}_${Date.now().toString(36)}`,
             divisionId: id,
             countryId: division.countryId,
             route: normalizedRoute,
-            currentIndex: 0,
+            currentIndex: initialIndex,
             hoursPerProvince,
             hoursRemaining: hoursPerProvince,
-            status: normalizedRoute.length <= 1 ? "completed" : "active",
+            status: normalizedRoute.length - 1 <= initialIndex ? "completed" : "active",
             issuedAt: Date.now(),
             options: { allowForeignTerritory: options.allowForeignTerritory === true, source: options.source ?? "manual" }
         };
