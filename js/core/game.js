@@ -197,6 +197,8 @@ export class Game {
             this.eventBus
         );
 
+        this.economyManager.trade.sanctions = this.diplomacyManager.sanctions;
+
         this.researchManager = new ResearchManager(
             this.state,
             this.eventBus
