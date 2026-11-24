@@ -92,6 +92,7 @@ test("game engine wires military systems and hourly simulation tasks", () => {
 
     assert.equal(typeof systems.divisionManager.createDivision, "function");
     assert.equal(typeof systems.equipmentManager.addStock, "function");
+    assert.equal(typeof systems.equipmentProductionManager.createLine, "function");
     assert.equal(typeof systems.armyManager.createArmy, "function");
     assert.equal(typeof systems.commanderManager.createCommander, "function");
     assert.equal(typeof systems.movementManager.advance, "function");
@@ -327,6 +328,35 @@ test("game engine recruits divisions only when required equipment is available",
     );
     assert.equal(rejected.success, false);
     assert.equal(rejected.reason, "insufficient_equipment");
+
+    game.destroy();
+});
+
+test("equipment production consumes industrial resources and updates national stockpiles", () => {
+    const game = createGame({ autoLoadWorld: false });
+    game.state.world.countries.AAA = { id: "AAA", name: "Alpha" };
+    const factory = game.economyManager.factories.create({
+        id: "AAA-military-works",
+        countryId: "AAA",
+        type: "military",
+        level: 2
+    });
+    game.economyManager.resources.setStockpile("AAA", "steel", 20);
+    game.equipmentProductionManager.createLine({
+        id: "AAA-small-arms",
+        countryId: "AAA",
+        factoryId: factory.id,
+        equipmentId: "small_arms",
+        resourceInputs: { steel: 2 },
+        unitsPerFactory: 3
+    });
+
+    const report = game.equipmentProductionManager.processMonthly()[0];
+
+    assert.equal(report.success, true);
+    assert.equal(report.produced, 6);
+    assert.equal(game.equipmentManager.getStock("AAA", "small_arms"), 6);
+    assert.equal(game.economyManager.resources.getStockpiles("AAA").steel, 8);
 
     game.destroy();
 });
