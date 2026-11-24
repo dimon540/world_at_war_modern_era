@@ -128,6 +128,7 @@ export class WorldAIManager {
             id: `ai_${agent.countryId}_${agent.decisionCount + 1}`,
             countryId: agent.countryId,
             goal,
+            decisionMade: true,
             reason,
             details: { ...details },
             date: currentDate(this.state),
@@ -168,6 +169,8 @@ export class WorldAIManager {
                     alternatives: ranking.slice(1, 3)
                 });
                 reports.push(decision);
+            } else {
+                reports.push({ countryId: id, goal: agent.currentGoal, decisionMade: false, plan: [...agent.currentPlan] });
             }
         }
         this.state.simulation.worldAI.updateCounters.daily += 1;
