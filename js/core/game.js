@@ -27,6 +27,7 @@ import { ArmyManager } from "../military/army-manager.js";
 import { CommanderManager } from "../military/commanders.js";
 import { MovementManager } from "../military/movement.js";
 import { CombatManager } from "../military/combat.js";
+import { FrontlineManager } from "../military/frontlines.js";
 import { SIMULATION_INTERVALS, SIMULATION_PRIORITY } from "./game-loop.js";
 
 /* =========================================================
@@ -79,6 +80,7 @@ export class Game {
         this.commanderManager = null;
         this.movementManager = null;
         this.combatManager = null;
+        this.frontlineManager = null;
         this.unregisterMovementTask = null;
         this.unregisterCombatTask = null;
 
@@ -124,6 +126,11 @@ export class Game {
         );
 
         this.armyManager = new ArmyManager(
+            this.state,
+            this.eventBus
+        );
+
+        this.frontlineManager = new FrontlineManager(
             this.state,
             this.eventBus
         );
@@ -693,7 +700,8 @@ export class Game {
             armyManager: this.armyManager,
             commanderManager: this.commanderManager,
             movementManager: this.movementManager,
-            combatManager: this.combatManager
+            combatManager: this.combatManager,
+            frontlineManager: this.frontlineManager
         };
     }
 
@@ -777,6 +785,7 @@ export class Game {
         }
 
         if (this.combatManager) this.combatManager.destroy();
+        if (this.frontlineManager) this.frontlineManager.destroy();
         if (this.movementManager) this.movementManager.destroy();
         if (this.commanderManager) this.commanderManager.destroy();
         if (this.armyManager) this.armyManager.destroy();
