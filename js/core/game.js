@@ -32,6 +32,7 @@ import { SupplyManager } from "../military/supply.js";
 import { BattlePlanManager } from "../military/battle-plans.js";
 import { WorldAIManager } from "../ai/world-ai-manager.js";
 import { EconomyManager } from "../economy/economy-manager.js";
+import { DiplomacyManager } from "../diplomacy/diplomacy-manager.js";
 import { SIMULATION_INTERVALS, SIMULATION_PRIORITY } from "./game-loop.js";
 
 /* =========================================================
@@ -89,6 +90,8 @@ export class Game {
         this.battlePlanManager = null;
         this.worldAIManager = null;
         this.economyManager = null;
+        this.diplomacyManager = null;
+        this.unregisterDiplomacyTask = null;
         this.unregisterEconomyTask = null;
 
         this.unregisterAITasks = [];
@@ -182,6 +185,20 @@ export class Game {
             this.state,
             this.eventBus
         );
+
+        this.diplomacyManager = new DiplomacyManager(
+            this.state,
+            this.eventBus
+        );
+
+        this.unregisterDiplomacyTask = this.loop.registerTask({
+            id: "diplomacy.daily",
+            name: "Diplomatic sanctions and treaties",
+            interval: SIMULATION_INTERVALS.DAILY,
+            priority: SIMULATION_PRIORITY.NORMAL,
+            description: "Processes diplomatic systems with date-aware expiry.",
+            execute: () => this.diplomacyManager.processDaily(this.clock.getSnapshot().date)
+        });
 
         this.unregisterEconomyTask = this.loop.registerTask({
             id: "economy.monthly",
