@@ -1,1 +1,18 @@
-
+/* WORLD AT WAR: economic and diplomatic sanctions. */
+import { markGameStateDirty } from "../core/game-state.js";
+import { GAME_EVENTS, gameEventBus } from "../core/event-bus.js";
+const isRecord = v => v !== null && typeof v === "object" && !Array.isArray(v);
+const required = (v, label) => { const s=String(v??"").trim(); if(!s) throw new TypeError(`${label} is required.`); return s; };
+export class SanctionManager {
+ constructor(state,eventBus=gameEventBus){if(!state?.world?.countries||!state?.diplomacy)throw new TypeError("SanctionManager requires world and diplomacy state.");this.state=state;this.eventBus=eventBus;if(!isRecord(state.diplomacy.sanctions))state.diplomacy.sanctions=Object.create(null);this.sanctions=state.diplomacy.sanctions;this.destroyed=false;}
+ #active(){if(this.destroyed)throw new Error("SanctionManager has been destroyed.");}
+ #country(v){const id=required(v,"Country ID");if(!this.state.world.countries[id])throw new RangeError(`Unknown country: ${id}`);return id;}
+ #sync(){this.state.diplomacy.statistics.activeSanctions=Object.values(this.sanctions).filter(x=>x.status==="active").length;markGameStateDirty(this.state);}
+ impose({id,issuerId,targetId,scope="comprehensive",reason="unspecified",date=null,durationDays=null,tradeRestrictions=[]}={}){this.#active();const key=required(id,"Sanction ID");if(this.sanctions[key])throw new Error(`Sanction already exists: ${key}`);const issuer=this.#country(issuerId),target=this.#country(targetId);if(issuer===target)throw new RangeError("A country cannot sanction itself.");if(durationDays!==null&&(!Number.isFinite(durationDays)||durationDays<=0))throw new RangeError("durationDays must be positive.");const item={id:key,issuerId:issuer,targetId:target,scope:String(scope),reason:String(reason),status:"active",imposedAt:date,expiresAt:null,durationDays,tradeRestrictions:Array.isArray(tradeRestrictions)?[...tradeRestrictions]:[],liftedAt:null,history:[{action:"imposed",date}]};this.sanctions[key]=item;this.#sync();this.eventBus?.emit?.(GAME_EVENTS.SANCTIONS_IMPOSED,{sanction:structuredClone(item)});return structuredClone(item);}
+ lift(id,{date=null,reason="lifted"}={}){this.#active();const item=this.sanctions[required(id,"Sanction ID")];if(!item||item.status!=="active")return false;item.status="lifted";item.liftedAt=date;item.history.push({action:"lifted",date,reason});this.#sync();this.eventBus?.emit?.(GAME_EVENTS.WORLD_UPDATED,{reason:"sanctions_lifted",sanctionId:item.id});return structuredClone(item);}
+ expire(date=null){this.#active();let count=0;for(const item of Object.values(this.sanctions)){if(item.status==="active"&&item.durationDays!==null&&item.imposedAt&&date){const start=new Date(item.imposedAt),end=new Date(date);if(Number.isFinite(start.getTime())&&Number.isFinite(end.getTime())&&(end-start)/86400000>=item.durationDays){item.status="expired";item.liftedAt=date;item.history.push({action:"expired",date});count++;}}}if(count)this.#sync();return count;}
+ isTargeted(countryId){this.#active();const id=this.#country(countryId);return Object.values(this.sanctions).filter(x=>x.status==="active"&&x.targetId===id).map(x=>structuredClone(x));}
+ list({status=null,issuerId=null,targetId=null}={}){this.#active();const issuer=issuerId?this.#country(issuerId):null,target=targetId?this.#country(targetId):null;return Object.values(this.sanctions).filter(x=>(!status||x.status===status)&&(!issuer||x.issuerId===issuer)&&(!target||x.targetId===target)).map(x=>structuredClone(x));}
+ destroy(){if(this.destroyed)return;this.destroyed=true;this.state=null;this.eventBus=null;this.sanctions=null;}
+}
+export default SanctionManager;
