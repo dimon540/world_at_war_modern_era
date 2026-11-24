@@ -266,6 +266,11 @@ export class DivisionManager {
             }
             division.armyId = null;
         }
+        if (division.supplyNetworkId) {
+            const network = this.state.military.supplyNetworks?.[division.supplyNetworkId];
+            if (network) network.divisionIds = (network.divisionIds ?? []).filter(id => id !== division.id);
+            delete division.supplyNetworkId;
+        }
         if (division.commanderId) {
             const commander = this.state.military.commanders?.[division.commanderId];
             if (commander?.assignment?.type === "division" && commander.assignment.id === division.id) {
