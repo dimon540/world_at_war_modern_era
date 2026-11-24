@@ -17,7 +17,7 @@ export class HistoricalEventManager {
         for (const item of definitions) {
             if (!item?.id || !item.date) continue;
             if (this.state.events.historicalEvents[item.id]) continue;
-            const definition = { ...item, historical: true };
+            const definition = { ...item, historical: true, verificationStatus: item.verificationStatus ?? item.status ?? "unverified" };
             this.state.events.historicalEvents[item.id] = definition;
             this.events.schedule(definition);
             count += 1;
@@ -45,7 +45,8 @@ export class HistoricalEventManager {
         const changes = event.changes ?? {};
         let changed = false;
 
-        if (event.status === "verified") {
+        const verificationStatus = event.verificationStatus ?? "unverified";
+        if (verificationStatus === "verified") {
             const created = this.#registerCountry(changes.createdCountryData);
             const successor = this.#registerCountry(changes.successorCountryData);
             if (created) {
@@ -85,7 +86,7 @@ export class HistoricalEventManager {
                     changed = true;
                 }
             }
-        } else if (event.status === "disputed" && changes.entityData) {
+        } else if (verificationStatus === "disputed" && changes.entityData) {
             const entity = this.#registerCountry(changes.entityData, "disputed_entity");
             if (entity) {
                 entity.status = "disputed_entity";
