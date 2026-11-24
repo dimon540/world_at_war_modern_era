@@ -30,7 +30,18 @@ const elements = {
     loadButton: $("#load-game"),
     message: $("#game-message"),
     mapCanvas: $("#world-map"),
-    mapLoading: $("#map-loading")
+    mapLoading: $("#map-loading"),
+    mainMenu: $("#main-menu"),
+    campaignSetup: $("#campaign-setup"),
+    settingsScreen: $("#settings-screen"),
+    gameScreen: $("#game-screen"),
+    campaignCountrySelect: $("#campaign-country-select"),
+    setupCountryName: $("#setup-country-name"),
+    setupCountryCapital: $("#setup-country-capital"),
+    setupCountryRegion: $("#setup-country-region"),
+    setupCountryStatus: $("#setup-country-status"),
+    launchCampaignButton: $("#launch-campaign"),
+    menuMessage: $("#menu-message")
 };
 
 let game = null;
@@ -40,6 +51,53 @@ let mapHitTargets = [];
 let resizeObserver = null;
 let eventUnsubscribers = [];
 const availableSpeeds = GAME_CONFIG.time?.availableSpeeds ?? [1, 2, 4, 8, 16];
+
+function showScreen(screen) {
+    const screens = [elements.mainMenu, elements.campaignSetup, elements.settingsScreen, elements.gameScreen];
+    for (const item of screens) {
+        if (item) item.hidden = item !== screen;
+    }
+    if (screen === elements.gameScreen) {
+        requestAnimationFrame(() => {
+            drawMap();
+            updateClock();
+        });
+    }
+}
+
+function showMenuMessage(message) {
+    if (elements.menuMessage) elements.menuMessage.textContent = message;
+}
+
+function updateCampaignCountry(countryId) {
+    const country = countryId ? game?.state.world.countries[countryId] : null;
+    if (elements.setupCountryName) elements.setupCountryName.textContent =
+        country?.name || country?.officialName || "Страна не выбрана";
+    if (elements.setupCountryCapital) elements.setupCountryCapital.textContent = country?.capital || "—";
+    if (elements.setupCountryRegion) elements.setupCountryRegion.textContent = country?.region || "—";
+    if (elements.setupCountryStatus) elements.setupCountryStatus.textContent =
+        country ? (country.status || "Доступна для игры") : "Выбери страну из списка";
+    if (elements.launchCampaignButton) elements.launchCampaignButton.disabled = !country;
+}
+
+async function loadCampaignFromMenu() {
+    try {
+        await game.load(1);
+        const countryId = game.state.player.countryId;
+        if (!countryId || !game.state.world.countries[countryId]) {
+            showMenuMessage("Сохранение найдено, но в нём не выбрана страна.");
+            return;
+        }
+        renderCountry(countryId);
+        uiManager?.refreshCountry();
+        showScreen(elements.gameScreen);
+        drawMap();
+        updateClock();
+        showMessage("Campaign loaded.", "success");
+    } catch (error) {
+        showMenuMessage("Сохранение не найдено или не удалось загрузить кампанию.");
+    }
+}
 
 function showMessage(message, type = "info") {
     if (!elements.message) return;
@@ -281,6 +339,22 @@ function populateCountries() {
         elements.countrySelect.append(option);
     }
 
+    if (elements.campaignCountrySelect) {
+        const setupPlaceholder = document.createElement("option");
+        setupPlaceholder.value = "";
+        setupPlaceholder.textContent = "Выбери государство…";
+        const setupOptions = countries.map(country => {
+            const option = document.createElement("option");
+            option.value = country.id || country.iso3;
+            option.textContent = country.name || country.officialName || option.value;
+            return option;
+        });
+        elements.campaignCountrySelect.replaceChildren(setupPlaceholder, ...setupOptions);
+        elements.campaignCountrySelect.disabled = false;
+        elements.campaignCountrySelect.value = "";
+        updateCampaignCountry("");
+    }
+
     if (elements.countryCount) {
         elements.countryCount.textContent = String(countries.length);
     }
@@ -319,6 +393,38 @@ async function startGame() {
 }
 
 function bindInterface() {
+    $("#menu-new-game")?.addEventListener("click", () => {
+        if (!game) {
+            showMenuMessage("Мир ещё загружается. Подожди немного.");
+            return;
+        }
+        showScreen(elements.campaignSetup);
+        showMenuMessage("СЦЕНАРИЙ: 1 ЯНВАРЯ 2000 ГОДА");
+    });
+    $("#menu-load-game")?.addEventListener("click", loadCampaignFromMenu);
+    $("#menu-settings")?.addEventListener("click", () => showScreen(elements.settingsScreen));
+    $("#setup-back-menu")?.addEventListener("click", () => showScreen(elements.mainMenu));
+    $("#settings-back-menu")?.addEventListener("click", () => showScreen(elements.mainMenu));
+    $("#return-to-menu")?.addEventListener("click", () => {
+        if (game?.status === "running") game.pause();
+        updateClock();
+        showScreen(elements.mainMenu);
+    });
+
+    elements.campaignCountrySelect?.addEventListener("change", event => {
+        updateCampaignCountry(event.target.value);
+    });
+    elements.launchCampaignButton?.addEventListener("click", async () => {
+        const countryId = elements.campaignCountrySelect?.value;
+        if (!countryId || !game.state.world.countries[countryId]) return;
+        chooseCountry(countryId);
+        showScreen(elements.gameScreen);
+        await startGame();
+    });
+    $("#reduce-motion-setting")?.addEventListener("change", event => {
+        document.querySelector("#app")?.classList.toggle("reduced-motion", event.target.checked);
+    });
+
     elements.countrySelect?.addEventListener("change", event => {
         chooseCountry(event.target.value);
     });
