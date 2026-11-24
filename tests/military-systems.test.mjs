@@ -1,3 +1,4 @@
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 import assert from "node:assert/strict";
 
@@ -224,4 +225,23 @@ test("independent AI agents make strategic decisions for every country", () => {
     assert.equal(ai.runWeeklyReview().length, 1);
     assert.equal(ai.runMonthlyReview().length, 1);
     assert.throws(() => ai.setPriority("AAA", "unknown_goal", 0.5), /Unknown strategic goal/);
+});
+
+test("real scenario dataset creates an independent AI agent for every country", async () => {
+    const dataset = JSON.parse(await readFile(
+        new URL("../data/countries/countries.json", import.meta.url),
+        "utf8"
+    ));
+    const state = createInitialGameState();
+    for (const country of dataset.countries) state.world.countries[country.id] = country;
+
+    const ai = new WorldAIManager(state);
+    const initialized = ai.initializeAgents();
+    const daily = ai.runDailyCycle();
+
+    assert.equal(initialized.totalCountries, dataset.countries.length);
+    assert.equal(ai.getSnapshot().totalAgents, dataset.countries.length);
+    assert.equal(ai.getSnapshot().activeAgents, dataset.countries.length);
+    assert.equal(daily.length, dataset.countries.length);
+    assert.equal(ai.getSnapshot().totalDecisions, dataset.countries.length);
 });
