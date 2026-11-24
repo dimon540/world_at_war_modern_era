@@ -119,7 +119,7 @@ export class CombatManager {
     }
     advanceBattles(hours = 1) {
         this.#assertActive();
-        if (!Number.isFinite(hours) || hours < 0) throw new RangeError("Battle time advance must be non-negative.");
+        if (!Number.isSafeInteger(hours) || hours < 0) throw new RangeError("Battle time advance must be a non-negative whole number of hours.");
         const reports = [];
         for (const battle of Object.values(this.state.military.battles)) {
             if (battle.status !== ACTIVE) continue;
