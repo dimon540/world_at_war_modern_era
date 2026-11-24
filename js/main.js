@@ -212,7 +212,7 @@ function drawMap() {
         context.stroke(path);
 
         if (country && !inactive) {
-            targets.push({ path, countryId: country.id ?? code });
+            targets.push({ path, countryId: country.id ?? code, provinceId });
         }
     }
 
@@ -247,6 +247,7 @@ function chooseCountry(countryId) {
         showMessage("This country is not present in the loaded scenario.", "error");
         return;
     }
+    game.state.map.selectedProvinceId = null;
     renderCountry(countryId);
     if (elements.aiCount) elements.aiCount.textContent = String(game.worldAIManager.getSnapshot().activeAgents);
     uiManager?.refreshCountry();
@@ -370,8 +371,17 @@ function bindInterface() {
         const y = event.clientY - rect.top;
         const context = elements.mapCanvas.getContext("2d");
         for (let i = mapHitTargets.length - 1; i >= 0; i--) {
-            if (context.isPointInPath(mapHitTargets[i].path, x, y)) {
-                chooseCountry(mapHitTargets[i].countryId);
+            const hit = mapHitTargets[i];
+            if (context.isPointInPath(hit.path, x, y)) {
+                chooseCountry(hit.countryId);
+                if (hit.provinceId && game.state.world.provinces[hit.provinceId]) {
+                    game.state.map.selectedProvinceId = hit.provinceId;
+                    uiManager?.province.render(hit.provinceId);
+                    uiManager?.showPanel("province");
+                    const province = game.state.world.provinces[hit.provinceId];
+                    const name = province.properties?.NAME_1 ?? province.properties?.name ?? hit.provinceId;
+                    showMessage(`Selected ${name} in ${game.state.world.countries[hit.countryId]?.name ?? hit.countryId}.`, "success");
+                }
                 return;
             }
         }
