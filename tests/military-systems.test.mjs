@@ -75,3 +75,22 @@ test("combat applies losses and finishes when a formation breaks", () => {
     assert.equal(combat.getActiveBattles().length, 1);
     assert.equal(state.military.statistics.activeBattles, 1);
 });
+
+import { createGame } from "../js/core/game.js";
+
+test("game engine wires military systems and hourly simulation tasks", () => {
+    const game = createGame({ autoLoadWorld: false });
+    const systems = game.getSystems();
+
+    assert.equal(typeof systems.divisionManager.createDivision, "function");
+    assert.equal(typeof systems.armyManager.createArmy, "function");
+    assert.equal(typeof systems.commanderManager.createCommander, "function");
+    assert.equal(typeof systems.movementManager.advance, "function");
+    assert.equal(typeof systems.combatManager.advanceBattles, "function");
+
+    const taskIds = systems.loop.getRegisteredTasks().map(task => task.id);
+    assert.ok(taskIds.includes("military.land_movement"));
+    assert.ok(taskIds.includes("military.land_combat"));
+
+    game.destroy();
+});
