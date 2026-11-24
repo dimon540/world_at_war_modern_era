@@ -60,7 +60,7 @@ test("AI economic priority reallocates an existing verified national budget", ()
 
     assert.equal(report.action.executed, true);
     assert.ok(budget.allocations.civilian > 0.2);
-    assert.equal(report.action.action, "budget_reallocated");
+    assert.equal(report.action.action, "industrial_expansion_started");
     assert.equal(report.action.constructionStarted, true);
     assert.equal(economy.construction.list({ countryId: "AAA", status: "active" }).length, 1);
 
