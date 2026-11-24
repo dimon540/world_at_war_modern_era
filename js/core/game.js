@@ -897,9 +897,14 @@ export class Game {
             this.unregisterEconomyTask();
             this.unregisterEconomyTask = null;
         }
+        if (this.unregisterDiplomacyTask) {
+            this.unregisterDiplomacyTask();
+            this.unregisterDiplomacyTask = null;
+        }
 
         if (this.worldAIManager) this.worldAIManager.destroy();
         if (this.economyManager) this.economyManager.destroy();
+        if (this.diplomacyManager) this.diplomacyManager.destroy();
         if (this.supplyManager) this.supplyManager.destroy();
         if (this.battlePlanManager) this.battlePlanManager.destroy();
         if (this.combatManager) this.combatManager.destroy();
