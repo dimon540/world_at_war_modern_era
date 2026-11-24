@@ -1,655 +1,318 @@
-
 /* =====================================================
    WORLD AT WAR: MODERN ERA
-   CORE EVENT BUS
-   Version: 1.0.1
+   CORE DATA LOADER
+   Version: 1.0.2
 
-   Central event communication system.
+   Loads and validates the historical world dataset.
 ===================================================== */
 
-/* =====================================================
-   EVENT CONSTANTS
-===================================================== */
-
-export const GAME_EVENTS = Object.freeze({
-
-    // Game lifecycle
-    GAME_INITIALIZING: "game:initializing",
-    GAME_INITIALIZED: "game:initialized",
-    GAME_STARTED: "game:started",
-    GAME_PAUSED: "game:paused",
-    GAME_RESUMED: "game:resumed",
-    GAME_OVER: "game:over",
-
-    // Time
-    CLOCK_TICK: "clock:tick",
-    HOUR_CHANGED: "clock:hour_changed",
-    DAY_CHANGED: "clock:day_changed",
-    WEEK_CHANGED: "clock:week_changed",
-    MONTH_CHANGED: "clock:month_changed",
-    YEAR_CHANGED: "clock:year_changed",
-
-    // World
-    WORLD_LOADING: "world:loading",
-    WORLD_LOADED: "world:loaded",
-    WORLD_UPDATED: "world:updated",
-
-    // Countries
-    COUNTRY_CREATED: "country:created",
-    COUNTRY_UPDATED: "country:updated",
-    COUNTRY_SELECTED: "country:selected",
-    COUNTRY_ELIMINATED: "country:eliminated",
-    COUNTRY_INDEPENDENCE: "country:independence",
-
-    // Provinces
-    PROVINCE_CREATED: "province:created",
-    PROVINCE_UPDATED: "province:updated",
-    PROVINCE_OWNER_CHANGED: "province:owner_changed",
-    PROVINCE_CONTROLLER_CHANGED: "province:controller_changed",
-
-    // Economy
-    ECONOMY_UPDATED: "economy:updated",
-    BUDGET_UPDATED: "economy:budget_updated",
-    FACTORY_COMPLETED: "economy:factory_completed",
-    CONSTRUCTION_STARTED: "economy:construction_started",
-    PRODUCTION_UPDATED: "economy:production_updated",
-    TRADE_ROUTE_CREATED: "economy:trade_route_created",
-
-    // Military
-    ARMY_CREATED: "military:army_created",
-    DIVISION_CREATED: "military:division_created",
-    DIVISION_MOVED: "military:division_moved",
-    DIVISION_DESTROYED: "military:division_destroyed",
-    MOBILIZATION_STARTED: "military:mobilization_started",
-    BATTLE_STARTED: "military:battle_started",
-    BATTLE_ENDED: "military:battle_ended",
-    FRONT_CREATED: "military:front_created",
-    EQUIPMENT_PRODUCED: "military:equipment_produced",
-
-    // Diplomacy
-    RELATIONS_CHANGED: "diplomacy:relations_changed",
-    ALLIANCE_CREATED: "diplomacy:alliance_created",
-    ALLIANCE_DISSOLVED: "diplomacy:alliance_dissolved",
-    WAR_DECLARED: "diplomacy:war_declared",
-    WAR_ENDED: "diplomacy:war_ended",
-    PEACE_SIGNED: "diplomacy:peace_signed",
-    SANCTIONS_IMPOSED: "diplomacy:sanctions_imposed",
-
-    // Politics
-    GOVERNMENT_CHANGED: "politics:government_changed",
-    ELECTION_STARTED: "politics:election_started",
-    ELECTION_ENDED: "politics:election_ended",
-    REVOLUTION_STARTED: "politics:revolution_started",
-    COUP_OCCURRED: "politics:coup_occurred",
-
-    // Technology
-    RESEARCH_STARTED: "technology:research_started",
-    RESEARCH_COMPLETED: "technology:research_completed",
-    TECHNOLOGY_UNLOCKED: "technology:unlocked",
-
-    // AI
-    AI_DECISION_MADE: "ai:decision_made",
-    AI_COUNTRY_UPDATED: "ai:country_updated",
-    AI_STRATEGY_CHANGED: "ai:strategy_changed",
-
-    // Events
-    HISTORICAL_EVENT: "event:historical",
-    WORLD_EVENT: "event:world",
-    CRISIS_STARTED: "event:crisis_started",
-    CRISIS_ENDED: "event:crisis_ended",
-
-    // UI
-    NOTIFICATION_CREATED: "ui:notification_created",
-    PANEL_UPDATED: "ui:panel_updated",
-    MAP_UPDATED: "ui:map_updated",
-
-    // Saves
-    SAVE_STARTED: "save:started",
-    SAVE_COMPLETED: "save:completed",
-    SAVE_FAILED: "save:failed",
-    SAVE_DELETED: "save:deleted",
-    GAME_SAVED: "save:game_saved",
-
-    // Loads
-    LOAD_STARTED: "load:started",
-    LOAD_COMPLETED: "load:completed",
-    LOAD_FAILED: "load:failed",
-    GAME_LOADED: "load:game_loaded",
-
-    // Errors
-    SYSTEM_ERROR: "system:error"
-});
-
-/* =====================================================
-   EVENT BUS CONFIGURATION
-===================================================== */
+import { DATA_PATHS } from "../config.js";
+import {
+    GAME_EVENTS,
+    gameEventBus
+} from "./event-bus.js";
+import {
+    validateGameState,
+    markGameStateDirty
+} from "./game-state.js";
 
 const DEFAULT_CONFIG = Object.freeze({
-    maxHistory: 1000,
-    maxListenersPerEvent: 500,
-    allowWildcardListeners: true,
-    captureErrors: true,
-    asyncListeners: false
+    requiredDatasets: ["countries", "provinces"],
+    fetchOptions: {
+        cache: "no-cache",
+        credentials: "same-origin"
+    },
+    validateState: true,
+    emitEvents: true
 });
 
-/* =====================================================
-   EVENT BUS CLASS
-===================================================== */
+function isObject(value) {
+    return value !== null && typeof value === "object" && !Array.isArray(value);
+}
 
-export class EventBus {
+function getCollection(data, preferredKeys = []) {
+    if (Array.isArray(data)) return data;
+    if (!isObject(data)) return [];
+    for (const key of preferredKeys) {
+        if (Array.isArray(data[key])) return data[key];
+    }
+    return [];
+}
 
-    constructor(config = {}) {
+function getFeatureId(feature, index) {
+    const properties = feature?.properties ?? {};
+    const candidates = [
+        feature?.id,
+        properties.id,
+        properties.ID,
+        properties.adm1_code,
+        properties.iso_3166_2,
+        properties.code,
+        properties.name,
+        properties.NAME_1
+    ];
+    const value = candidates.find(item =>
+        item !== undefined && item !== null && String(item).trim() !== ""
+    );
+    return value === undefined ? `province_${index + 1}` : String(value);
+}
 
+function toRegistry(items, idResolver) {
+    const registry = Object.create(null);
+    items.forEach((item, index) => {
+        if (!isObject(item)) return;
+        const id = idResolver(item, index);
+        if (id) registry[String(id)] = item;
+    });
+    return registry;
+}
+
+export class DataLoader {
+    constructor(state, eventBus = gameEventBus, options = {}) {
+        if (!state || !state.world) {
+            throw new TypeError("DataLoader requires a valid game state.");
+        }
+
+        this.state = state;
+        this.eventBus = eventBus;
         this.config = {
             ...DEFAULT_CONFIG,
-            ...config
+            ...options,
+            fetchOptions: {
+                ...DEFAULT_CONFIG.fetchOptions,
+                ...(options.fetchOptions ?? {})
+            }
         };
 
-        this.listeners = new Map();
-        this.history = [];
-
-        this.listenerCounter = 0;
-        this.eventCounter = 0;
-
+        this.loading = false;
         this.destroyed = false;
+        this.lastReport = null;
+        this.activeRequests = new Map();
     }
 
-    /* ===============================================
-       SUBSCRIBE
-    =============================================== */
-
-    on(eventName, callback, options = {}) {
-
-        this.#validateEvent(eventName);
-
-        if (typeof callback !== "function") {
-            throw new TypeError(
-                "Event listener must be a function."
-            );
-        }
-
+    async loadWorldData(options = {}) {
         this.#ensureActive();
 
-        const {
-            priority = 0,
-            once = false,
-            context = null
-        } = options;
-
-        if (!Number.isFinite(priority)) {
-            throw new TypeError(
-                "Listener priority must be a finite number."
-            );
+        if (this.loading) {
+            throw new Error("World data is already being loaded.");
         }
 
-        const listeners =
-            this.listeners.get(eventName) ?? [];
+        this.loading = true;
+        const startedAt = Date.now();
+        const required = options.requiredDatasets ??
+            this.config.requiredDatasets;
 
-        if (
-            listeners.length >=
-            this.config.maxListenersPerEvent
-        ) {
-            throw new Error(
-                `Maximum listeners reached for event: ${eventName}`
-            );
+        this.#emit(GAME_EVENTS.WORLD_LOADING, {
+            datasets: [...required],
+            startedAt
+        });
+
+        try {
+            const countriesPath = options.paths?.countries ?? DATA_PATHS.countries;
+            const provincesPath = options.paths?.provinces ?? DATA_PATHS.provinces;
+
+            if (!countriesPath || !provincesPath) {
+                throw new Error("Required world data paths are not configured.");
+            }
+
+            const [countriesData, provincesData] = await Promise.all([
+                this.loadJSON(countriesPath, { required: required.includes("countries") }),
+                this.loadJSON(provincesPath, { required: required.includes("provinces") })
+            ]);
+
+            if (!countriesData || !provincesData) {
+                throw new Error("Required country or province dataset is missing.");
+            }
+
+            const countryItems = getCollection(countriesData, [
+                "countries", "items", "data"
+            ]);
+            const provinceItems = provincesData.type === "FeatureCollection"
+                ? (Array.isArray(provincesData.features) ? provincesData.features : [])
+                : getCollection(provincesData, ["provinces", "features", "items", "data"]);
+
+            if (countryItems.length === 0) {
+                throw new Error("Country dataset contains no countries.");
+            }
+            if (provinceItems.length === 0) {
+                throw new Error("Province dataset contains no features.");
+            }
+
+            this.#applyWorldData(countryItems, provinceItems, countriesData, provincesData);
+
+            if (this.config.validateState) {
+                const validation = validateGameState(this.state);
+                if (!validation.valid) {
+                    throw new Error(
+                        "Game state validation failed: " + validation.errors.join(" ")
+                    );
+                }
+            }
+
+            this.state.status.isInitialized = true;
+            this.state.status.isRunning = false;
+            this.state.status.isPaused = true;
+            this.state.metadata.lastUpdatedAt = new Date().toISOString();
+
+            if (typeof markGameStateDirty === "function") {
+                markGameStateDirty(this.state);
+            }
+
+            const report = {
+                success: true,
+                loadedAt: new Date().toISOString(),
+                durationMs: Date.now() - startedAt,
+                countries: countryItems.length,
+                provinces: provinceItems.length,
+                datasets: ["countries", "provinces"]
+            };
+
+            this.lastReport = report;
+            this.#emit(GAME_EVENTS.WORLD_LOADED, report);
+            return report;
+        } catch (error) {
+            const report = {
+                success: false,
+                durationMs: Date.now() - startedAt,
+                error: error.message
+            };
+            this.lastReport = report;
+            this.#emit(GAME_EVENTS.SYSTEM_ERROR, {
+                source: "DataLoader",
+                operation: "loadWorldData",
+                message: error.message
+            });
+            throw error;
+        } finally {
+            this.loading = false;
+            this.activeRequests.clear();
         }
-
-        const listener = {
-            id: ++this.listenerCounter,
-            eventName,
-            callback,
-            priority,
-            once,
-            context,
-            active: true
-        };
-
-        listeners.push(listener);
-
-        listeners.sort(
-            (a, b) => b.priority - a.priority
-        );
-
-        this.listeners.set(eventName, listeners);
-
-        return () => this.off(eventName, listener.id);
     }
 
-    /* ===============================================
-       SUBSCRIBE ONCE
-    =============================================== */
+    async loadDataset(name, path, options = {}) {
+        this.#ensureActive();
 
-    once(eventName, callback, options = {}) {
+        if (typeof name !== "string" || !name.trim()) {
+            throw new TypeError("Dataset name must be a non-empty string.");
+        }
 
-        return this.on(eventName, callback, {
-            ...options,
-            once: true
+        const resolvedPath = path ?? DATA_PATHS[name];
+        if (!resolvedPath) {
+            if (options.required) {
+                throw new Error(`No path configured for required dataset "${name}".`);
+            }
+            return null;
+        }
+
+        return this.loadJSON(resolvedPath, options);
+    }
+
+    async loadJSON(path, options = {}) {
+        this.#ensureActive();
+
+        if (typeof path !== "string" || !path.trim()) {
+            if (options.required) throw new TypeError("A valid data path is required.");
+            return null;
+        }
+
+        const key = String(path);
+        if (this.activeRequests.has(key)) {
+            return this.activeRequests.get(key);
+        }
+
+        const request = (async () => {
+            let response;
+            try {
+                response = await fetch(key, {
+                    ...this.config.fetchOptions,
+                    ...(options.fetchOptions ?? {})
+                });
+            } catch (error) {
+                if (!options.required) return null;
+                throw new Error(`Network error while loading "${key}": ${error.message}`);
+            }
+
+            if (!response.ok) {
+                if (!options.required && response.status === 404) return null;
+                throw new Error(
+                    `Failed to load "${key}": HTTP ${response.status} ${response.statusText}`
+                );
+            }
+
+            try {
+                return await response.json();
+            } catch (error) {
+                throw new Error(`Invalid JSON in "${key}": ${error.message}`);
+            }
+        })();
+
+        this.activeRequests.set(key, request);
+        try {
+            return await request;
+        } finally {
+            this.activeRequests.delete(key);
+        }
+    }
+
+    #applyWorldData(countries, provinces, countriesSource, provincesSource) {
+        this.state.world.countries = toRegistry(
+            countries,
+            (country, index) => country.id ?? country.iso3 ?? country.iso2 ?? country.tag ?? `country_${index + 1}`
+        );
+
+        this.state.world.provinces = toRegistry(
+            provinces,
+            (feature, index) => getFeatureId(feature, index)
+        );
+
+        this.state.world.statistics.totalCountries =
+            Object.keys(this.state.world.countries).length;
+        this.state.world.statistics.totalProvinces =
+            Object.keys(this.state.world.provinces).length;
+
+        this.state.statistics.totalCountries =
+            this.state.world.statistics.totalCountries;
+        this.state.statistics.totalProvinces =
+            this.state.world.statistics.totalProvinces;
+
+        this.state.map.geoJSON = provincesSource;
+        this.state.map.countryData = countriesSource;
+
+        if (!this.state.world.ownership) {
+            this.state.world.ownership = {
+                provinceOwners: Object.create(null),
+                provinceControllers: Object.create(null)
+            };
+        }
+    }
+
+    getStatus() {
+        return {
+            loading: this.loading,
+            destroyed: this.destroyed,
+            lastReport: this.lastReport
+        };
+    }
+
+    #emit(eventName, payload) {
+        if (!this.config.emitEvents || !eventName || !this.eventBus?.emit) return;
+        this.eventBus.emit(eventName, {
+            ...payload,
+            timestamp: Date.now()
         });
     }
 
-    /* ===============================================
-       UNSUBSCRIBE
-    =============================================== */
-
-    off(eventName, listenerIdentifier) {
-
-        this.#ensureActive();
-
-        const listeners = this.listeners.get(eventName);
-
-        if (!listeners) {
-            return false;
-        }
-
-        const index = listeners.findIndex(listener => (
-            listener.id === listenerIdentifier ||
-            listener.callback === listenerIdentifier
-        ));
-
-        if (index === -1) {
-            return false;
-        }
-
-        listeners[index].active = false;
-        listeners.splice(index, 1);
-
-        if (listeners.length === 0) {
-            this.listeners.delete(eventName);
-        }
-
-        return true;
-    }
-
-    /* ===============================================
-       REMOVE ALL LISTENERS
-    =============================================== */
-
-    removeAllListeners(eventName = null) {
-
-        this.#ensureActive();
-
-        if (eventName === null) {
-
-            for (const listeners of this.listeners.values()) {
-                for (const listener of listeners) {
-                    listener.active = false;
-                }
-            }
-
-            this.listeners.clear();
-            return;
-        }
-
-        const listeners = this.listeners.get(eventName);
-
-        if (!listeners) {
-            return;
-        }
-
-        for (const listener of listeners) {
-            listener.active = false;
-        }
-
-        this.listeners.delete(eventName);
-    }
-
-    /* ===============================================
-       PUBLISH EVENT
-    =============================================== */
-
-    emit(eventName, payload = null) {
-
-        this.#validateEvent(eventName);
-        this.#ensureActive();
-
-        const event = {
-            id: ++this.eventCounter,
-            name: eventName,
-            payload,
-            timestamp: Date.now(),
-            errors: [],
-            listenerCount: 0
-        };
-
-        this.#recordEvent(event);
-
-        const listeners = [
-            ...(this.listeners.get(eventName) ?? [])
-        ];
-
-        if (this.config.allowWildcardListeners) {
-            listeners.push(
-                ...(this.listeners.get("*") ?? [])
-            );
-        }
-
-        listeners.sort(
-            (a, b) => b.priority - a.priority
-        );
-
-        for (const listener of listeners) {
-
-            if (!listener.active) {
-                continue;
-            }
-
-            if (listener.once) {
-                this.off(
-                    listener.eventName,
-                    listener.id
-                );
-            }
-
-            try {
-
-                listener.callback.call(
-                    listener.context,
-                    payload,
-                    event
-                );
-
-                event.listenerCount++;
-
-            } catch (error) {
-
-                event.errors.push({
-                    listenerId: listener.id,
-                    message: error.message,
-                    timestamp: Date.now()
-                });
-
-                if (this.config.captureErrors) {
-                    this.#handleListenerError(
-                        eventName,
-                        error,
-                        listener
-                    );
-                }
-            }
-        }
-
-        return event;
-    }
-
-    /* ===============================================
-       ASYNC PUBLISH
-    =============================================== */
-
-    async emitAsync(eventName, payload = null) {
-
-        this.#validateEvent(eventName);
-        this.#ensureActive();
-
-        const event = {
-            id: ++this.eventCounter,
-            name: eventName,
-            payload,
-            timestamp: Date.now(),
-            errors: [],
-            listenerCount: 0
-        };
-
-        this.#recordEvent(event);
-
-        const listeners = [
-            ...(this.listeners.get(eventName) ?? [])
-        ];
-
-        if (this.config.allowWildcardListeners) {
-            listeners.push(
-                ...(this.listeners.get("*") ?? [])
-            );
-        }
-
-        listeners.sort(
-            (a, b) => b.priority - a.priority
-        );
-
-        for (const listener of listeners) {
-
-            if (!listener.active) {
-                continue;
-            }
-
-            if (listener.once) {
-                this.off(
-                    listener.eventName,
-                    listener.id
-                );
-            }
-
-            try {
-
-                await listener.callback.call(
-                    listener.context,
-                    payload,
-                    event
-                );
-
-                event.listenerCount++;
-
-            } catch (error) {
-
-                event.errors.push({
-                    listenerId: listener.id,
-                    message: error.message,
-                    timestamp: Date.now()
-                });
-
-                if (this.config.captureErrors) {
-                    this.#handleListenerError(
-                        eventName,
-                        error,
-                        listener
-                    );
-                }
-            }
-        }
-
-        return event;
-    }
-
-    /* ===============================================
-       EVENT HISTORY
-    =============================================== */
-
-    #recordEvent(event) {
-
-        this.history.push(event);
-
-        const excess =
-            this.history.length - this.config.maxHistory;
-
-        if (excess > 0) {
-            this.history.splice(0, excess);
-        }
-    }
-
-    getHistory(options = {}) {
-
-        const {
-            eventName = null,
-            limit = this.config.maxHistory
-        } = options;
-
-        let result = this.history;
-
-        if (eventName !== null) {
-            result = result.filter(
-                event => event.name === eventName
-            );
-        }
-
-        return result.slice(-limit);
-    }
-
-    clearHistory() {
-
-        this.#ensureActive();
-        this.history.length = 0;
-    }
-
-    /* ===============================================
-       LISTENER INFORMATION
-    =============================================== */
-
-    listenerCount(eventName = null) {
-
-        if (eventName !== null) {
-            return (
-                this.listeners.get(eventName)?.length ?? 0
-            );
-        }
-
-        let count = 0;
-
-        for (const listeners of this.listeners.values()) {
-            count += listeners.length;
-        }
-
-        return count;
-    }
-
-    eventNames() {
-        return Array.from(this.listeners.keys());
-    }
-
-    hasListeners(eventName) {
-        return this.listenerCount(eventName) > 0;
-    }
-
-    /* ===============================================
-       ERROR HANDLING
-    =============================================== */
-
-    #handleListenerError(eventName, error, listener) {
-
-        if (eventName === GAME_EVENTS.SYSTEM_ERROR) {
-            return;
-        }
-
-        const errorEvent = {
-            source: "EventBus",
-            eventName,
-            listenerId: listener.id,
-            message: error.message,
-            stack: error.stack ?? null,
-            timestamp: Date.now()
-        };
-
-        const errorListeners = [
-            ...(this.listeners.get(
-                GAME_EVENTS.SYSTEM_ERROR
-            ) ?? [])
-        ];
-
-        for (const errorListener of errorListeners) {
-
-            if (!errorListener.active) {
-                continue;
-            }
-
-            try {
-                errorListener.callback(errorEvent);
-            } catch {
-                // Prevent recursive error handling.
-            }
-        }
-    }
-
-    /* ===============================================
-       VALIDATION
-    =============================================== */
-
-    #validateEvent(eventName) {
-
-        if (
-            typeof eventName !== "string" ||
-            eventName.trim().length === 0
-        ) {
-            throw new TypeError(
-                "Event name must be a non-empty string."
-            );
-        }
-    }
-
     #ensureActive() {
-
         if (this.destroyed) {
-            throw new Error(
-                "EventBus has been destroyed."
-            );
+            throw new Error("DataLoader has been destroyed.");
         }
     }
-
-    /* ===============================================
-       DESTROY
-    =============================================== */
 
     destroy() {
-
-        if (this.destroyed) {
-            return;
-        }
-
-        this.removeAllListeners();
-        this.history.length = 0;
+        if (this.destroyed) return;
+        this.activeRequests.clear();
         this.destroyed = true;
     }
 }
 
-/* =====================================================
-   GLOBAL GAME EVENT BUS
-===================================================== */
-
-export const gameEventBus = new EventBus();
-
-/* =====================================================
-   CONVENIENCE FUNCTIONS
-===================================================== */
-
-export function emitGameEvent(eventName, payload = null) {
-    return gameEventBus.emit(eventName, payload);
-}
-
-export function onGameEvent(
-    eventName,
-    callback,
-    options = {}
-) {
-    return gameEventBus.on(
-        eventName,
-        callback,
-        options
-    );
-}
-
-export function onceGameEvent(
-    eventName,
-    callback,
-    options = {}
-) {
-    return gameEventBus.once(
-        eventName,
-        callback,
-        options
-    );
-}
-
-export function offGameEvent(
-    eventName,
-    listenerIdentifier
-) {
-    return gameEventBus.off(
-        eventName,
-        listenerIdentifier
-    );
-}
-
-/* =====================================================
-   MODULE INITIALIZATION
-===================================================== */
-
-console.log(
-    "WORLD AT WAR: Event Bus module loaded."
-);
+console.log("WORLD AT WAR: Data Loader module loaded.");
