@@ -51,6 +51,7 @@ export class WorldAIManager {
         this.maxDecisionHistory = Number.isSafeInteger(options.maxDecisionHistory)
             ? clamp(options.maxDecisionHistory, 10, 500) : 60;
         this.agents = aiState.countries;
+        this.systems = options.systems ?? {};
         this.initialized = false;
         this.destroyed = false;
     }
@@ -89,6 +90,7 @@ export class WorldAIManager {
             lastWeeklyReview: null,
             lastMonthlyReview: null,
             recentDecisions: [],
+            lastAction: null,
             createdAt: Date.now(),
             updatedAt: Date.now()
         };
@@ -118,6 +120,7 @@ export class WorldAIManager {
                 ]));
                 if (!Array.isArray(agent.currentPlan)) agent.currentPlan = [];
                 if (!Array.isArray(agent.recentDecisions)) agent.recentDecisions = [];
+                if (agent.lastAction !== null && !isRecord(agent.lastAction)) agent.lastAction = null;
                 if (!Number.isSafeInteger(agent.decisionCount) || agent.decisionCount < 0) agent.decisionCount = 0;
                 refreshed += 1;
             }
@@ -162,6 +165,52 @@ export class WorldAIManager {
         return entries.sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
             .map(([goal, score]) => ({ goal, score: Number(score.toFixed(4)) }));
     }
+    setSystems(systems = {}) {
+        this.#assertActive();
+        if (!isRecord(systems)) throw new TypeError("AI systems must be supplied as an object.");
+        this.systems = { ...this.systems, ...systems };
+        return Object.keys(this.systems);
+    }
+    #executeGoal(agent, goal) {
+        const countryId = agent.countryId;
+        if (goal === "technological_progress") {
+            const research = this.systems.researchManager;
+            if (!research) return { executed: false, reason: "research_system_unavailable" };
+            const data = research.getCountryResearch(countryId);
+            if (data.projects.length >= 3) return { executed: false, reason: "research_queue_full" };
+            const available = research.getAvailable(countryId);
+            if (!available.length) return { executed: false, reason: "no_available_technology" };
+            const militaryFocus = agent.personality.militaryFocus;
+            const preferred = available.filter(item => item.category === "military");
+            const civilian = available.filter(item => item.category !== "military");
+            const pool = militaryFocus >= 0.5 && preferred.length ? preferred : civilian.length ? civilian : available;
+            pool.sort((a, b) => a.cost - b.cost || a.id.localeCompare(b.id));
+            const project = research.startResearch(countryId, pool[0].id, { priority: agent.priorities.technological_progress });
+            return { executed: true, action: "research_started", technologyId: project.technologyId, cost: project.cost };
+        }
+        if (goal === "economic_development") {
+            const budgets = this.systems.economyManager?.budgets;
+            const budget = budgets?.getBudget(countryId);
+            if (!budget) return { executed: false, reason: "verified_budget_unavailable" };
+            const allocations = { ...budget.allocations };
+            const target = Math.min(0.5, allocations.civilian + 0.02);
+            const delta = target - allocations.civilian;
+            if (delta <= 0.000001) return { executed: false, reason: "civilian_investment_target_reached" };
+            const reducible = ["social", "administration", "diplomacy"].reduce((sum, key) => sum + allocations[key], 0);
+            if (reducible + 0.000001 < delta) return { executed: false, reason: "no_budget_reallocation_capacity" };
+            let remaining = delta;
+            for (const key of ["social", "administration", "diplomacy"]) {
+                const cut = Math.min(allocations[key], remaining);
+                allocations[key] -= cut;
+                remaining -= cut;
+                if (remaining <= 0.000001) break;
+            }
+            allocations.civilian = target;
+            budgets.setAllocations(countryId, allocations, { reason: "autonomous_ai_economic_development" });
+            return { executed: true, action: "budget_reallocated", civilianAllocation: target };
+        }
+        return { executed: false, reason: "goal_requires_additional_historical_data_or_policy" };
+    }
     runDailyCycle() {
         this.#assertActive();
         if (!this.enabled || this.state.simulation.worldAI.enabled === false) return [];
@@ -181,7 +230,14 @@ export class WorldAIManager {
                     score: selected.score,
                     alternatives: ranking.slice(1, 3)
                 });
+                const action = this.#executeGoal(agent, selected.goal);
+                agent.lastAction = { ...action, goal: selected.goal, date: currentDate(this.state) };
+                decision.action = { ...agent.lastAction };
                 reports.push(decision);
+            } else if (selected) {
+                const action = this.#executeGoal(agent, selected.goal);
+                agent.lastAction = { ...action, goal: selected.goal, date: currentDate(this.state) };
+                reports.push({ countryId: id, goal: agent.currentGoal, decisionMade: false, action: { ...agent.lastAction }, plan: [...agent.currentPlan] });
             } else {
                 reports.push({ countryId: id, goal: agent.currentGoal, decisionMade: false, plan: [...agent.currentPlan] });
             }
@@ -273,6 +329,7 @@ export class WorldAIManager {
         this.state = null;
         this.eventBus = null;
         this.agents = null;
+        this.systems = null;
     }
 }
 export { GOALS as COUNTRY_AI_GOALS };
