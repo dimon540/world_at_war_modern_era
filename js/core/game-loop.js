@@ -403,8 +403,6 @@ export class GameLoop {
         this.running = true;
 
         this.state.simulation.enabled = true;
-
-        this.state.simulation.enabled = true;
     }
 
     stop() {
@@ -471,20 +469,8 @@ export class GameLoop {
                 continue;
             }
 
-            if (
-                processed >= this.config.maxTasksPerUpdate
-            ) {
-                break;
-            }
-
-            const elapsed =
-                performance.now() - startedAt;
-
-            if (
-                elapsed >= this.config.maxExecutionTimeMs
-            ) {
-                break;
-            }
+            // Never discard due tasks because a frame budget was reached.
+            // Every registered task for this simulation interval must run.
 
             try {
 
