@@ -1,1 +1,276 @@
+/* WORLD AT WAR: MODERN ERA — Responsive layout rules
+   Keep the command interface usable on desktop, Chromebook and mobile. */
 
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+}
+
+body {
+  min-width: 320px;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+canvas,
+video {
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+.game-layout,
+.game-container,
+.main-layout,
+.command-layout {
+  min-width: 0;
+}
+
+.game-main,
+.main-content,
+.map-column,
+.sidebar,
+.panel-column {
+  min-width: 0;
+}
+
+@media (max-width: 1200px) {
+  .game-layout,
+  .main-layout,
+  .command-layout {
+    grid-template-columns: minmax(0, 1fr) 280px;
+  }
+
+  .game-sidebar,
+  .sidebar,
+  .panel-column {
+    min-width: 0;
+  }
+
+  .topbar {
+    gap: 10px;
+  }
+
+  .topbar__brand,
+  .brand {
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .game-layout,
+  .main-layout,
+  .command-layout,
+  .interface-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .game-sidebar,
+  .sidebar,
+  .panel-column,
+  .right-sidebar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .map-column,
+  .main-content,
+  .game-main {
+    width: 100%;
+  }
+
+  .map-frame,
+  .map-container,
+  #world-map {
+    min-height: 420px;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .topbar__controls,
+  .topbar-controls,
+  .game-controls {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .game-header,
+  .topbar,
+  .command-bar {
+    gap: 8px;
+    padding: 9px 10px;
+  }
+
+  .topbar__brand,
+  .brand {
+    width: 100%;
+  }
+
+  .topbar__date,
+  .game-date,
+  #game-date {
+    font-size: 0.78rem;
+  }
+
+  .topbar__controls,
+  .topbar-controls,
+  .game-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .game-layout,
+  .main-layout,
+  .command-layout,
+  .interface-layout {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .game-sidebar,
+  .sidebar,
+  .panel-column,
+  .right-sidebar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .map-toolbar,
+  .map-header,
+  .map-footer {
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .map-frame,
+  .map-container,
+  #world-map {
+    min-height: 300px;
+  }
+
+  .map-hint,
+  .map-legend {
+    font-size: 0.68rem;
+  }
+
+  .panel,
+  .game-panel,
+  .country-panel,
+  .military-panel,
+  .economy-panel,
+  .diplomacy-panel {
+    min-width: 0;
+  }
+
+  .panel__header,
+  .game-panel__header,
+  .country-panel__header {
+    gap: 8px;
+    padding: 10px 11px;
+  }
+
+  .panel__body,
+  .game-panel__body,
+  .country-panel__body {
+    padding: 11px;
+  }
+
+  .stats-grid,
+  .country-stats,
+  .military-summary,
+  .army-summary,
+  .economy-summary,
+  .economy-stat-grid,
+  .budget-summary,
+  .diplomacy-summary,
+  .diplomacy-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .game-message,
+  .notification-log,
+  .system-list {
+    max-height: 220px;
+    overflow-y: auto;
+  }
+
+  .table-wrap,
+  .economy-table-wrap,
+  .production-table-wrap,
+  .trade-table-wrap {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 380px) {
+  .topbar__controls,
+  .topbar-controls,
+  .game-controls {
+    justify-content: flex-start;
+  }
+
+  .topbar button,
+  .game-controls button,
+  .speed-controls button {
+    min-width: 30px;
+    padding: 6px 7px;
+    font-size: 0.68rem;
+  }
+
+  .map-frame,
+  .map-container,
+  #world-map {
+    min-height: 250px;
+  }
+
+  .stats-grid,
+  .country-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .game-header,
+  .topbar {
+    position: relative;
+  }
+
+  .map-frame,
+  .map-container,
+  #world-map {
+    min-height: 220px;
+  }
+
+  .game-message,
+  .notification-log {
+    max-height: 130px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
