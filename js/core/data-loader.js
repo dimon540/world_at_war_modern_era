@@ -1,678 +1,590 @@
-/* =========================================================
+
+/* =====================================================
    WORLD AT WAR: MODERN ERA
-   CORE GAME ENGINE
-   Version: 1.1.1
+   CORE EVENT BUS
+   Version: 1.0.1
 
-   Main controller connecting all core systems.
-========================================================= */
+   Central event communication system.
+===================================================== */
 
-import { GAME_CONFIG } from "../config.js";
+/* =====================================================
+   EVENT CONSTANTS
+===================================================== */
 
-import {
-    createInitialGameState,
-    GAME_PHASES
-} from "./game-state.js";
+export const GAME_EVENTS = Object.freeze({
 
-import {
-    gameEventBus,
-    GAME_EVENTS
-} from "./event-bus.js";
+    // Game lifecycle
+    GAME_INITIALIZING: "game:initializing",
+    GAME_INITIALIZED: "game:initialized",
+    GAME_STARTED: "game:started",
+    GAME_PAUSED: "game:paused",
+    GAME_RESUMED: "game:resumed",
+    GAME_OVER: "game:over",
 
-import { GameClock } from "./game-clock.js";
-import { GameLoop } from "./game-loop.js";
-import { DataLoader } from "./data-loader.js";
-import { SaveManager } from "./save-manager.js";
+    // Time
+    CLOCK_TICK: "clock:tick",
+    HOUR_CHANGED: "clock:hour_changed",
+    DAY_CHANGED: "clock:day_changed",
+    WEEK_CHANGED: "clock:week_changed",
+    MONTH_CHANGED: "clock:month_changed",
+    YEAR_CHANGED: "clock:year_changed",
 
-/* =========================================================
-   GAME STATUS
-========================================================= */
+    // World
+    WORLD_LOADING: "world:loading",
+    WORLD_LOADED: "world:loaded",
+    WORLD_UPDATED: "world:updated",
 
-export const GAME_STATUS = Object.freeze({
-    CREATED: "created",
-    INITIALIZING: "initializing",
-    READY: "ready",
-    RUNNING: "running",
-    PAUSED: "paused",
-    STOPPED: "stopped",
-    ERROR: "error",
-    DESTROYED: "destroyed"
+    // Countries
+    COUNTRY_CREATED: "country:created",
+    COUNTRY_UPDATED: "country:updated",
+    COUNTRY_SELECTED: "country:selected",
+    COUNTRY_ELIMINATED: "country:eliminated",
+    COUNTRY_INDEPENDENCE: "country:independence",
+
+    // Provinces
+    PROVINCE_CREATED: "province:created",
+    PROVINCE_UPDATED: "province:updated",
+    PROVINCE_OWNER_CHANGED: "province:owner_changed",
+    PROVINCE_CONTROLLER_CHANGED: "province:controller_changed",
+
+    // Economy
+    ECONOMY_UPDATED: "economy:updated",
+    BUDGET_UPDATED: "economy:budget_updated",
+    FACTORY_COMPLETED: "economy:factory_completed",
+    CONSTRUCTION_STARTED: "economy:construction_started",
+    PRODUCTION_UPDATED: "economy:production_updated",
+    TRADE_ROUTE_CREATED: "economy:trade_route_created",
+
+    // Military
+    ARMY_CREATED: "military:army_created",
+    DIVISION_CREATED: "military:division_created",
+    DIVISION_MOVED: "military:division_moved",
+    DIVISION_DESTROYED: "military:division_destroyed",
+    MOBILIZATION_STARTED: "military:mobilization_started",
+    BATTLE_STARTED: "military:battle_started",
+    BATTLE_ENDED: "military:battle_ended",
+    FRONT_CREATED: "military:front_created",
+    EQUIPMENT_PRODUCED: "military:equipment_produced",
+
+    // Diplomacy
+    RELATIONS_CHANGED: "diplomacy:relations_changed",
+    ALLIANCE_CREATED: "diplomacy:alliance_created",
+    ALLIANCE_DISSOLVED: "diplomacy:alliance_dissolved",
+    WAR_DECLARED: "diplomacy:war_declared",
+    WAR_ENDED: "diplomacy:war_ended",
+    PEACE_SIGNED: "diplomacy:peace_signed",
+    SANCTIONS_IMPOSED: "diplomacy:sanctions_imposed",
+
+    // Politics
+    GOVERNMENT_CHANGED: "politics:government_changed",
+    ELECTION_STARTED: "politics:election_started",
+    ELECTION_ENDED: "politics:election_ended",
+    REVOLUTION_STARTED: "politics:revolution_started",
+    COUP_OCCURRED: "politics:coup_occurred",
+
+    // Technology
+    RESEARCH_STARTED: "technology:research_started",
+    RESEARCH_COMPLETED: "technology:research_completed",
+    TECHNOLOGY_UNLOCKED: "technology:unlocked",
+
+    // AI
+    AI_DECISION_MADE: "ai:decision_made",
+    AI_COUNTRY_UPDATED: "ai:country_updated",
+    AI_STRATEGY_CHANGED: "ai:strategy_changed",
+
+    // Events
+    HISTORICAL_EVENT: "event:historical",
+    WORLD_EVENT: "event:world",
+    CRISIS_STARTED: "event:crisis_started",
+    CRISIS_ENDED: "event:crisis_ended",
+
+    // UI
+    NOTIFICATION_CREATED: "ui:notification_created",
+    PANEL_UPDATED: "ui:panel_updated",
+    MAP_UPDATED: "ui:map_updated",
+
+    // Saves
+    SAVE_STARTED: "save:started",
+    SAVE_COMPLETED: "save:completed",
+    SAVE_FAILED: "save:failed",
+    SAVE_DELETED: "save:deleted",
+    GAME_SAVED: "save:game_saved",
+
+    // Loads
+    LOAD_STARTED: "load:started",
+    LOAD_COMPLETED: "load:completed",
+    LOAD_FAILED: "load:failed",
+    GAME_LOADED: "load:game_loaded",
+
+    // Errors
+    SYSTEM_ERROR: "system:error"
 });
 
-/* =========================================================
-   GAME ENGINE
-========================================================= */
+/* =====================================================
+   EVENT BUS CONFIGURATION
+===================================================== */
 
-export class Game {
+const DEFAULT_CONFIG = Object.freeze({
+    maxHistory: 1000,
+    maxListenersPerEvent: 500,
+    allowWildcardListeners: true,
+    captureErrors: true,
+    asyncListeners: false
+});
 
-    constructor(options = {}) {
+/* =====================================================
+   EVENT BUS CLASS
+===================================================== */
 
-        this.options = {
-            autoLoadWorld: true,
-            autoSave: false,
-            autoSaveSlot: 1,
-            ...options
+export class EventBus {
+
+    constructor(config = {}) {
+
+        this.config = {
+            ...DEFAULT_CONFIG,
+            ...config
         };
 
-        this.status = GAME_STATUS.CREATED;
+        this.listeners = new Map();
+        this.history = [];
 
-        this.state = createInitialGameState();
-
-        this.eventBus =
-            this.options.eventBus ??
-            gameEventBus;
-
-        this.ownsEventBus =
-            Boolean(this.options.ownsEventBus);
-
-        this.clock = null;
-        this.loop = null;
-        this.dataLoader = null;
-        this.saveManager = null;
-
-        this.initialized = false;
-        this.initializationPromise = null;
+        this.listenerCounter = 0;
+        this.eventCounter = 0;
 
         this.destroyed = false;
-        this.lastError = null;
-
-        this.#createSystems();
     }
 
-    /* =====================================================
-       CREATE SYSTEMS
-    ===================================================== */
-
-    #createSystems() {
-
-        this.clock = new GameClock(
-            this.state,
-            this.eventBus
-        );
-
-        this.loop = new GameLoop(
-            this.state,
-            this.clock,
-            this.eventBus
-        );
-
-        this.dataLoader = new DataLoader(
-            this.state,
-            this.eventBus
-        );
-
-        this.saveManager = new SaveManager(
-            this.state,
-            this.eventBus
-        );
-    }
-
-    /* =====================================================
-       INITIALIZE GAME
-    ===================================================== */
-
-    async initialize(options = {}) {
-
-        this.#ensureActive();
-
-        if (this.initialized) {
-            return this.getStatus();
-        }
-
-        if (this.initializationPromise) {
-            return this.initializationPromise;
-        }
-
-        this.initializationPromise =
-            this.#initializeInternal(options);
-
-        try {
-            return await this.initializationPromise;
-        } finally {
-            this.initializationPromise = null;
-        }
-    }
-
-    async #initializeInternal(options) {
-
-        this.status = GAME_STATUS.INITIALIZING;
-
-        this.state.status.phase =
-            GAME_PHASES.INITIALIZING;
-
-        this.state.status.isInitialized = false;
-        this.state.status.isRunning = false;
-        this.state.status.isPaused = true;
-
-        this.#emit(
-            GAME_EVENTS.GAME_INITIALIZING,
-            {
-                scenarioId: GAME_CONFIG.scenario?.id ?? null
-            }
-        );
-
-        try {
-
-            const shouldLoadWorld =
-                options.loadWorld ??
-                this.options.autoLoadWorld;
-
-            let worldLoaded = false;
-
-            if (shouldLoadWorld) {
-
-                const report =
-                    await this.dataLoader.loadWorldData();
-
-                if (!report || !report.success) {
-                    throw new Error(
-                        "World data initialization failed."
-                    );
-                }
-
-                worldLoaded = true;
-            }
-
-            await this.saveManager.initialize();
-
-            this.initialized = true;
-
-            this.status = GAME_STATUS.READY;
-
-            this.state.status.phase =
-                GAME_PHASES.READY;
-
-            this.state.status.isRunning = false;
-            this.state.status.isPaused = true;
-
-            this.#emit(
-                GAME_EVENTS.GAME_INITIALIZED,
-                {
-                    scenarioId:
-                        this.state.metadata.scenarioId,
-
-                    worldLoaded
-                }
-            );
-
-            if (
-                this.options.autoSave &&
-                this.state.status.isInitialized
-            ) {
-                this.saveManager.startAutoSave(
-                    this.options.autoSaveSlot
-                );
-            }
-
-            return this.getStatus();
-
-        } catch (error) {
-
-            this.status = GAME_STATUS.ERROR;
-
-            this.lastError = error.message;
-
-            this.state.status.phase =
-                GAME_PHASES.INITIALIZING;
-
-            this.state.status.isRunning = false;
-            this.state.status.isPaused = true;
-
-            this.#emit(
-                GAME_EVENTS.SYSTEM_ERROR,
-                {
-                    source: "Game",
-                    operation: "initialize",
-                    message: error.message
-                }
-            );
-
-            throw error;
-        }
-    }
-
-    /* =====================================================
-       START GAME
-    ===================================================== */
-
-    async start(options = {}) {
-
-        this.#ensureActive();
-
-        if (!this.initialized) {
-            await this.initialize(options);
-        }
-
-        if (this.status === GAME_STATUS.RUNNING) {
-            return false;
-        }
-
-        if (!this.state.status.isInitialized) {
-            throw new Error(
-                "World data must be loaded before starting the game."
-            );
-        }
-
-        if (options.speed !== undefined) {
-            this.setSpeed(options.speed);
-        }
-
-        this.loop.start();
-
-        this.clock.start();
-
-        this.status = GAME_STATUS.RUNNING;
-
-        this.state.status.phase =
-            GAME_PHASES.RUNNING;
-
-        this.state.status.isRunning = true;
-        this.state.status.isPaused = false;
-
-        this.#emit(
-            GAME_EVENTS.GAME_STARTED,
-            {
-                date: this.clock.date,
-                speed: this.clock.speed
-            }
-        );
-
-        return true;
-    }
-
-    /* =====================================================
-       PAUSE GAME
-    ===================================================== */
-
-    pause() {
-
-        this.#ensureActive();
-
-        if (this.status !== GAME_STATUS.RUNNING) {
-            return false;
-        }
-
-        this.loop.stop();
-
-        this.clock.pause();
-
-        this.status = GAME_STATUS.PAUSED;
-
-        this.state.status.phase =
-            GAME_PHASES.PAUSED;
-
-        this.state.status.isRunning = false;
-        this.state.status.isPaused = true;
-
-        return true;
-    }
-
-    /* =====================================================
-       RESUME GAME
-    ===================================================== */
-
-    resume() {
-
-        this.#ensureActive();
-
-        if (this.status !== GAME_STATUS.PAUSED) {
-            return false;
-        }
-
-        if (!this.state.status.isInitialized) {
-            throw new Error(
-                "Cannot resume without loaded world data."
-            );
-        }
-
-        this.loop.start();
-
-        this.clock.start();
-
-        this.status = GAME_STATUS.RUNNING;
-
-        this.state.status.phase =
-            GAME_PHASES.RUNNING;
-
-        this.state.status.isRunning = true;
-        this.state.status.isPaused = false;
-
-        this.#emit(
-            GAME_EVENTS.GAME_RESUMED,
-            {
-                date: this.clock.date,
-                speed: this.clock.speed
-            }
-        );
-
-        return true;
-    }
-
-    /* =====================================================
-       STOP GAME
-    ===================================================== */
-
-    stop() {
-
-        this.#ensureActive();
-
-        if (
-            this.status !== GAME_STATUS.RUNNING &&
-            this.status !== GAME_STATUS.PAUSED
-        ) {
-            return false;
-        }
-
-        this.loop.stop();
-
-        this.clock.pause();
-
-        this.status = GAME_STATUS.STOPPED;
-
-        this.state.status.phase =
-            GAME_PHASES.PAUSED;
-
-        this.state.status.isRunning = false;
-        this.state.status.isPaused = true;
-
-        return true;
-    }
-
-    /* =====================================================
-       TIME CONTROL
-    ===================================================== */
-
-    setSpeed(speed) {
-
-        this.#ensureActive();
-
-        const availableSpeeds =
-            GAME_CONFIG.time?.availableSpeeds ??
-            [1, 2, 4, 8];
-
-        if (!availableSpeeds.includes(speed)) {
-            throw new RangeError(
-                `Unsupported game speed: ${speed}`
-            );
-        }
-
-        this.clock.setSpeed(speed);
-
-        return this.clock.speed;
-    }
-
-    getSpeed() {
-
-        this.#ensureActive();
-
-        return this.clock.speed;
-    }
-
-    getDate() {
-
-        this.#ensureActive();
-
-        return this.clock.date;
-    }
-
-    getClockSnapshot() {
-
-        this.#ensureActive();
-
-        return this.clock.getSnapshot();
-    }
-
-    /* =====================================================
-       MANUAL SIMULATION
-    ===================================================== */
-
-    executeSimulationStep(interval) {
-
-        this.#ensureActive();
-
-        if (!this.initialized) {
-            throw new Error(
-                "Game engine is not initialized."
-            );
-        }
-
-        return this.loop.executeManualStep(interval);
-    }
-
-    getSimulationStatus() {
-
-        this.#ensureActive();
-
-        return this.loop.getMetrics();
-    }
-
-    getSimulationTasks() {
-
-        this.#ensureActive();
-
-        return this.loop.getRegisteredTasks();
-    }
-
-    /* =====================================================
-       SAVE CAMPAIGN
-    ===================================================== */
-
-    async save(slot = 1, name = null) {
-
-        this.#ensureInitialized();
-
-        return this.saveManager.saveGame(
-            slot,
-            name
-        );
-    }
-
-    /* =====================================================
-       LOAD CAMPAIGN
-    ===================================================== */
-
-    async load(slot = 1) {
-
-        this.#ensureActive();
-
-        if (!this.initialized) {
-            await this.initialize({
-                loadWorld: false
-            });
-        }
-
-        const wasRunning =
-            this.status === GAME_STATUS.RUNNING;
-
-        if (wasRunning) {
-            this.pause();
-        }
-
-        try {
-
-            const result =
-                await this.saveManager.loadGame(slot);
-
-            this.clock.validateClock();
-
-            this.status = GAME_STATUS.PAUSED;
-
-            this.state.status.phase =
-                GAME_PHASES.PAUSED;
-
-            this.state.status.isRunning = false;
-            this.state.status.isPaused = true;
-
-            this.#emit(
-                GAME_EVENTS.WORLD_UPDATED,
-                {
-                    type: "campaign_restored",
-                    slot,
-                    date: this.clock.date
-                }
-            );
-
-            return result;
-
-        } catch (error) {
-
-            this.lastError = error.message;
-
-            throw error;
-        }
-    }
-
-    /* =====================================================
-       SAVE MANAGEMENT
-    ===================================================== */
-
-    async getSaveList() {
-
-        this.#ensureActive();
-
-        return this.saveManager.getSaveList();
-    }
-
-    async deleteSave(slot) {
-
-        this.#ensureActive();
-
-        return this.saveManager.deleteSave(slot);
-    }
-
-    async renameSave(slot, name) {
-
-        this.#ensureActive();
-
-        return this.saveManager.renameSave(
-            slot,
-            name
-        );
-    }
-
-    /* =====================================================
-       EVENT MANAGEMENT
-    ===================================================== */
+    /* ===============================================
+       SUBSCRIBE
+    =============================================== */
 
     on(eventName, callback, options = {}) {
 
+        this.#validateEvent(eventName);
+
+        if (typeof callback !== "function") {
+            throw new TypeError(
+                "Event listener must be a function."
+            );
+        }
+
         this.#ensureActive();
 
-        return this.eventBus.on(
+        const {
+            priority = 0,
+            once = false,
+            context = null
+        } = options;
+
+        if (!Number.isFinite(priority)) {
+            throw new TypeError(
+                "Listener priority must be a finite number."
+            );
+        }
+
+        const listeners =
+            this.listeners.get(eventName) ?? [];
+
+        if (
+            listeners.length >=
+            this.config.maxListenersPerEvent
+        ) {
+            throw new Error(
+                `Maximum listeners reached for event: ${eventName}`
+            );
+        }
+
+        const listener = {
+            id: ++this.listenerCounter,
             eventName,
             callback,
-            options
+            priority,
+            once,
+            context,
+            active: true
+        };
+
+        listeners.push(listener);
+
+        listeners.sort(
+            (a, b) => b.priority - a.priority
         );
+
+        this.listeners.set(eventName, listeners);
+
+        return () => this.off(eventName, listener.id);
     }
+
+    /* ===============================================
+       SUBSCRIBE ONCE
+    =============================================== */
 
     once(eventName, callback, options = {}) {
 
-        this.#ensureActive();
-
-        return this.eventBus.once(
-            eventName,
-            callback,
-            options
-        );
+        return this.on(eventName, callback, {
+            ...options,
+            once: true
+        });
     }
 
-    off(eventName, listenerId) {
+    /* ===============================================
+       UNSUBSCRIBE
+    =============================================== */
+
+    off(eventName, listenerIdentifier) {
 
         this.#ensureActive();
 
-        return this.eventBus.off(
-            eventName,
-            listenerId
-        );
+        const listeners = this.listeners.get(eventName);
+
+        if (!listeners) {
+            return false;
+        }
+
+        const index = listeners.findIndex(listener => (
+            listener.id === listenerIdentifier ||
+            listener.callback === listenerIdentifier
+        ));
+
+        if (index === -1) {
+            return false;
+        }
+
+        listeners[index].active = false;
+        listeners.splice(index, 1);
+
+        if (listeners.length === 0) {
+            this.listeners.delete(eventName);
+        }
+
+        return true;
     }
 
-    #emit(eventName, payload = {}) {
+    /* ===============================================
+       REMOVE ALL LISTENERS
+    =============================================== */
 
-        if (!eventName) {
+    removeAllListeners(eventName = null) {
+
+        this.#ensureActive();
+
+        if (eventName === null) {
+
+            for (const listeners of this.listeners.values()) {
+                for (const listener of listeners) {
+                    listener.active = false;
+                }
+            }
+
+            this.listeners.clear();
             return;
         }
 
-        this.eventBus.emit(
-            eventName,
-            {
-                ...payload,
-                timestamp: Date.now()
-            }
-        );
+        const listeners = this.listeners.get(eventName);
+
+        if (!listeners) {
+            return;
+        }
+
+        for (const listener of listeners) {
+            listener.active = false;
+        }
+
+        this.listeners.delete(eventName);
     }
 
-    /* =====================================================
-       GET SYSTEMS
-    ===================================================== */
+    /* ===============================================
+       PUBLISH EVENT
+    =============================================== */
 
-    getSystems() {
+    emit(eventName, payload = null) {
 
+        this.#validateEvent(eventName);
         this.#ensureActive();
 
-        return {
-            state: this.state,
-            eventBus: this.eventBus,
-            clock: this.clock,
-            loop: this.loop,
-            dataLoader: this.dataLoader,
-            saveManager: this.saveManager
+        const event = {
+            id: ++this.eventCounter,
+            name: eventName,
+            payload,
+            timestamp: Date.now(),
+            errors: [],
+            listenerCount: 0
         };
+
+        this.#recordEvent(event);
+
+        const listeners = [
+            ...(this.listeners.get(eventName) ?? [])
+        ];
+
+        if (this.config.allowWildcardListeners) {
+            listeners.push(
+                ...(this.listeners.get("*") ?? [])
+            );
+        }
+
+        listeners.sort(
+            (a, b) => b.priority - a.priority
+        );
+
+        for (const listener of listeners) {
+
+            if (!listener.active) {
+                continue;
+            }
+
+            if (listener.once) {
+                this.off(
+                    listener.eventName,
+                    listener.id
+                );
+            }
+
+            try {
+
+                listener.callback.call(
+                    listener.context,
+                    payload,
+                    event
+                );
+
+                event.listenerCount++;
+
+            } catch (error) {
+
+                event.errors.push({
+                    listenerId: listener.id,
+                    message: error.message,
+                    timestamp: Date.now()
+                });
+
+                if (this.config.captureErrors) {
+                    this.#handleListenerError(
+                        eventName,
+                        error,
+                        listener
+                    );
+                }
+            }
+        }
+
+        return event;
     }
 
-    /* =====================================================
-       GET GAME STATUS
-    ===================================================== */
+    /* ===============================================
+       ASYNC PUBLISH
+    =============================================== */
 
-    getStatus() {
+    async emitAsync(eventName, payload = null) {
 
-        return {
-            status: this.status,
+        this.#validateEvent(eventName);
+        this.#ensureActive();
 
-            initialized: this.initialized,
-
-            worldLoaded:
-                Boolean(this.state.status.isInitialized),
-
-            destroyed: this.destroyed,
-
-            date: this.clock
-                ? this.clock.date
-                : null,
-
-            speed: this.clock
-                ? this.clock.speed
-                : null,
-
-            lastError: this.lastError
+        const event = {
+            id: ++this.eventCounter,
+            name: eventName,
+            payload,
+            timestamp: Date.now(),
+            errors: [],
+            listenerCount: 0
         };
+
+        this.#recordEvent(event);
+
+        const listeners = [
+            ...(this.listeners.get(eventName) ?? [])
+        ];
+
+        if (this.config.allowWildcardListeners) {
+            listeners.push(
+                ...(this.listeners.get("*") ?? [])
+            );
+        }
+
+        listeners.sort(
+            (a, b) => b.priority - a.priority
+        );
+
+        for (const listener of listeners) {
+
+            if (!listener.active) {
+                continue;
+            }
+
+            if (listener.once) {
+                this.off(
+                    listener.eventName,
+                    listener.id
+                );
+            }
+
+            try {
+
+                await listener.callback.call(
+                    listener.context,
+                    payload,
+                    event
+                );
+
+                event.listenerCount++;
+
+            } catch (error) {
+
+                event.errors.push({
+                    listenerId: listener.id,
+                    message: error.message,
+                    timestamp: Date.now()
+                });
+
+                if (this.config.captureErrors) {
+                    this.#handleListenerError(
+                        eventName,
+                        error,
+                        listener
+                    );
+                }
+            }
+        }
+
+        return event;
     }
 
-    /* =====================================================
-       INITIALIZATION CHECKS
-    ===================================================== */
+    /* ===============================================
+       EVENT HISTORY
+    =============================================== */
+
+    #recordEvent(event) {
+
+        this.history.push(event);
+
+        const excess =
+            this.history.length - this.config.maxHistory;
+
+        if (excess > 0) {
+            this.history.splice(0, excess);
+        }
+    }
+
+    getHistory(options = {}) {
+
+        const {
+            eventName = null,
+            limit = this.config.maxHistory
+        } = options;
+
+        let result = this.history;
+
+        if (eventName !== null) {
+            result = result.filter(
+                event => event.name === eventName
+            );
+        }
+
+        return result.slice(-limit);
+    }
+
+    clearHistory() {
+
+        this.#ensureActive();
+        this.history.length = 0;
+    }
+
+    /* ===============================================
+       LISTENER INFORMATION
+    =============================================== */
+
+    listenerCount(eventName = null) {
+
+        if (eventName !== null) {
+            return (
+                this.listeners.get(eventName)?.length ?? 0
+            );
+        }
+
+        let count = 0;
+
+        for (const listeners of this.listeners.values()) {
+            count += listeners.length;
+        }
+
+        return count;
+    }
+
+    eventNames() {
+        return Array.from(this.listeners.keys());
+    }
+
+    hasListeners(eventName) {
+        return this.listenerCount(eventName) > 0;
+    }
+
+    /* ===============================================
+       ERROR HANDLING
+    =============================================== */
+
+    #handleListenerError(eventName, error, listener) {
+
+        if (eventName === GAME_EVENTS.SYSTEM_ERROR) {
+            return;
+        }
+
+        const errorEvent = {
+            source: "EventBus",
+            eventName,
+            listenerId: listener.id,
+            message: error.message,
+            stack: error.stack ?? null,
+            timestamp: Date.now()
+        };
+
+        const errorListeners = [
+            ...(this.listeners.get(
+                GAME_EVENTS.SYSTEM_ERROR
+            ) ?? [])
+        ];
+
+        for (const errorListener of errorListeners) {
+
+            if (!errorListener.active) {
+                continue;
+            }
+
+            try {
+                errorListener.callback(errorEvent);
+            } catch {
+                // Prevent recursive error handling.
+            }
+        }
+    }
+
+    /* ===============================================
+       VALIDATION
+    =============================================== */
+
+    #validateEvent(eventName) {
+
+        if (
+            typeof eventName !== "string" ||
+            eventName.trim().length === 0
+        ) {
+            throw new TypeError(
+                "Event name must be a non-empty string."
+            );
+        }
+    }
 
     #ensureActive() {
 
         if (this.destroyed) {
             throw new Error(
-                "Game engine has been destroyed."
+                "EventBus has been destroyed."
             );
         }
     }
 
-    #ensureInitialized() {
-
-        this.#ensureActive();
-
-        if (!this.initialized) {
-            throw new Error(
-                "Game engine is not initialized."
-            );
-        }
-    }
-
-    /* =====================================================
+    /* ===============================================
        DESTROY
-    ===================================================== */
+    =============================================== */
 
     destroy() {
 
@@ -680,56 +592,64 @@ export class Game {
             return;
         }
 
-        if (this.loop) {
-            this.loop.stop();
-        }
-
-        if (this.clock) {
-            this.clock.pause();
-        }
-
-        if (this.saveManager) {
-            this.saveManager.destroy();
-        }
-
-        if (this.dataLoader) {
-            this.dataLoader.destroy();
-        }
-
-        if (this.clock) {
-            this.clock.destroy();
-        }
-
-        if (this.loop) {
-            this.loop.destroy();
-        }
-
-        if (
-            this.ownsEventBus &&
-            this.eventBus?.destroy
-        ) {
-            this.eventBus.destroy();
-        }
-
-        this.status = GAME_STATUS.DESTROYED;
-
+        this.removeAllListeners();
+        this.history.length = 0;
         this.destroyed = true;
     }
 }
 
-/* =========================================================
-   FACTORY
-========================================================= */
+/* =====================================================
+   GLOBAL GAME EVENT BUS
+===================================================== */
 
-export function createGame(options = {}) {
+export const gameEventBus = new EventBus();
 
-    return new Game(options);
+/* =====================================================
+   CONVENIENCE FUNCTIONS
+===================================================== */
+
+export function emitGameEvent(eventName, payload = null) {
+    return gameEventBus.emit(eventName, payload);
 }
 
-/* =========================================================
+export function onGameEvent(
+    eventName,
+    callback,
+    options = {}
+) {
+    return gameEventBus.on(
+        eventName,
+        callback,
+        options
+    );
+}
+
+export function onceGameEvent(
+    eventName,
+    callback,
+    options = {}
+) {
+    return gameEventBus.once(
+        eventName,
+        callback,
+        options
+    );
+}
+
+export function offGameEvent(
+    eventName,
+    listenerIdentifier
+) {
+    return gameEventBus.off(
+        eventName,
+        listenerIdentifier
+    );
+}
+
+/* =====================================================
    MODULE INITIALIZATION
-========================================================= */
+===================================================== */
 
 console.log(
-    "WORLD AT WAR: Game Engine module loaded."
+    "WORLD AT WAR: Event Bus module loaded."
 );
