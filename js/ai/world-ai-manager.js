@@ -207,7 +207,26 @@ export class WorldAIManager {
             }
             allocations.civilian = target;
             budgets.setAllocations(countryId, allocations, { reason: "autonomous_ai_economic_development" });
-            return { executed: true, action: "budget_reallocated", civilianAllocation: target };
+            const economy = this.systems.economyManager;
+            const factories = economy.factories.list({ countryId });
+            const activeProjects = economy.construction.list({ countryId, status: "active" });
+            let construction = null;
+            if (factories.some(factory => factory.type === "civilian") && activeProjects.length === 0) {
+                const civilianLevels = factories.filter(factory => factory.type === "civilian").reduce((sum, factory) => sum + factory.level, 0);
+                const militaryLevels = factories.filter(factory => factory.type === "military").reduce((sum, factory) => sum + factory.level, 0);
+                const date = currentDate(this.state);
+                const dateId = date ? `${date.year}-${date.month}-${date.day}` : "undated";
+                construction = economy.construction.start({
+                    id: `ai-construction-${countryId}-${dateId}-${agent.decisionCount}`,
+                    countryId,
+                    name: militaryLevels < civilianLevels ? "Military Industrial Expansion" : "Civilian Industrial Expansion",
+                    factoryType: militaryLevels < civilianLevels ? "military" : "civilian",
+                    cost: 100,
+                    capacity: 1
+                });
+            }
+            return { executed: true, action: "budget_reallocated", civilianAllocation: target,
+                constructionStarted: Boolean(construction), constructionProjectId: construction?.id ?? null };
         }
         return { executed: false, reason: "goal_requires_additional_historical_data_or_policy" };
     }
