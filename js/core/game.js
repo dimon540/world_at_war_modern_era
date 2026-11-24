@@ -303,6 +303,14 @@ export class Game {
         this.state.status.isRunning = false;
         this.state.status.isPaused = true;
 
+        this.#emit(
+            GAME_EVENTS.GAME_PAUSED,
+            {
+                date: this.clock.date,
+                totalTicks: this.clock.totalTicks
+            }
+        );
+
         return true;
     }
 
@@ -373,6 +381,15 @@ export class Game {
 
         this.state.status.isRunning = false;
         this.state.status.isPaused = true;
+
+        this.#emit(
+            GAME_EVENTS.GAME_PAUSED,
+            {
+                date: this.clock.date,
+                totalTicks: this.clock.totalTicks,
+                stopped: true
+            }
+        );
 
         return true;
     }
