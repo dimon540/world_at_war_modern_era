@@ -1,1 +1,6 @@
-
+export class CountryPanel{
+ constructor(game,root=document){this.game=game;this.root=root;this.container=root.querySelector("#panel-country");}
+ render(countryId=this.game.state.player.countryId){if(!this.container)return;this.container.replaceChildren();const c=this.game.state.world.countries[countryId];if(!c){this.container.textContent="Select a country to view its national overview.";return;}const rows=[["Country",c.name??c.officialName??countryId],["Capital",c.capital??"Not recorded"],["Region",c.region??"—"],["Government",this.game.politicsManager.governments.getGovernment(countryId)?.type??"Data unavailable"],["Stability",this.game.politicsManager.governments.getGovernment(countryId)?.stability??"—"],["Status",c.status??"—"]];for(const [label,value] of rows){const row=document.createElement("p");row.className="management-row";const b=document.createElement("b");b.textContent=label;const span=document.createElement("span");span.textContent=String(value);row.append(b,span);this.container.append(row);}}
+ destroy(){this.game=null;this.root=null;this.container=null;}
+}
+export default CountryPanel;
