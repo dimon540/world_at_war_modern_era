@@ -4,6 +4,7 @@
 ========================================================= */
 
 import { createGame } from "./core/game.js";
+import { GAME_CONFIG } from "./config.js";
 import { GAME_EVENTS } from "./core/event-bus.js";
 import { selectPlayerCountry } from "./core/game-state.js";
 
@@ -34,6 +35,8 @@ let game = null;
 let mapFeatures = [];
 let mapHitTargets = [];
 let resizeObserver = null;
+let eventUnsubscribers = [];
+const availableSpeeds = GAME_CONFIG.time?.availableSpeeds ?? [1, 2, 4, 8, 16];
 
 function showMessage(message, type = "info") {
     if (!elements.message) return;
@@ -305,16 +308,16 @@ function bindInterface() {
     });
 
     $("#speed-down")?.addEventListener("click", () => {
-        const speeds = [1, 2, 4, 8, 16];
-        const index = speeds.indexOf(game.getSpeed());
-        game.setSpeed(speeds[Math.max(0, index - 1)]);
+        const index = availableSpeeds.indexOf(game.getSpeed());
+        const currentIndex = index < 0 ? 0 : index;
+        game.setSpeed(availableSpeeds[Math.max(0, currentIndex - 1)]);
         updateClock();
     });
 
     $("#speed-up")?.addEventListener("click", () => {
-        const speeds = [1, 2, 4, 8, 16];
-        const index = speeds.indexOf(game.getSpeed());
-        game.setSpeed(speeds[Math.min(speeds.length - 1, index + 1)]);
+        const index = availableSpeeds.indexOf(game.getSpeed());
+        const currentIndex = index < 0 ? 0 : index;
+        game.setSpeed(availableSpeeds[Math.min(availableSpeeds.length - 1, currentIndex + 1)]);
         updateClock();
     });
 
@@ -352,13 +355,15 @@ function bindInterface() {
         }
     });
 
-    game.on(GAME_EVENTS.CLOCK_TICK, updateClock);
-    game.on(GAME_EVENTS.GAME_STARTED, updateClock);
-    game.on(GAME_EVENTS.GAME_PAUSED, updateClock);
-    game.on(GAME_EVENTS.GAME_RESUMED, updateClock);
-    game.on(GAME_EVENTS.SYSTEM_ERROR, payload => {
-        if (payload?.message) showMessage(payload.message, "error");
-    });
+    eventUnsubscribers = [
+        game.on(GAME_EVENTS.CLOCK_TICK, updateClock),
+        game.on(GAME_EVENTS.GAME_STARTED, updateClock),
+        game.on(GAME_EVENTS.GAME_PAUSED, updateClock),
+        game.on(GAME_EVENTS.GAME_RESUMED, updateClock),
+        game.on(GAME_EVENTS.SYSTEM_ERROR, payload => {
+            if (payload?.message) showMessage(payload.message, "error");
+        })
+    ].filter(unsubscribe => typeof unsubscribe === "function");
 
     if (typeof ResizeObserver === "function" && elements.mapCanvas) {
         resizeObserver = new ResizeObserver(drawMap);
@@ -406,6 +411,8 @@ async function boot() {
 
 window.addEventListener("beforeunload", () => {
     if (resizeObserver) resizeObserver.disconnect();
+    for (const unsubscribe of eventUnsubscribers) unsubscribe();
+    eventUnsubscribers = [];
     if (game && !game.destroyed) game.destroy();
 });
 
