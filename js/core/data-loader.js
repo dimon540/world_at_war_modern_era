@@ -39,6 +39,39 @@ function getCollection(data, preferredKeys = []) {
     return [];
 }
 
+const HISTORICAL_OWNER_OVERRIDES = Object.freeze({
+    SRB: "YUG",
+    MNE: "YUG",
+    XKX: "YUG",
+    SSD: "SDN"
+});
+
+function getFeatureCountryCodes(feature) {
+    const properties = feature?.properties ?? {};
+    const candidates = [
+        properties.ADM0_A3, properties.adm0_a3,
+        properties.ISO_A3, properties.iso_a3,
+        properties.SOV_A3, properties.sov_a3,
+        properties.GU_A3, properties.gu_a3,
+        properties.ADM0_A3_US, properties.SU_A3,
+        properties.BRK_A3, properties.ISO3,
+        properties.iso3, properties.country_code
+    ];
+    return [...new Set(candidates
+        .filter(value => typeof value === "string" && value.trim() && value.trim() !== "-99")
+        .map(value => value.trim().toUpperCase()))];
+}
+
+function resolveCountryId(code, countries) {
+    const override = HISTORICAL_OWNER_OVERRIDES[code];
+    if (override && countries[override]) return override;
+    if (countries[code]) return code;
+    for (const [id, country] of Object.entries(countries)) {
+        if (country?.iso3 === code || country?.iso2 === code || country?.tag === code) return id;
+    }
+    return null;
+}
+
 function getFeatureId(feature, index) {
     const properties = feature?.properties ?? {};
     const candidates = [
@@ -344,12 +377,18 @@ export class DataLoader {
         this.state.map.geoJSON = provincesSource;
         this.state.map.countryData = countriesSource;
 
-        if (!this.state.world.ownership) {
-            this.state.world.ownership = {
-                provinceOwners: Object.create(null),
-                provinceControllers: Object.create(null)
-            };
+        const provinceOwners = Object.create(null);
+        const provinceControllers = Object.create(null);
+        for (const [provinceId, feature] of Object.entries(provinceRegistry)) {
+            const ownerId = getFeatureCountryCodes(feature)
+                .map(code => resolveCountryId(code, countryRegistry))
+                .find(Boolean) ?? null;
+            if (ownerId) {
+                provinceOwners[provinceId] = ownerId;
+                provinceControllers[provinceId] = ownerId;
+            }
         }
+        this.state.world.ownership = { provinceOwners, provinceControllers };
     }
 
     getStatus() {
