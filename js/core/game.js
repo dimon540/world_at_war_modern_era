@@ -1,7 +1,7 @@
 /* =========================================================
    WORLD AT WAR: MODERN ERA
    CORE GAME ENGINE
-   Version: 1.1.0
+   Version: 1.1.1
 
    Main controller connecting all core systems.
 ========================================================= */
@@ -442,7 +442,7 @@ export class Game {
 
         this.#ensureActive();
 
-        return this.loop.getStatus();
+        return this.loop.getMetrics();
     }
 
     getSimulationTasks() {
