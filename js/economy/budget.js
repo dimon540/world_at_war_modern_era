@@ -14,7 +14,7 @@ function normalizeAllocations(input) {
     if (!isRecord(input)) throw new TypeError("Budget allocations must be an object.");
     const allocations = Object.fromEntries(BUDGET_CATEGORIES.map(key => [key, amount(input[key] ?? 0, `${key} allocation`)]));
     const total = Object.values(allocations).reduce((sum, value) => sum + value, 0);
-    if (total > 1.000001) throw new RangeError("Budget allocations cannot exceed 100% of revenue.");
+    if (total > 1.500001) throw new RangeError("Budget allocations cannot exceed 150% of revenue; higher spending requires a separate debt policy.");
     return allocations;
 }
 function cloneBudget(budget) {
