@@ -1,1 +1,6 @@
-
+export class ArmyPanel{
+ constructor(game,root=document){this.game=game;this.root=root;this.container=root.querySelector("#panel-army");}
+ render(countryId=this.game.state.player.countryId){if(!this.container)return;this.container.replaceChildren();if(!countryId){this.container.textContent="Select a country to inspect its armed forces.";return;}const armies=Object.values(this.game.state.military.armies).filter(a=>a.countryId===countryId);const summary=document.createElement("p");summary.className="panel-note";summary.textContent="Armies: "+armies.length+" · Divisions: "+Object.values(this.game.state.military.divisions).filter(d=>d.countryId===countryId).length;this.container.append(summary);for(const army of armies){const item=document.createElement("article");item.className="management-item";const title=document.createElement("strong");title.textContent=army.name??army.id;const meta=document.createElement("span");meta.textContent=(army.divisionIds?.length??0)+" divisions · "+(army.status??"active");item.append(title,meta);this.container.append(item);}if(!armies.length){const empty=document.createElement("p");empty.textContent="No army formations have been initialized for this country.";this.container.append(empty);}}
+ destroy(){this.game=null;this.root=null;this.container=null;}
+}
+export default ArmyPanel;
