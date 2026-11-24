@@ -1,4 +1,3 @@
-
 {
   "id": "modern_2000",
   "name": "WORLD AT WAR: MODERN ERA",
@@ -21,13 +20,19 @@
   },
   "time": {
     "initialSpeed": 1,
-    "availableSpeeds": [1, 2, 4, 8],
+    "availableSpeeds": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
     "ticksPerDay": 1,
     "pauseOnEvents": true
   },
   "world": {
     "scope": "global",
-    "historicalBorders": true,
+    "historicalBorders": false,
     "historicalCountryStatus": true,
     "independentCountryAI": true,
     "simulateAllCountries": true,
@@ -76,7 +81,7 @@
     "countrySelection": true,
     "showProvinceBorders": true,
     "showCountryBorders": true,
-    "historicalOwnership": true,
+    "historicalOwnership": false,
     "dataFiles": {
       "countries": "../../countries/countries.json",
       "provinces": "../../map/provinces.geojson",
@@ -84,7 +89,8 @@
       "states": "../../map/states.json",
       "strategicRegions": "../../map/strategic-regions.json",
       "ownership": "./ownership.json"
-    }
+    },
+    "geographicDataStatus": "Modern administrative boundary reference; not a verified 2000 province map."
   },
   "data": {
     "countries": "../../countries/countries.json",
