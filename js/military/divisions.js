@@ -183,6 +183,22 @@ export class DivisionManager {
         const experience = finiteNumber(options.experience ?? 0, "Division experience", { min: 0, max: 1 });
         const equipmentAssigned = Object.create(null);
 
+        if (options.requireManpower === true) {
+            const personnel = this.state.military.nationalPersonnel?.[ownerId]?.activePersonnel;
+            if (!Number.isFinite(personnel) || personnel < 0) {
+                return { success: false, reason: "manpower_baseline_unavailable" };
+            }
+            const allocated = Object.values(this.state.military.divisions)
+                .filter(item => item.countryId === ownerId &&
+                    ![DIVISION_STATUS.DISBANDED, DIVISION_STATUS.DESTROYED].includes(item.status))
+                .reduce((sum, item) => sum + (item.manpower ?? 0), 0);
+            const required = Math.round(totals.manpower * strength);
+            const available = Math.max(0, personnel - allocated);
+            if (available < required) {
+                return { success: false, reason: "insufficient_manpower", required, available };
+            }
+        }
+
         if (options.requireEquipment === true) {
             if (!this.equipment) throw new Error("An EquipmentManager must be supplied to enforce equipment stock requirements.");
             const consumed = [];
