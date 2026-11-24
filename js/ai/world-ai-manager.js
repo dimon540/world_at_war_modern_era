@@ -224,7 +224,32 @@ export class WorldAIManager {
                     && !item.armyId
                     && !["disbanded", "destroyed"].includes(item.status))
                 .sort((a, b) => a.name.localeCompare(b.name));
-            if (!unassigned.length) return { executed: false, reason: "no_unassigned_active_divisions" };
+            if (!unassigned.length) {
+                const production = this.systems.equipmentProductionManager;
+                const economy = this.systems.economyManager;
+                const factory = economy?.factories.list({ countryId, type: "military" })[0];
+                const existingLine = production?.list({ countryId }).find(line => line.equipmentId === "small_arms");
+                if (existingLine?.status === "paused") {
+                    production.setStatus(existingLine.id, "active");
+                    return { executed: true, action: "equipment_production_resumed", lineId: existingLine.id };
+                }
+                if (existingLine?.status === "active") {
+                    return { executed: false, reason: "equipment_production_already_active", lineId: existingLine.id };
+                }
+                const steel = economy?.resources.getStockpiles(countryId).steel ?? 0;
+                if (production && factory && steel >= 1) {
+                    const line = production.createLine({
+                        id: `ai-equipment-${countryId}-small-arms`,
+                        countryId,
+                        factoryId: factory.id,
+                        equipmentId: "small_arms",
+                        resourceInputs: { steel: 1 },
+                        unitsPerFactory: 2
+                    });
+                    return { executed: true, action: "equipment_production_started", lineId: line.id, equipmentId: line.equipmentId };
+                }
+                return { executed: false, reason: !factory ? "no_military_factories" : "insufficient_steel_or_production_system" };
+            }
             const date = currentDate(this.state);
             const dateId = date ? `${date.year}-${date.month}-${date.day}` : "undated";
             const army = armies.createArmy(countryId, "National Reserve Group", {
