@@ -91,6 +91,7 @@ test("game engine wires military systems and hourly simulation tasks", () => {
     const systems = game.getSystems();
 
     assert.equal(typeof systems.divisionManager.createDivision, "function");
+    assert.equal(typeof systems.equipmentManager.addStock, "function");
     assert.equal(typeof systems.armyManager.createArmy, "function");
     assert.equal(typeof systems.commanderManager.createCommander, "function");
     assert.equal(typeof systems.movementManager.advance, "function");
@@ -298,4 +299,34 @@ test("monthly economy manager updates initialized country accounts", () => {
     assert.ok(report.gdp.nominalGDP > 1000);
     assert.equal(economy.getCountryOverview("AAA").budget.monthlySpending.civilian, 40);
     assert.equal(economy.getWorldStatistics().gdp.countriesWithGDPData, 1);
+});
+
+test("game engine recruits divisions only when required equipment is available", () => {
+    const game = createGame({ autoLoadWorld: false });
+    game.state.world.countries.AAA = { id: "AAA", name: "Alpha" };
+    const equipment = game.equipmentManager;
+    equipment.addStock("AAA", "small_arms", 1);
+    equipment.addStock("AAA", "support_equipment", 1);
+
+    const created = game.divisionManager.createDivision(
+        "AAA",
+        "Equipped Infantry",
+        { infantry: 1 },
+        { requireEquipment: true }
+    );
+
+    assert.equal(created.success, true);
+    assert.equal(equipment.getStock("AAA", "small_arms"), 0);
+    assert.equal(equipment.getStock("AAA", "support_equipment"), 0);
+
+    const rejected = game.divisionManager.createDivision(
+        "AAA",
+        "Unequipped Infantry",
+        { infantry: 1 },
+        { requireEquipment: true }
+    );
+    assert.equal(rejected.success, false);
+    assert.equal(rejected.reason, "insufficient_equipment");
+
+    game.destroy();
 });
