@@ -1,0 +1,120 @@
+/* Full-screen grand-strategy command layout.
+   HOI-inspired information hierarchy; original WORLD AT WAR styling. */
+html,body,#app{width:100%;height:100%;min-height:0}
+body{overflow:hidden}
+#game-screen{width:100%;height:100dvh;min-height:0;max-height:100dvh;overflow:hidden}
+#game-screen .topbar{flex:0 0 62px;min-height:62px;height:62px;grid-template-columns:minmax(185px,1fr) auto minmax(110px,.55fr) auto;gap:15px;padding:6px 14px}
+#game-screen .brand-mark{width:38px;height:38px;flex-basis:38px;font-size:24px}
+#game-screen .brand-copy strong{font-size:18px}
+#game-screen .campaign-meta{gap:1px;padding-left:13px}
+#game-screen .campaign-meta strong{font-size:17px}
+#game-screen .meta-label{font-size:9px}
+#game-screen .time-controls{gap:5px}
+#game-screen .icon-button,#game-screen .control-button{min-height:30px}
+#game-screen .icon-button{width:29px}
+#game-screen .control-button{padding:0 9px;font-size:10px}
+#game-screen .main-layout{
+  display:grid;
+  grid-template-columns:minmax(205px,238px) minmax(0,1fr) minmax(295px,345px);
+  grid-template-rows:minmax(0,1fr);
+  gap:7px;
+  width:100%;
+  max-width:none;
+  height:calc(100dvh - 62px);
+  min-height:0;
+  margin:0;
+  padding:7px;
+  overflow:hidden;
+}
+#game-screen .sidebar{min-height:0;height:100%;gap:7px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#536674 #101c25}
+#game-screen .sidebar .panel{flex:0 0 auto;margin:0;padding:12px;border-radius:3px;box-shadow:0 4px 14px rgba(0,0,0,.16)}
+#game-screen .sidebar .panel-heading{margin-bottom:9px;padding-bottom:7px}
+#game-screen .sidebar .panel-heading h1{font-size:20px}
+#game-screen .sidebar .panel-heading h2{font-size:18px}
+#game-screen .sidebar .panel-heading .eyebrow{margin-bottom:4px;font-size:9px}
+#game-screen .sidebar-left .country-selector-panel{padding-bottom:10px}
+#game-screen .sidebar-left .country-details-panel .details-list>div{padding:6px 0}
+#game-screen .sidebar-left .world-statistics-panel .stat-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+#game-screen .sidebar-left .world-statistics-panel .stat-card{min-height:51px;padding:8px 6px}
+#game-screen .sidebar-left .world-statistics-panel .stat-card strong{font-size:20px}
+#game-screen .sidebar-left .world-statistics-panel .stat-card span{font-size:8px}
+#game-screen .sidebar-left .world-statistics-panel .panel-note{margin-top:7px;font-size:9px}
+#game-screen .map-section{
+  grid-column:2;
+  grid-row:1;
+  width:100%;
+  height:100%;
+  min-width:0;
+  min-height:0;
+  border:1px solid rgba(173,194,205,.2);
+  border-radius:3px;
+  box-shadow:0 8px 25px rgba(0,0,0,.3);
+}
+#game-screen .map-toolbar{flex:0 0 39px;min-height:39px;padding:5px 11px}
+#game-screen .map-toolbar strong{font-size:16px}
+#game-screen .map-toolbar .eyebrow{font-size:8px}
+#game-screen .map-frame{flex:1 1 auto;min-height:0}
+#game-screen #world-map{min-height:0}
+#game-screen .map-footer{flex:0 0 25px;min-height:25px;padding:6px 10px;font-size:8px}
+#game-screen .map-hint{font-size:8px}
+#game-screen .sidebar-right .world-systems-panel{display:none}
+#game-screen .sidebar-right .actions-panel{display:grid;grid-template-columns:1fr 1fr;column-gap:6px;align-items:center;padding:8px 10px}
+#game-screen .sidebar-right .actions-panel .panel-heading{grid-column:1/-1;margin:0;padding:0;border:0}
+#game-screen .sidebar-right .actions-panel .panel-heading h2{font-size:14px}
+#game-screen .sidebar-right .actions-panel .panel-heading .eyebrow{display:none}
+#game-screen .sidebar-right .actions-panel .action-button{min-height:29px;margin:0;padding:5px 7px;font-size:9px}
+#game-screen .sidebar-right .actions-panel .panel-note{display:none}
+#game-screen .sidebar-right .management-panel-shell{display:flex;flex:1 0 auto;flex-direction:column;min-height:250px;overflow:hidden}
+#game-screen .sidebar-right .management-panel-shell>.panel-heading{flex:0 0 auto}
+#game-screen .sidebar-right .management-panel-shell .panel-tabs{flex:0 0 auto;gap:3px;margin:0 0 8px}
+#game-screen .sidebar-right .management-panel-shell .panel-tabs button{flex:1 1 auto;min-width:0;padding:7px 5px;font-size:9px}
+#game-screen .sidebar-right .management-panel-shell>[data-management-panel]{min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#536674 #101c25}
+#game-screen .sidebar-right .message-panel{flex:0 0 auto;padding:8px 10px}
+#game-screen .sidebar-right .message-panel .panel-heading{margin:0;padding:0;border:0}
+#game-screen .sidebar-right .message-panel .panel-heading .eyebrow{display:none}
+#game-screen .sidebar-right .message-panel .panel-heading h2{font-size:13px}
+#game-screen .sidebar-right .message-panel .game-message{min-height:0;margin-top:6px;padding:6px 8px;font-size:9px}
+#game-screen .game-footer{display:none}
+#game-screen .sidebar::-webkit-scrollbar,#game-screen [data-management-panel]::-webkit-scrollbar{width:6px}
+#game-screen .sidebar::-webkit-scrollbar-thumb,#game-screen [data-management-panel]::-webkit-scrollbar-thumb{border-radius:4px;background:#536674}
+@media(min-width:1500px){
+ #game-screen .main-layout{grid-template-columns:250px minmax(0,1fr) 365px;gap:9px;padding:9px}
+ #game-screen .sidebar .panel{padding:14px}
+ #game-screen .map-toolbar{flex-basis:43px;min-height:43px}
+}
+@media(max-width:1050px) and (min-width:761px){
+ #game-screen .main-layout{grid-template-columns:190px minmax(0,1fr) 275px;gap:5px;padding:5px}
+ #game-screen .topbar{grid-template-columns:minmax(150px,1fr) auto auto;gap:8px}
+ #game-screen .topbar-status{display:none}
+ #game-screen .sidebar .panel{padding:9px}
+ #game-screen .sidebar-right .management-panel-shell .panel-tabs button{font-size:8px;padding:6px 3px}
+}
+@media(max-width:760px){
+ body{overflow:auto}
+ #game-screen{height:auto;min-height:100dvh;max-height:none;overflow:visible}
+ #game-screen .topbar{position:relative;height:auto;min-height:88px;flex:0 0 auto}
+ #game-screen .main-layout{display:flex;flex-direction:column;height:auto;min-height:0;overflow:visible;padding:7px}
+ #game-screen .map-section{order:0;height:min(62dvh,560px);min-height:340px}
+ #game-screen .sidebar-left{order:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));height:auto;overflow:visible}
+ #game-screen .sidebar-right{order:2;height:auto;overflow:visible}
+ #game-screen .sidebar-right .management-panel-shell{min-height:330px;max-height:70vh}
+ #game-screen .sidebar-right .message-panel{display:block}
+ #game-screen .game-footer{display:flex}
+ #game-screen .map-footer{flex-wrap:wrap}
+}
+@media(max-width:480px){
+ #game-screen .sidebar-left{grid-template-columns:minmax(0,1fr)}
+ #game-screen .map-section{height:55dvh;min-height:300px}
+ #game-screen .topbar{grid-template-columns:1fr auto}
+ #game-screen .time-controls{max-width:190px}
+}
+@media(max-height:700px) and (min-width:761px){
+ #game-screen .topbar{height:54px;min-height:54px;flex-basis:54px}
+ #game-screen .main-layout{height:calc(100dvh - 54px)}
+ #game-screen .sidebar .panel{padding:9px}
+ #game-screen .sidebar .panel-heading{margin-bottom:6px;padding-bottom:5px}
+ #game-screen .sidebar .panel-heading h1{font-size:18px}
+ #game-screen .sidebar .panel-heading h2{font-size:16px}
+ #game-screen .map-toolbar{flex-basis:34px;min-height:34px}
+ #game-screen .map-footer{flex-basis:20px;min-height:20px;padding:4px 8px}
+}
