@@ -89,10 +89,13 @@ test("game engine wires military systems and hourly simulation tasks", () => {
     assert.equal(typeof systems.commanderManager.createCommander, "function");
     assert.equal(typeof systems.movementManager.advance, "function");
     assert.equal(typeof systems.combatManager.advanceBattles, "function");
+    assert.equal(typeof systems.frontlineManager.createFrontline, "function");
+    assert.equal(typeof systems.supplyManager.processDaily, "function");
 
     const taskIds = systems.loop.getRegisteredTasks().map(task => task.id);
     assert.ok(taskIds.includes("military.land_movement"));
     assert.ok(taskIds.includes("military.land_combat"));
+    assert.ok(taskIds.includes("military.supply"));
 
     game.destroy();
 });
