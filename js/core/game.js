@@ -508,17 +508,22 @@ export class Game {
                 ]);
 
                 for (const [countryId, baseline] of Object.entries(economyDataset?.countries ?? {})) {
-                    if (!this.state.world.countries[countryId] ||
-                        !Number.isFinite(baseline?.nominalGDP) ||
-                        !Number.isFinite(baseline?.population) ||
-                        this.state.economy.countries[countryId]) continue;
-                    this.economyManager.gdp.initializeCountry(countryId, baseline);
+                    if (!Number.isFinite(baseline?.nominalGDP) || !Number.isFinite(baseline?.population)) continue;
+                    if (!this.state.world.countries[countryId]) {
+                        this.state.economy.pendingCountryBaselines[countryId] = baseline;
+                        continue;
+                    }
+                    if (!this.state.economy.countries[countryId]) {
+                        this.economyManager.gdp.initializeCountry(countryId, baseline);
+                    }
                 }
 
                 for (const [countryId, baseline] of Object.entries(militaryDataset?.countries ?? {})) {
-                    if (!this.state.world.countries[countryId] ||
-                        !Number.isFinite(baseline?.activePersonnel) ||
-                        baseline.activePersonnel < 0) continue;
+                    if (!Number.isFinite(baseline?.activePersonnel) || baseline.activePersonnel < 0) continue;
+                    if (!this.state.world.countries[countryId]) {
+                        this.state.military.pendingPersonnelBaselines[countryId] = baseline;
+                        continue;
+                    }
                     this.state.military.nationalPersonnel[countryId] = {
                         activePersonnel: baseline.activePersonnel,
                         source: baseline.source ?? null,
