@@ -13,6 +13,7 @@ import { SupplyManager } from "../js/military/supply.js";
 import { WorldAIManager } from "../js/ai/world-ai-manager.js";
 import { GDPManager } from "../js/economy/gdp.js";
 import { BudgetManager } from "../js/economy/budget.js";
+import { EconomyManager } from "../js/economy/economy-manager.js";
 import { BattlePlanManager } from "../js/military/battle-plans.js";
 
 function makeState() {
@@ -98,6 +99,7 @@ test("game engine wires military systems and hourly simulation tasks", () => {
     assert.equal(typeof systems.supplyManager.processDaily, "function");
     assert.equal(typeof systems.battlePlanManager.createPlan, "function");
     assert.equal(typeof systems.worldAIManager.runDailyCycle, "function");
+    assert.equal(typeof systems.economyManager.processMonthly, "function");
 
     const taskIds = systems.loop.getRegisteredTasks().map(task => task.id);
     assert.ok(taskIds.includes("military.land_movement"));
@@ -106,6 +108,7 @@ test("game engine wires military systems and hourly simulation tasks", () => {
     assert.ok(taskIds.includes("ai.country_daily"));
     assert.ok(taskIds.includes("ai.country_weekly"));
     assert.ok(taskIds.includes("ai.country_monthly"));
+    assert.ok(taskIds.includes("economy.monthly"));
 
     game.destroy();
 });
@@ -279,4 +282,20 @@ test("GDP and budget systems preserve sourced baselines and calculate changes", 
     assert.equal(monthly.treasury, 80);
     assert.equal(monthly.debt, 40);
     assert.throws(() => budget.setAllocations("AAA", { civilian: 1.6 }), /150%/);
+});
+
+test("monthly economy manager updates initialized country accounts", () => {
+    const state = makeState();
+    const economy = new EconomyManager(state);
+    economy.initializeCountry("AAA", {
+        gdp: { nominalGDP: 1000, realGDP: 900, population: 100, annualGrowthRate: 0.12, source: "test_fixture" },
+        budget: { treasury: 500, monthlyRevenue: 100, allocations: { civilian: 0.4, military: 0.3, research: 0.1 } }
+    });
+
+    const report = economy.processMonthly();
+    assert.equal(report.countriesWithGDP, 1);
+    assert.equal(report.countriesWithBudgets, 1);
+    assert.ok(report.gdp.nominalGDP > 1000);
+    assert.equal(economy.getCountryOverview("AAA").budget.monthlySpending.civilian, 40);
+    assert.equal(economy.getWorldStatistics().gdp.countriesWithGDPData, 1);
 });
