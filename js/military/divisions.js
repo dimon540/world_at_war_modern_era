@@ -252,6 +252,35 @@ export class DivisionManager {
             .map(cloneDivision);
     }
 
+    #detachFormationLinks(division, reason) {
+        if (division.armyId) {
+            const army = this.state.military.armies?.[division.armyId];
+            if (army) {
+                army.divisionIds = (army.divisionIds ?? []).filter(id => id !== division.id);
+                army.updatedAt = Date.now();
+                army.history?.push({
+                    action: "division_detached",
+                    date: this.state.clock?.date ? { ...this.state.clock.date } : null,
+                    details: { divisionId: division.id, reason }
+                });
+            }
+            division.armyId = null;
+        }
+        if (division.commanderId) {
+            const commander = this.state.military.commanders?.[division.commanderId];
+            if (commander?.assignment?.type === "division" && commander.assignment.id === division.id) {
+                commander.assignment = null;
+                commander.updatedAt = Date.now();
+                commander.history?.push({
+                    action: "division_command_ended",
+                    date: this.state.clock?.date ? { ...this.state.clock.date } : null,
+                    details: { divisionId: division.id, reason }
+                });
+            }
+            division.commanderId = null;
+        }
+    }
+
     setStatus(divisionId, status) {
         this.#assertActive();
         if (!VALID_STATUSES.has(status)) throw new RangeError(`Invalid division status: ${status}`);
@@ -261,6 +290,11 @@ export class DivisionManager {
         }
         const previousStatus = division.status;
         division.status = status;
+        if ([DIVISION_STATUS.DISBANDED, DIVISION_STATUS.DESTROYED].includes(status)) {
+            this.#detachFormationLinks(division, status);
+            division.manpower = 0;
+            this.#recalculateStatistics();
+        }
         this.#touch(division, "status_changed", { previousStatus, status });
         return cloneDivision(division);
     }
@@ -335,6 +369,7 @@ export class DivisionManager {
         }
         const previousCountryId = division.countryId;
         if (previousCountryId === targetId) return cloneDivision(division);
+        this.#detachFormationLinks(division, "transferred");
         division.countryId = targetId;
         this.#touch(division, "transferred", { from: previousCountryId, to: targetId });
         this.#emit(GAME_EVENTS.WORLD_UPDATED, {
@@ -357,6 +392,7 @@ export class DivisionManager {
                 if (quantity > 0) this.equipment.addStock(division.countryId, equipmentId, quantity);
             }
         }
+        this.#detachFormationLinks(division, "disbanded");
         division.status = DIVISION_STATUS.DISBANDED;
         division.manpower = 0;
         this.#touch(division, "disbanded", { returnEquipment });
