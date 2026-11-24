@@ -197,19 +197,21 @@ function drawMap() {
         const country = (code && countries[code]) ? countries[code] : ownerId ? countries[ownerId] : null;
         const countryId = country?.id ?? country?.iso3 ?? code;
         const inactive = country?.status === "inactive";
+        const selectedProvince = game.state.map.selectedProvinceId === provinceId;
         const selected = selectedId && (
             selectedId === countryId ||
             selectedId === country?.iso3
         );
 
-        context.fillStyle = selected
-            ? "#d6ad62"
-            : inactive ? "#35414a" : hashColor(countryId || code || featureCountryName(feature));
+        context.fillStyle = selectedProvince
+            ? "#f1d28a"
+            : selected ? "#d6ad62"
+                : inactive ? "#35414a" : hashColor(countryId || code || featureCountryName(feature));
         context.fill(path, "evenodd");
-        context.strokeStyle = selected
+        context.strokeStyle = selectedProvince || selected
             ? "#fff0bd"
             : "rgba(8, 19, 27, .72)";
-        context.lineWidth = selected ? 1.35 : 0.55;
+        context.lineWidth = selectedProvince ? 1.8 : selected ? 1.35 : 0.55;
         context.stroke(path);
 
         if (country && !inactive) {
@@ -377,6 +379,7 @@ function bindInterface() {
                 chooseCountry(hit.countryId);
                 if (hit.provinceId && game.state.world.provinces[hit.provinceId]) {
                     game.state.map.selectedProvinceId = hit.provinceId;
+                    drawMap();
                     uiManager?.province.render(hit.provinceId);
                     uiManager?.showPanel("province");
                     const province = game.state.world.provinces[hit.provinceId];
