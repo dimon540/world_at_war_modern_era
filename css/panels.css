@@ -1,1 +1,38 @@
-
+/* WORLD AT WAR: MODERN ERA — unified command panels */
+.sidebar{min-width:0}
+.sidebar .panel{position:relative;overflow:hidden;border:1px solid rgba(173,194,205,.15);border-radius:5px;background:linear-gradient(145deg,rgba(27,43,55,.98),rgba(17,29,39,.98));box-shadow:0 8px 22px rgba(0,0,0,.19)}
+.sidebar .panel:before{position:absolute;top:0;left:0;width:3px;height:34px;background:linear-gradient(180deg,#c6a15f,rgba(198,161,95,0));content:"";opacity:.75}
+.sidebar .panel-heading{position:relative;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(173,194,205,.12)}
+.sidebar .panel-heading h1,.sidebar .panel-heading h2{color:#e5ebee;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.sidebar .panel-heading .eyebrow{color:#c6a15f}
+.sidebar .field-label{margin-bottom:7px;color:#93a5af;font-size:10px;font-weight:700;letter-spacing:.11em;text-transform:uppercase}
+.sidebar .country-select{appearance:none;min-height:40px;padding:9px 36px 9px 11px;border:1px solid rgba(173,194,205,.23);border-radius:4px;background-color:#0e1a23;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='m1 1 5 5 5-5' fill='none' stroke='%23c6a15f' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;color:#e1e8eb;font-size:11px;cursor:pointer}
+.sidebar .country-select:hover{border-color:rgba(198,161,95,.55)}
+.sidebar .country-select:focus{border-color:#c6a15f;outline:2px solid rgba(198,161,95,.15);outline-offset:1px}
+.country-summary{border:1px solid rgba(198,161,95,.25);border-radius:4px;background:linear-gradient(100deg,rgba(198,161,95,.11),rgba(198,161,95,.035))}
+.country-summary .summary-label{color:#a9a18d;font-size:9px;letter-spacing:.14em}
+.country-summary strong{color:#e2c17d;font-family:"Barlow Condensed",sans-serif;font-size:17px;letter-spacing:.025em}
+.details-list>div{align-items:baseline;border-bottom:1px solid rgba(173,194,205,.1)}
+.details-list dt{color:#8fa1ab;font-size:10px;font-weight:600;letter-spacing:.025em}
+.details-list dd{color:#d9e1e5;font-size:11px;font-weight:600}
+.stat-grid{gap:8px}
+.stat-card{position:relative;overflow:hidden;min-height:67px;border:1px solid rgba(173,194,205,.13);border-radius:4px;background:linear-gradient(145deg,rgba(8,18,26,.48),rgba(20,34,44,.45))}
+.stat-card:after{position:absolute;right:-15px;bottom:-24px;width:58px;height:58px;border:1px solid rgba(198,161,95,.1);border-radius:50%;content:""}
+.stat-card strong{color:#e2c17d;font-size:27px;font-variant-numeric:tabular-nums}
+.stat-card span{color:#8fa1ab;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.actions-panel .action-button{min-height:39px;border-radius:4px;font-size:10px;letter-spacing:.055em;text-transform:uppercase}
+.actions-panel .action-button:focus-visible{outline:2px solid #e2c17d;outline-offset:2px}
+.actions-panel .action-button:disabled{cursor:not-allowed;opacity:.42}
+.actions-panel .action-button:not(.action-secondary){box-shadow:inset 0 1px rgba(255,255,255,.06)}
+.actions-panel .action-secondary{border-color:rgba(173,194,205,.2);color:#cbd5da}
+.system-list{gap:0}
+.system-list li{min-height:31px;padding:7px 0;border-bottom:1px solid rgba(173,194,205,.085);font-size:10px}
+.system-list li:last-child{border-bottom:0}
+.system-indicator{width:7px;height:7px;flex-basis:7px}
+.system-pending{opacity:.78}
+.message-panel .game-message{min-height:35px;padding:10px 11px;border:1px solid rgba(173,194,205,.1);border-radius:3px;background:rgba(5,13,19,.25);color:#bdcbd1;font-size:10px}
+.message-panel .game-message[data-type="success"]{border-color:rgba(121,184,155,.2);background:rgba(121,184,155,.06);color:#8dc8a9}
+.message-panel .game-message[data-type="warning"]{border-color:rgba(198,161,95,.2);background:rgba(198,161,95,.06);color:#e2c17d}
+.message-panel .game-message[data-type="error"]{border-color:rgba(212,125,117,.22);background:rgba(212,125,117,.06);color:#ef9990}
+.panel-note{color:#81939d;font-size:10px}
+@media(max-width:760px){.sidebar .panel{padding:14px}.sidebar .panel-heading{margin-bottom:11px;padding-bottom:8px}.system-list li{min-height:29px}}
