@@ -20,7 +20,8 @@ export class ArmyPanel {
             .filter(item => item.countryId === countryId && !["disbanded", "destroyed"].includes(item.status));
         const summary = document.createElement("p");
         summary.className = "panel-note";
-        summary.textContent = `Armies: ${armies.length} · Divisions: ${divisions.length}`;
+        const nationalPersonnel = this.game.state.military.nationalPersonnel?.[countryId]?.activePersonnel;
+        summary.textContent = `Armies: ${armies.length} · Divisions: ${divisions.length} · Active personnel: ${Number.isFinite(nationalPersonnel) ? nationalPersonnel.toLocaleString() : "Not recorded"}`;
         this.container.append(summary);
 
         for (const army of armies) {
