@@ -1,0 +1,68 @@
+name: Project validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          count=0
+          while IFS= read -r -d '' file; do
+            node --check --input-type=module < "$file"
+            count=$((count + 1))
+          done < <(find js -type f -name '*.js' -print0)
+          echo "Syntax checked $count JavaScript files."
+
+      - name: Validate local JavaScript imports
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import pathlib, re, sys
+          root = pathlib.Path(".")
+          failures = []
+          files = list((root / "js").rglob("*.js"))
+          pattern = re.compile(r'from\s+["\'](\.[^"\']+)["\']')
+          for file in files:
+              source = file.read_text(encoding="utf-8")
+              for spec in pattern.findall(source):
+                  target = (file.parent / spec).resolve()
+                  if not target.is_file():
+                      failures.append(f"{file}: missing import {spec} -> {target}")
+          if failures:
+              print("\n".join(failures))
+              sys.exit(1)
+          print(f"Validated relative imports in {len(files)} JavaScript files.")
+          PY
+
+      - name: Validate JSON and map datasets
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, sys
+          files = list(pathlib.Path("data").rglob("*.json")) + list(pathlib.Path("data").rglob("*.geojson"))
+          for file in files:
+              with file.open(encoding="utf-8") as stream:
+                  data = json.load(stream)
+              if file.name == "provinces.geojson":
+                  if data.get("type") != "FeatureCollection" or not data.get("features"):
+                      raise SystemExit("Province map must be a non-empty GeoJSON FeatureCollection.")
+          print(f"Validated {len(files)} JSON/GeoJSON datasets.")
+          PY
