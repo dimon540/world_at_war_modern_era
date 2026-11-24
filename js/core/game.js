@@ -211,8 +211,7 @@ export class Game {
 
             this.lastError = error.message;
 
-            this.state.status.phase =
-                GAME_PHASES.INITIALIZING;
+            this.state.status.phase = "error";
 
             this.state.status.isRunning = false;
             this.state.status.isPaused = true;
