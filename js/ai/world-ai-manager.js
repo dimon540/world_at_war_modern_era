@@ -161,8 +161,35 @@ export class WorldAIManager {
         return decision;
     }
     #rankGoals(agent) {
-        const entries = Object.entries(agent.priorities);
-        return entries.sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+        const scores = { ...agent.priorities };
+        const countryId = agent.countryId;
+        const wars = this.systems.diplomacyManager?.wars;
+        if (wars?.listWars({ status: "active", countryId }).length) {
+            scores.military_modernization = Math.min(1.5, scores.military_modernization + 0.35);
+        }
+        const government = this.systems.politicsManager?.governments.getGovernment(countryId);
+        if (government && government.stability < 40) {
+            scores.domestic_stability = Math.min(1.5, scores.domestic_stability + 0.35);
+        } else if (government && government.stability < 60) {
+            scores.domestic_stability = Math.min(1.5, scores.domestic_stability + 0.15);
+        }
+        const gdp = this.systems.economyManager?.gdp.getCountryGDP(countryId);
+        if (gdp && gdp.annualGrowthRate < 0) {
+            scores.economic_development = Math.min(1.5, scores.economic_development + 0.25);
+        }
+        const sanctions = this.systems.diplomacyManager?.sanctions;
+        if (sanctions?.isTargeted(countryId).length) {
+            scores.diplomatic_security = Math.min(1.5, scores.diplomatic_security + 0.2);
+        }
+        const research = this.systems.researchManager;
+        if (research) {
+            const data = research.getCountryResearch(countryId);
+            if (data.projects.length === 0 && research.getAvailable(countryId).length) {
+                scores.technological_progress = Math.min(1.5, scores.technological_progress + 0.1);
+            }
+        }
+        return Object.entries(scores)
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
             .map(([goal, score]) => ({ goal, score: Number(score.toFixed(4)) }));
     }
     setSystems(systems = {}) {
