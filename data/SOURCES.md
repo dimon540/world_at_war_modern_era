@@ -118,10 +118,15 @@ Institute for Strategic Studies' *The Military Balance*. It represents
 active-duty personnel and may include paramilitary forces; it does not
 represent reserve manpower. Some observations are estimates or incomplete.
 
+The automated baseline importer currently imports only the
+IISS-sourced active-personnel series. The SIPRI military-expenditure
+series listed above are not redistributed by the importer because their
+source pages specify separate SIPRI terms and conditions.
+
 License:
-World Bank indicator data is published under CC BY 4.0. Preserve the
-indicator code, observation year, source attribution and missing-value
-status when using it.
+The active-personnel World Bank indicator is published under CC BY 4.0.
+Preserve the indicator code, observation year, source attribution and
+missing-value status when using it.
 
 ### Correlates of War
 Website:
