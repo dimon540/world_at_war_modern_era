@@ -1,1 +1,353 @@
+/* WORLD AT WAR: MODERN ERA — Military interface
+   Unified navy / graphite / steel palette with restrained gold accents. */
 
+.military-panel,
+.army-panel,
+.military-overview,
+.military-section {
+  color: var(--text-primary, #e8edf4);
+}
+
+.military-panel,
+.army-panel {
+  background: var(--panel-bg, #111c2b);
+  border: 1px solid var(--border-color, #29394d);
+  border-radius: var(--radius-md, 8px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
+}
+
+.military-panel__header,
+.army-panel__header,
+.military-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-color, #29394d);
+}
+
+.military-panel__title,
+.army-panel__title,
+.military-section__title {
+  margin: 0;
+  color: var(--text-primary, #e8edf4);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.military-panel__body,
+.army-panel__body,
+.military-section__body {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.military-summary,
+.army-summary,
+.military-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.military-stat,
+.army-stat {
+  min-width: 0;
+  padding: 10px;
+  background: rgb(5 13 23 / 42%);
+  border: 1px solid var(--border-color, #29394d);
+  border-radius: 6px;
+}
+
+.military-stat__label,
+.army-stat__label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--text-muted, #8e9caf);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.military-stat__value,
+.army-stat__value {
+  display: block;
+  color: var(--text-primary, #e8edf4);
+  font-size: 1.12rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.military-stat__value--accent,
+.army-stat__value--accent {
+  color: var(--accent-gold, #d2ad62);
+}
+
+.division-list,
+.army-list,
+.military-unit-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.division-card,
+.army-unit,
+.military-unit {
+  display: grid;
+  gap: 9px;
+  padding: 11px;
+  background: linear-gradient(135deg, rgb(28 43 61 / 88%), rgb(15 25 38 / 94%));
+  border: 1px solid var(--border-color, #29394d);
+  border-left: 3px solid var(--steel-accent, #647f9d);
+  border-radius: 6px;
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.division-card:hover,
+.army-unit:hover,
+.military-unit:hover {
+  border-color: var(--accent-gold, #d2ad62);
+}
+
+.division-card.is-selected,
+.army-unit.is-selected,
+.military-unit.is-selected {
+  border-left-color: var(--accent-gold, #d2ad62);
+  background: rgb(39 54 71 / 92%);
+}
+
+.division-card__top,
+.army-unit__top,
+.military-unit__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.division-card__name,
+.army-unit__name,
+.military-unit__name {
+  color: var(--text-primary, #e8edf4);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.division-card__meta,
+.army-unit__meta,
+.military-unit__meta {
+  color: var(--text-muted, #8e9caf);
+  font-size: 0.72rem;
+}
+
+.military-status,
+.unit-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: fit-content;
+  padding: 3px 7px;
+  color: #b8c7d8;
+  background: rgb(100 127 157 / 16%);
+  border: 1px solid rgb(100 127 157 / 35%);
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.military-status--ready,
+.unit-status--ready {
+  color: #9bd3ad;
+  border-color: rgb(91 166 116 / 42%);
+  background: rgb(49 117 73 / 16%);
+}
+
+.military-status--warning,
+.unit-status--warning {
+  color: #e3c17d;
+  border-color: rgb(210 173 98 / 42%);
+  background: rgb(160 116 35 / 14%);
+}
+
+.military-status--danger,
+.unit-status--danger {
+  color: #e49a9a;
+  border-color: rgb(190 85 85 / 42%);
+  background: rgb(150 49 49 / 15%);
+}
+
+.military-progress,
+.unit-strength,
+.equipment-progress {
+  overflow: hidden;
+  height: 7px;
+  background: #08111d;
+  border: 1px solid rgb(100 127 157 / 22%);
+  border-radius: 999px;
+}
+
+.military-progress__bar,
+.unit-strength__bar,
+.equipment-progress__bar {
+  display: block;
+  width: var(--progress, 0%);
+  height: 100%;
+  background: linear-gradient(90deg, #607d9c, #c6a45e);
+  border-radius: inherit;
+  transition: width 220ms ease;
+}
+
+.unit-strength__bar--low {
+  background: linear-gradient(90deg, #9b4d4d, #d18b70);
+}
+
+.military-progress__caption,
+.unit-strength__caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--text-muted, #8e9caf);
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.frontline-list,
+.battle-plan-list,
+.commander-list,
+.equipment-list {
+  display: grid;
+  gap: 8px;
+}
+
+.frontline-item,
+.battle-plan-item,
+.commander-card,
+.equipment-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 10px;
+  background: rgb(5 13 23 / 35%);
+  border: 1px solid var(--border-color, #29394d);
+  border-radius: 6px;
+}
+
+.frontline-item__name,
+.battle-plan-item__name,
+.commander-card__name,
+.equipment-item__name {
+  color: var(--text-primary, #e8edf4);
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.frontline-item__detail,
+.battle-plan-item__detail,
+.commander-card__detail,
+.equipment-item__detail {
+  color: var(--text-muted, #8e9caf);
+  font-size: 0.69rem;
+}
+
+.military-toolbar,
+.army-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.military-button,
+.army-action-button {
+  min-height: 32px;
+  padding: 7px 10px;
+  color: #dce5ef;
+  background: #1b2b3e;
+  border: 1px solid #3a5069;
+  border-radius: 5px;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.military-button:hover,
+.army-action-button:hover {
+  color: #fff;
+  background: #263b53;
+  border-color: var(--accent-gold, #d2ad62);
+}
+
+.military-button--primary,
+.army-action-button--primary {
+  color: #171b21;
+  background: var(--accent-gold, #d2ad62);
+  border-color: #e0c27f;
+}
+
+.military-button--primary:hover,
+.army-action-button--primary:hover {
+  color: #101820;
+  background: #e0c27f;
+}
+
+.military-button:disabled,
+.army-action-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.military-empty,
+.army-empty {
+  padding: 18px 12px;
+  color: var(--text-muted, #8e9caf);
+  background: rgb(5 13 23 / 28%);
+  border: 1px dashed var(--border-color, #29394d);
+  border-radius: 6px;
+  font-size: 0.76rem;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .military-summary,
+  .army-summary,
+  .military-stat-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .military-panel__header,
+  .army-panel__header,
+  .military-section__header {
+    padding: 10px 11px;
+  }
+
+  .military-panel__body,
+  .army-panel__body,
+  .military-section__body {
+    padding: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .division-card,
+  .army-unit,
+  .military-unit,
+  .military-button,
+  .army-action-button,
+  .military-progress__bar,
+  .unit-strength__bar,
+  .equipment-progress__bar {
+    transition: none;
+  }
+}
