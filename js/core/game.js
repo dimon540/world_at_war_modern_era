@@ -480,7 +480,7 @@ export class Game {
                         indicatorCode: baseline.indicatorCodes?.activePersonnel ?? "MS.MIL.TOTL.P1"
                     };
                 }
-                this.state.military.statistics.totalPersonnel = Object.values(this.state.military.nationalPersonnel)
+                this.state.military.statistics.nationalActivePersonnel = Object.values(this.state.military.nationalPersonnel)
                     .reduce((sum, record) => sum + record.activePersonnel, 0);
 
                 this.worldAIManager.initializeAgents();
