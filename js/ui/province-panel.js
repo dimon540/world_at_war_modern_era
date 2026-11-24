@@ -1,1 +1,6 @@
-
+export class ProvincePanel{
+ constructor(game,root=document){this.game=game;this.root=root;this.container=root.querySelector("#panel-province");}
+ render(provinceId=this.game.state.map.selectedProvinceId){if(!this.container)return;this.container.replaceChildren();const p=provinceId?this.game.state.world.provinces[provinceId]:null;if(!p){this.container.textContent="Select a map region to inspect its province data.";return;}const owner=this.game.state.world.ownership.provinceOwners[provinceId]??p.ownerId??"Unknown";const controller=this.game.state.world.ownership.provinceControllers[provinceId]??owner;for(const [label,value] of [["Province",p.name??p.id],["Owner",owner],["Controller",controller],["Population",p.population??"Not recorded"],["Terrain",p.terrain??"Not recorded"]]){const row=document.createElement("p");row.className="management-row";const b=document.createElement("b");b.textContent=label;const span=document.createElement("span");span.textContent=String(value);row.append(b,span);this.container.append(row);}}
+ destroy(){this.game=null;this.root=null;this.container=null;}
+}
+export default ProvincePanel;
