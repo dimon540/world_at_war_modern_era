@@ -1,1 +1,30 @@
-
+/* WORLD AT WAR: MODERN ERA — unified command header */
+.topbar{position:relative;z-index:20;display:grid;grid-template-columns:minmax(220px,1fr) auto minmax(150px,.8fr) auto;align-items:center;gap:24px;min-height:76px;padding:10px 22px;color:var(--text-primary,#e8edf2);background:linear-gradient(180deg,#1b2a37 0%,#14212c 100%);border-bottom:1px solid rgba(177,194,207,.2);box-shadow:0 5px 18px rgba(0,0,0,.28)}
+.topbar:after{position:absolute;right:0;bottom:-1px;left:0;height:2px;content:"";background:linear-gradient(90deg,transparent,#a88748 18%,#d0b16d 50%,#a88748 82%,transparent);opacity:.72;pointer-events:none}
+.brand{display:inline-flex;align-items:center;gap:12px;min-width:0;color:inherit;text-decoration:none}
+.brand-mark{display:grid;flex:0 0 46px;width:46px;height:46px;place-items:center;color:#e8d4a3;background:linear-gradient(145deg,#33495a,#172631);border:1px solid #a88748;border-radius:4px;box-shadow:inset 0 0 0 3px rgba(9,17,23,.34),0 2px 8px rgba(0,0,0,.25);font-family:"Barlow Condensed",sans-serif;font-size:29px;font-weight:800;line-height:1;text-shadow:0 2px 4px #000}
+.brand-copy{display:flex;flex-direction:column;gap:1px;min-width:0;line-height:1}
+.brand-copy strong{overflow:hidden;color:#f0f2f4;font-family:"Barlow Condensed",sans-serif;font-size:21px;font-weight:800;letter-spacing:.095em;text-overflow:ellipsis;white-space:nowrap}
+.brand-copy small{color:#c0a66d;font-family:"Barlow Condensed",sans-serif;font-size:11px;font-weight:700;letter-spacing:.27em}
+.campaign-meta{display:flex;flex-direction:column;gap:4px;min-width:112px;padding-left:20px;border-left:1px solid rgba(181,196,207,.2)}
+.meta-label,.eyebrow{color:#a9b5bf;font-family:"Barlow Condensed",sans-serif;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.campaign-meta strong{color:#e8d4a3;font-family:"Barlow Condensed",sans-serif;font-size:20px;font-weight:700;letter-spacing:.045em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.topbar-status{display:flex;align-items:center;gap:9px;min-width:0;color:#b9c4cc;font-size:11px;font-weight:600;letter-spacing:.035em;text-transform:uppercase}
+.topbar-status #game-status{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.status-dot{flex:0 0 8px;width:8px;height:8px;background:#c19a50;border-radius:50%;box-shadow:0 0 0 3px rgba(193,154,80,.13),0 0 9px rgba(193,154,80,.45)}
+.topbar-status:has(#game-status[data-state="ready"]) .status-dot,.topbar-status:has(#game-status[data-state="running"]) .status-dot{background:#75ad82;box-shadow:0 0 0 3px rgba(117,173,130,.13),0 0 9px rgba(117,173,130,.4)}
+.time-controls{display:flex;align-items:center;justify-content:flex-end;gap:7px;white-space:nowrap}
+.icon-button,.control-button{display:inline-flex;align-items:center;justify-content:center;min-height:34px;color:#d8e0e6;background:linear-gradient(180deg,#2b3d4b,#20313d);border:1px solid #465a68;border-radius:3px;cursor:pointer;font-family:"Inter",sans-serif;font-size:12px;font-weight:700;transition:background .16s ease,border-color .16s ease,color .16s ease,transform .16s ease}
+.icon-button{width:32px;padding:0;font-size:19px;line-height:1}
+.speed-value{min-width:35px;color:#e8d4a3;font-family:"Barlow Condensed",sans-serif;font-size:16px;font-weight:700;text-align:center;font-variant-numeric:tabular-nums}
+.control-button{gap:7px;padding:0 13px;letter-spacing:.025em}
+.control-primary{margin-left:5px;color:#171b1d;background:linear-gradient(180deg,#d4ba7d,#ad8d4e);border-color:#dfc991;text-shadow:0 1px rgba(255,255,255,.25)}
+.icon-button:hover:not(:disabled),.control-button:hover:not(:disabled){color:#fff;background:linear-gradient(180deg,#3a5060,#2a3d4b);border-color:#8294a0}
+.control-primary:hover:not(:disabled){color:#111719;background:linear-gradient(180deg,#e4cf9c,#c2a568);border-color:#f0dca9}
+.icon-button:active:not(:disabled),.control-button:active:not(:disabled){transform:translateY(1px)}
+.icon-button:focus-visible,.control-button:focus-visible,.brand:focus-visible{outline:2px solid #d6b976;outline-offset:3px}
+.icon-button:disabled,.control-button:disabled{cursor:not-allowed;opacity:.42;filter:saturate(.55)}
+@media(max-width:1100px){.topbar{grid-template-columns:minmax(190px,1fr) auto auto;gap:16px}.topbar-status{display:none}}
+@media(max-width:760px){.topbar{grid-template-columns:1fr auto;gap:10px 14px;padding:10px 13px}.brand-mark{flex-basis:40px;width:40px;height:40px;font-size:25px}.brand-copy strong{font-size:18px}.campaign-meta{grid-column:1;grid-row:2;padding:0;border:0}.campaign-meta strong{font-size:17px}.time-controls{grid-column:2;grid-row:1/span 2;flex-wrap:wrap;max-width:190px}.control-button{min-height:31px;padding:0 9px;font-size:11px}}
+@media(max-width:420px){.topbar{padding-right:9px;padding-left:9px}.brand{gap:8px}.brand-copy strong{font-size:16px;letter-spacing:.06em}.brand-copy small{font-size:9px}.time-controls{gap:4px;max-width:166px}.icon-button{width:28px;min-height:30px}.speed-value{min-width:27px;font-size:14px}.control-button{padding:0 7px;font-size:10px}}
+@media(prefers-reduced-motion:reduce){.icon-button,.control-button{transition:none}}
