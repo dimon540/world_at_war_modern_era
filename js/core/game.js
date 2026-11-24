@@ -418,6 +418,17 @@ export class Game {
 
                 worldLoaded = true;
                 this.worldAIManager.initializeAgents();
+
+                try {
+                    const historyDataset = await this.dataLoader.loadDataset("countryHistory");
+                    this.historicalEventManager.load(historyDataset?.events ?? []);
+                } catch (historyError) {
+                    this.eventBus.emit(GAME_EVENTS.SYSTEM_ERROR, {
+                        source: "HistoricalEventManager",
+                        operation: "load",
+                        message: historyError.message
+                    });
+                }
             }
 
             await this.saveManager.initialize();
