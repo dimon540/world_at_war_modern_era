@@ -65,6 +65,7 @@ jobs:
           grep -q 'military.land_movement' js/core/game.js
           grep -q 'military.land_combat' js/core/game.js
           grep -q 'military.supply' js/core/game.js
+          grep -q 'ai.country_daily' js/core/game.js
           grep -q 'BattlePlanManager' js/core/game.js
 
       - name: Validate JSON and map datasets
