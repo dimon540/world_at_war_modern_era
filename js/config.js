@@ -45,7 +45,7 @@ export const GAME_CONFIG = {
     world: {
         allCountries: true,
         dependentTerritories: true,
-        historicalBorders: true,
+        historicalBorders: false,
         historicalCountryData: true
     },
 
@@ -109,6 +109,8 @@ export const DATA_PATHS = {
     ownership: "./data/scenarios/2000/ownership.json",
 
     countryHistory: "./data/history/country-changes.json",
+    economyBaselines: "./data/economy/country-baselines-2000.json",
+    militaryPersonnel: "./data/military/personnel-2000.json",
     borderHistory: "./data/history/border-changes.json"
 };
 
