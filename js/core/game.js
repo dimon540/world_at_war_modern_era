@@ -22,6 +22,11 @@ import { GameClock } from "./game-clock.js";
 import { GameLoop } from "./game-loop.js";
 import { DataLoader } from "./data-loader.js";
 import { SaveManager } from "./save-manager.js";
+import { DivisionManager } from "../military/divisions.js";
+import { ArmyManager } from "../military/army-manager.js";
+import { CommanderManager } from "../military/commanders.js";
+import { MovementManager } from "../military/movement.js";
+import { SIMULATION_INTERVALS, SIMULATION_PRIORITY } from "./game-loop.js";
 
 /* =========================================================
    GAME STATUS
@@ -68,6 +73,11 @@ export class Game {
         this.loop = null;
         this.dataLoader = null;
         this.saveManager = null;
+        this.divisionManager = null;
+        this.armyManager = null;
+        this.commanderManager = null;
+        this.movementManager = null;
+        this.unregisterMovementTask = null;
 
         this.initialized = false;
         this.initializationPromise = null;
@@ -104,6 +114,36 @@ export class Game {
             this.state,
             this.eventBus
         );
+
+        this.divisionManager = new DivisionManager(
+            this.state,
+            this.eventBus
+        );
+
+        this.armyManager = new ArmyManager(
+            this.state,
+            this.eventBus
+        );
+
+        this.commanderManager = new CommanderManager(
+            this.state,
+            this.eventBus
+        );
+
+        this.movementManager = new MovementManager(
+            this.state,
+            this.divisionManager,
+            this.eventBus
+        );
+
+        this.unregisterMovementTask = this.loop.registerTask({
+            id: "military.land_movement",
+            name: "Land division movement",
+            interval: SIMULATION_INTERVALS.HOURLY,
+            priority: SIMULATION_PRIORITY.HIGH,
+            description: "Advances active land movement orders by one simulation hour.",
+            execute: () => this.movementManager.advance(1)
+        });
     }
 
     /* =====================================================
@@ -630,7 +670,11 @@ export class Game {
             clock: this.clock,
             loop: this.loop,
             dataLoader: this.dataLoader,
-            saveManager: this.saveManager
+            saveManager: this.saveManager,
+            divisionManager: this.divisionManager,
+            armyManager: this.armyManager,
+            commanderManager: this.commanderManager,
+            movementManager: this.movementManager
         };
     }
 
@@ -703,6 +747,16 @@ export class Game {
         if (this.clock) {
             this.clock.pause();
         }
+
+        if (this.unregisterMovementTask) {
+            this.unregisterMovementTask();
+            this.unregisterMovementTask = null;
+        }
+
+        if (this.movementManager) this.movementManager.destroy();
+        if (this.commanderManager) this.commanderManager.destroy();
+        if (this.armyManager) this.armyManager.destroy();
+        if (this.divisionManager) this.divisionManager.destroy();
 
         if (this.saveManager) {
             this.saveManager.destroy();
