@@ -4,6 +4,7 @@ import { createInitialGameState } from "../js/core/game-state.js";
 import { WorldAIManager } from "../js/ai/world-ai-manager.js";
 import { ResearchManager } from "../js/technology/research-manager.js";
 import { EconomyManager } from "../js/economy/economy-manager.js";
+import { DiplomacyManager } from "../js/diplomacy/diplomacy-manager.js";
 
 function makeState() {
     const state = createInitialGameState();
@@ -62,4 +63,25 @@ test("AI economic priority reallocates an existing verified national budget", ()
 
     ai.destroy();
     economy.destroy();
+});
+
+test("AI diplomatic priority creates a defensive alliance from reciprocal trust", () => {
+    const state = makeState();
+    state.world.countries.BBB = { id: "BBB", name: "Bravo" };
+    const ai = new WorldAIManager(state);
+    const diplomacy = new DiplomacyManager(state);
+    diplomacy.relations.setRelation("AAA", "BBB", 75);
+    diplomacy.relations.setRelation("BBB", "AAA", 80);
+    ai.setSystems({ diplomacyManager: diplomacy });
+    ai.initializeAgents();
+    forceGoal(ai, "AAA", "diplomatic_security");
+
+    const report = ai.runDailyCycle().find(item => item.countryId === "AAA");
+    const alliance = diplomacy.alliances.listAlliances({ countryId: "AAA" })[0];
+
+    assert.equal(report.action.action, "defensive_alliance_created");
+    assert.deepEqual(alliance.members, ["AAA", "BBB"]);
+
+    ai.destroy();
+    diplomacy.destroy();
 });
