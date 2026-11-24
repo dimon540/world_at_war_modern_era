@@ -218,6 +218,17 @@ export class Game {
             this.eventBus
         );
 
+        this.worldAIManager.setSystems({
+            researchManager: this.researchManager,
+            economyManager: this.economyManager,
+            diplomacyManager: this.diplomacyManager,
+            politicsManager: this.politicsManager,
+            divisionManager: this.divisionManager,
+            armyManager: this.armyManager,
+            movementManager: this.movementManager,
+            battlePlanManager: this.battlePlanManager
+        });
+
         this.eventManager = new EventManager(this.state, this.eventBus);
         this.historicalEventManager = new HistoricalEventManager(this.state, this.eventBus);
         this.worldEventManager = new WorldEventManager(this.state, this.eventBus);
