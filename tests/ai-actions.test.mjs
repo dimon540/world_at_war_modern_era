@@ -42,6 +42,7 @@ test("AI economic priority reallocates an existing verified national budget", ()
     const state = makeState();
     const ai = new WorldAIManager(state);
     const economy = new EconomyManager(state);
+    economy.factories.create({ id: "civilian-works", countryId: "AAA", type: "civilian", level: 2 });
     economy.budgets.initializeCountry("AAA", {
         treasury: 1000,
         monthlyRevenue: 100,
@@ -60,6 +61,8 @@ test("AI economic priority reallocates an existing verified national budget", ()
     assert.equal(report.action.executed, true);
     assert.ok(budget.allocations.civilian > 0.2);
     assert.equal(report.action.action, "budget_reallocated");
+    assert.equal(report.action.constructionStarted, true);
+    assert.equal(economy.construction.list({ countryId: "AAA", status: "active" }).length, 1);
 
     ai.destroy();
     economy.destroy();
