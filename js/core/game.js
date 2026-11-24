@@ -24,6 +24,7 @@ import { DataLoader } from "./data-loader.js";
 import { SaveManager } from "./save-manager.js";
 import { DivisionManager } from "../military/divisions.js";
 import { EquipmentManager } from "../military/equipment.js";
+import { EquipmentProductionManager } from "../military/equipment-production.js";
 import { ArmyManager } from "../military/army-manager.js";
 import { CommanderManager } from "../military/commanders.js";
 import { MovementManager } from "../military/movement.js";
@@ -89,6 +90,7 @@ export class Game {
         this.saveManager = null;
         this.divisionManager = null;
         this.equipmentManager = null;
+        this.equipmentProductionManager = null;
         this.armyManager = null;
         this.commanderManager = null;
         this.movementManager = null;
@@ -110,6 +112,7 @@ export class Game {
         this.unregisterResearchTask = null;
         this.unregisterDiplomacyTask = null;
         this.unregisterEconomyTask = null;
+        this.unregisterEquipmentProductionTask = null;
 
         this.unregisterAITasks = [];
         this.unregisterMovementTask = null;
@@ -206,6 +209,14 @@ export class Game {
             this.eventBus
         );
 
+        this.equipmentProductionManager = new EquipmentProductionManager(
+            this.state,
+            this.equipmentManager,
+            this.economyManager.factories,
+            this.economyManager.resources,
+            this.eventBus
+        );
+
         this.diplomacyManager = new DiplomacyManager(
             this.state,
             this.eventBus
@@ -230,6 +241,7 @@ export class Game {
             politicsManager: this.politicsManager,
             divisionManager: this.divisionManager,
             equipmentManager: this.equipmentManager,
+            equipmentProductionManager: this.equipmentProductionManager,
             armyManager: this.armyManager,
             movementManager: this.movementManager,
             battlePlanManager: this.battlePlanManager
@@ -307,6 +319,15 @@ export class Game {
             priority: SIMULATION_PRIORITY.NORMAL,
             description: "Processes sourced GDP baselines and national budget accounts.",
             execute: () => this.economyManager.processMonthly()
+        });
+
+        this.unregisterEquipmentProductionTask = this.loop.registerTask({
+            id: "military.equipment_production_monthly",
+            name: "Military equipment production",
+            interval: SIMULATION_INTERVALS.MONTHLY,
+            priority: SIMULATION_PRIORITY.NORMAL,
+            description: "Consumes industrial resources and adds completed equipment to national stockpiles.",
+            execute: () => this.equipmentProductionManager.processMonthly()
         });
 
         this.combatManager = new CombatManager(
@@ -909,6 +930,7 @@ export class Game {
             saveManager: this.saveManager,
             divisionManager: this.divisionManager,
             equipmentManager: this.equipmentManager,
+            equipmentProductionManager: this.equipmentProductionManager,
             armyManager: this.armyManager,
             commanderManager: this.commanderManager,
             movementManager: this.movementManager,
@@ -1009,6 +1031,10 @@ export class Game {
             this.unregisterEconomyTask();
             this.unregisterEconomyTask = null;
         }
+        if (this.unregisterEquipmentProductionTask) {
+            this.unregisterEquipmentProductionTask();
+            this.unregisterEquipmentProductionTask = null;
+        }
         if (this.unregisterDiplomacyTask) {
             this.unregisterDiplomacyTask();
             this.unregisterDiplomacyTask = null;
@@ -1023,6 +1049,7 @@ export class Game {
         this.unregisterEventTasks = [];
 
         if (this.worldAIManager) this.worldAIManager.destroy();
+        if (this.equipmentProductionManager) this.equipmentProductionManager.destroy();
         if (this.economyManager) this.economyManager.destroy();
         if (this.diplomacyManager) this.diplomacyManager.destroy();
         if (this.researchManager) this.researchManager.destroy();
