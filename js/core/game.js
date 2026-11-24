@@ -84,6 +84,7 @@ export class Game {
         this.combatManager = null;
         this.frontlineManager = null;
         this.supplyManager = null;
+        this.battlePlanManager = null;
         this.unregisterMovementTask = null;
         this.unregisterSupplyTask = null;
         this.unregisterCombatTask = null;
@@ -145,14 +146,6 @@ export class Game {
             this.eventBus
         );
 
-        this.battlePlanManager = new BattlePlanManager(
-            this.state,
-            this.armyManager,
-            this.frontlineManager,
-            this.movementManager,
-            this.eventBus
-        );
-
         this.commanderManager = new CommanderManager(
             this.state,
             this.eventBus
@@ -161,6 +154,14 @@ export class Game {
         this.movementManager = new MovementManager(
             this.state,
             this.divisionManager,
+            this.eventBus
+        );
+
+        this.battlePlanManager = new BattlePlanManager(
+            this.state,
+            this.armyManager,
+            this.frontlineManager,
+            this.movementManager,
             this.eventBus
         );
 
