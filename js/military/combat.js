@@ -61,8 +61,8 @@ export class CombatManager {
         const divisions = unique.map(id => this.divisionManager.getDivision(id));
         for (const d of divisions) {
             if (["disbanded", "destroyed"].includes(d.status)) throw new Error(`Inactive division cannot fight: ${d.id}`);
-            if (d.location?.provinceId && d.location.provinceId !== provinceId) {
-                throw new Error(`Division ${d.id} is not located in battle province ${provinceId}.`);
+            if (d.location?.provinceId !== provinceId) {
+                throw new Error(`Division ${d.id} must be deployed in battle province ${provinceId} before combat.`);
             }
         }
         return divisions;
