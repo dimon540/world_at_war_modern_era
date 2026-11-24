@@ -19,9 +19,85 @@
     <link rel="stylesheet" href="./css/economy.css">
     <link rel="stylesheet" href="./css/diplomacy.css">
     <link rel="stylesheet" href="./css/responsive.css">
+    <link rel="stylesheet" href="./css/menu.css">
 </head>
 <body>
-    <div class="game-shell" id="app">
+    <div class="app-root" id="app">
+        <section class="main-menu-screen" id="main-menu" aria-label="Главное меню">
+            <div class="menu-backdrop" aria-hidden="true">
+                <div class="menu-grid"></div>
+                <div class="menu-world-mark">WORLD</div>
+            </div>
+            <header class="menu-brand">
+                <span class="menu-emblem">W</span>
+                <span><strong>WORLD AT WAR</strong><small>MODERN ERA</small></span>
+            </header>
+            <div class="menu-content">
+                <p class="menu-kicker">ГЛОБАЛЬНАЯ СТРАТЕГИЯ · 2000–∞</p>
+                <h1>МИР НА ГРАНИ<br><span>НОВОЙ ЭПОХИ</span></h1>
+                <p class="menu-description">Возглавь государство. Измени ход истории. Построй собственный мировой порядок.</p>
+                <div class="menu-actions">
+                    <button class="menu-button menu-button-primary" id="menu-new-game" type="button"><span>01</span> НОВАЯ ИГРА <b>→</b></button>
+                    <button class="menu-button" id="menu-load-game" type="button"><span>02</span> ЗАГРУЗИТЬ ИГРУ <b>→</b></button>
+                    <button class="menu-button" id="menu-settings" type="button"><span>03</span> НАСТРОЙКИ <b>→</b></button>
+                </div>
+                <p class="menu-message" id="menu-message" role="status" aria-live="polite">СЦЕНАРИЙ: 1 ЯНВАРЯ 2000 ГОДА</p>
+            </div>
+            <footer class="menu-footer"><span>WORLD AT WAR: MODERN ERA</span><span>ОДИНОЧНАЯ КАМПАНИЯ</span><span>BUILD 0.1</span></footer>
+        </section>
+
+        <section class="campaign-setup-screen" id="campaign-setup" hidden aria-label="Настройка новой кампании">
+            <header class="setup-header">
+                <button class="text-button" id="setup-back-menu" type="button">← ГЛАВНОЕ МЕНЮ</button>
+                <div class="menu-brand setup-brand"><span class="menu-emblem">W</span><span><strong>WORLD AT WAR</strong><small>НОВАЯ КАМПАНИЯ</small></span></div>
+                <span class="setup-step">ШАГ 01 / 01</span>
+            </header>
+            <main class="setup-layout">
+                <section class="setup-intro">
+                    <p class="menu-kicker">НАЧАЛО ИСТОРИИ</p>
+                    <h1>ВЫБЕРИ<br><span>СВОЮ СТРАНУ</span></h1>
+                    <p>1 января 2000 года. Мир вступает в новое тысячелетие. Выбери государство, которым будешь руководить.</p>
+                    <div class="scenario-card">
+                        <span>АКТИВНЫЙ СЦЕНАРИЙ</span>
+                        <strong>НОВОЕ ТЫСЯЧЕЛЕТИЕ</strong>
+                        <small>01.01.2000 · Историческое начало</small>
+                    </div>
+                </section>
+                <section class="setup-selection">
+                    <label for="campaign-country-select">ГОСУДАРСТВО</label>
+                    <select id="campaign-country-select" class="setup-country-select" disabled>
+                        <option value="">Загрузка списка государств…</option>
+                    </select>
+                    <div class="selected-nation-card">
+                        <span class="nation-label">ВЫБРАННОЕ ГОСУДАРСТВО</span>
+                        <h2 id="setup-country-name">Страна не выбрана</h2>
+                        <dl>
+                            <div><dt>Столица</dt><dd id="setup-country-capital">—</dd></div>
+                            <div><dt>Регион</dt><dd id="setup-country-region">—</dd></div>
+                            <div><dt>Статус</dt><dd id="setup-country-status">Выбери страну из списка</dd></div>
+                        </dl>
+                    </div>
+                    <p class="setup-note">Все остальные государства будут развиваться под управлением независимого ИИ.</p>
+                    <button class="launch-campaign-button" id="launch-campaign" type="button" disabled>НАЧАТЬ КАМПАНИЮ <span>→</span></button>
+                </section>
+            </main>
+            <footer class="menu-footer"><span>WORLD AT WAR: MODERN ERA</span><span>СЦЕНАРИЙ 2000</span><span>ОДИНОЧНАЯ ИГРА</span></footer>
+        </section>
+
+        <section class="settings-screen" id="settings-screen" hidden aria-label="Настройки">
+            <header class="setup-header">
+                <button class="text-button" id="settings-back-menu" type="button">← ГЛАВНОЕ МЕНЮ</button>
+                <div class="menu-brand setup-brand"><span class="menu-emblem">W</span><span><strong>WORLD AT WAR</strong><small>НАСТРОЙКИ</small></span></div>
+                <span class="setup-step">ПАРАМЕТРЫ</span>
+            </header>
+            <main class="settings-content">
+                <p class="menu-kicker">ПАРАМЕТРЫ ИГРЫ</p>
+                <h1>НАСТРОЙКИ</h1>
+                <label class="setting-row"><span><strong>Уменьшить анимации</strong><small>Отключает необязательные переходы интерфейса</small></span><input id="reduce-motion-setting" type="checkbox"></label>
+            </main>
+        </section>
+
+        <div class="game-shell" id="game-screen" hidden>
         <header class="topbar">
             <a class="brand" href="./" aria-label="WORLD AT WAR home">
                 <span class="brand-mark">W</span>
@@ -42,6 +118,7 @@
             </div>
 
             <div class="time-controls" aria-label="Time controls">
+                <button class="control-button" id="return-to-menu" type="button">☰ Меню</button>
                 <button class="icon-button" id="speed-down" type="button" title="Decrease speed" aria-label="Decrease speed">−</button>
                 <span class="speed-value" id="game-speed">×1</span>
                 <button class="icon-button" id="speed-up" type="button" title="Increase speed" aria-label="Increase speed">+</button>
@@ -182,6 +259,7 @@
             <span>WORLD AT WAR <b>·</b> MODERN ERA</span>
             <span>EARLY DEVELOPMENT BUILD</span>
         </footer>
+        </div>
     </div>
 
     <script type="module" src="./js/main.js"></script>
