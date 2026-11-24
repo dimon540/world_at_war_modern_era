@@ -157,8 +157,14 @@ export class BattlePlanManager {
         const id = requiredId(armyId, "Army ID");
         const army = this.armyManager.getArmy(id);
         if (army.countryId !== plan.countryId) throw new Error("Army belongs to another country.");
-        if (Object.keys(plan.divisionOrders).some(divisionId => army.divisionIds.includes(divisionId))) {
-            throw new Error("Cancel or reassign this army's division orders before removing it.");
+        const activeOrders = Object.keys(plan.divisionOrders).filter(divisionId =>
+            army.divisionIds.includes(divisionId) && this.movementManager.getMoveOrder(divisionId)
+        );
+        if (activeOrders.length) {
+            throw new Error("Cancel or complete this army's active division orders before removing it.");
+        }
+        for (const divisionId of Object.keys(plan.divisionOrders)) {
+            if (army.divisionIds.includes(divisionId)) delete plan.divisionOrders[divisionId];
         }
         plan.armyIds = plan.armyIds.filter(item => item !== id);
         this.#record(plan, "army_removed", { armyId: id });
@@ -171,7 +177,21 @@ export class BattlePlanManager {
         const plan = this.#plan(planId);
         if ([BATTLE_PLAN_STATUS.COMPLETED, BATTLE_PLAN_STATUS.CANCELLED].includes(plan.status)
             && status !== plan.status) throw new Error("Closed battle plans cannot be reopened.");
+        if (status === BATTLE_PLAN_STATUS.COMPLETED) {
+            const progress = this.getProgress(plan.id);
+            if (progress.activeOrders > 0 || progress.completedOrders !== progress.totalOrders) {
+                throw new Error("A battle plan can only be completed after all issued division orders have reached their destinations.");
+            }
+        }
         const previousStatus = plan.status;
+        if (status === BATTLE_PLAN_STATUS.CANCELLED) {
+            for (const divisionId of Object.keys(plan.divisionOrders)) {
+                if (this.movementManager.getMoveOrder(divisionId)) {
+                    this.movementManager.cancelMoveOrder(divisionId);
+                }
+                plan.divisionOrders[divisionId].status = "cancelled";
+            }
+        }
         plan.status = status;
         this.#record(plan, "status_changed", { previousStatus, status });
         this.#emit("battle_plan_updated", { planId: plan.id, status });
@@ -199,6 +219,10 @@ export class BattlePlanManager {
             if (!this.state.world.provinces[provinceId]) throw new RangeError(`Unknown route province: ${provinceId}`);
             return provinceId;
         });
+        if (plan.objectiveProvinceIds.length
+            && !plan.objectiveProvinceIds.includes(normalizedRoute.at(-1))) {
+            throw new Error("Division route must end at one of this battle plan's objective provinces.");
+        }
         const order = this.movementManager.issueMoveOrder(id, normalizedRoute, {
             ...options,
             source: "battle_plan"
@@ -231,7 +255,8 @@ export class BattlePlanManager {
             const division = this.state.military.divisions?.[entry.divisionId];
             const activeOrder = this.movementManager.getMoveOrder(entry.divisionId);
             const currentProvinceId = division?.location?.provinceId ?? null;
-            const complete = !activeOrder && currentProvinceId === entry.route.at(-1);
+            const complete = entry.status !== "cancelled" && !activeOrder
+                && currentProvinceId === entry.route.at(-1);
             return { divisionId: entry.divisionId, armyId: entry.armyId,
                 status: complete ? "completed" : activeOrder ? activeOrder.status : entry.status,
                 currentProvinceId, destinationProvinceId: entry.route.at(-1),
