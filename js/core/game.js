@@ -35,6 +35,10 @@ import { EconomyManager } from "../economy/economy-manager.js";
 import { DiplomacyManager } from "../diplomacy/diplomacy-manager.js";
 import { ResearchManager } from "../technology/research-manager.js";
 import { PoliticsManager } from "../politics/politics-manager.js";
+import { EventManager } from "../events/event-manager.js";
+import { HistoricalEventManager } from "../events/historical-events.js";
+import { WorldEventManager } from "../events/world-events.js";
+import { CrisisManager } from "../events/crisis-manager.js";
 import { SIMULATION_INTERVALS, SIMULATION_PRIORITY } from "./game-loop.js";
 
 /* =========================================================
@@ -95,6 +99,11 @@ export class Game {
         this.diplomacyManager = null;
         this.researchManager = null;
         this.politicsManager = null;
+        this.eventManager = null;
+        this.historicalEventManager = null;
+        this.worldEventManager = null;
+        this.crisisManager = null;
+        this.unregisterEventTasks = [];
         this.unregisterPoliticsTasks = [];
         this.unregisterResearchTask = null;
         this.unregisterDiplomacyTask = null;
@@ -208,6 +217,34 @@ export class Game {
             this.state,
             this.eventBus
         );
+
+        this.eventManager = new EventManager(this.state, this.eventBus);
+        this.historicalEventManager = new HistoricalEventManager(this.state, this.eventBus);
+        this.worldEventManager = new WorldEventManager(this.state, this.eventBus);
+        this.crisisManager = new CrisisManager(this.state, this.eventBus);
+
+        this.unregisterEventTasks = [
+            this.loop.registerTask({
+                id: "events.scheduled_daily",
+                name: "Scheduled world events",
+                interval: SIMULATION_INTERVALS.DAILY,
+                priority: SIMULATION_PRIORITY.LOW,
+                description: "Triggers scheduled historical and scripted events.",
+                execute: () => {
+                    const date = this.clock.getSnapshot().date;
+                    this.eventManager.processDaily(date);
+                    this.historicalEventManager.processDaily(date);
+                }
+            }),
+            this.loop.registerTask({
+                id: "events.dynamic_daily",
+                name: "Autonomous world events",
+                interval: SIMULATION_INTERVALS.DAILY,
+                priority: SIMULATION_PRIORITY.LOW,
+                description: "Evaluates low-probability national events with cooldowns.",
+                execute: () => this.worldEventManager.processDaily(this.clock.getSnapshot().date)
+            })
+        ];
 
         this.unregisterPoliticsTasks = [
             this.loop.registerTask({
@@ -953,12 +990,18 @@ export class Game {
         }
         for (const unregister of this.unregisterPoliticsTasks) unregister();
         this.unregisterPoliticsTasks = [];
+        for (const unregister of this.unregisterEventTasks) unregister();
+        this.unregisterEventTasks = [];
 
         if (this.worldAIManager) this.worldAIManager.destroy();
         if (this.economyManager) this.economyManager.destroy();
         if (this.diplomacyManager) this.diplomacyManager.destroy();
         if (this.researchManager) this.researchManager.destroy();
         if (this.politicsManager) this.politicsManager.destroy();
+        if (this.crisisManager) this.crisisManager.destroy();
+        if (this.worldEventManager) this.worldEventManager.destroy();
+        if (this.historicalEventManager) this.historicalEventManager.destroy();
+        if (this.eventManager) this.eventManager.destroy();
         if (this.supplyManager) this.supplyManager.destroy();
         if (this.battlePlanManager) this.battlePlanManager.destroy();
         if (this.combatManager) this.combatManager.destroy();
