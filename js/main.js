@@ -369,7 +369,8 @@ function bindInterface() {
         game.on(GAME_EVENTS.GAME_STARTED, updateClock),
         game.on(GAME_EVENTS.GAME_PAUSED, updateClock),
         game.on(GAME_EVENTS.GAME_RESUMED, updateClock),
-        game.on(GAME_EVENTS.HISTORICAL_EVENT, () => {
+        game.on(GAME_EVENTS.WORLD_UPDATED, payload => {
+            if (payload?.reason !== "historical_country_registry_changed") return;
             populateCountries();
             uiManager?.refreshCountry();
             drawMap();
