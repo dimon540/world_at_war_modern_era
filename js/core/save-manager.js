@@ -14,6 +14,8 @@ import {
     gameEventBus
 } from "./event-bus.js";
 
+import { validateGameState } from "./game-state.js";
+
 /* =====================================================
    CONSTANTS
 ===================================================== */
@@ -87,16 +89,52 @@ function validateSaveData(data) {
         throw new Error("Invalid save data.");
     }
 
-    if (!data.world || typeof data.world !== "object") {
-        throw new Error("Save is missing world state.");
+    const validation = validateGameState(data);
+
+    if (!validation.valid) {
+        throw new Error(
+            `Invalid campaign state: ${validation.errors.join("; ")}`
+        );
     }
 
-    if (!data.clock || typeof data.clock !== "object") {
-        throw new Error("Save is missing game clock.");
+    const date = data.clock.date;
+    const { day, month, year } = date;
+
+    if (
+        !Number.isInteger(year) ||
+        year < 1 ||
+        !Number.isInteger(month) ||
+        month < 1 ||
+        month > 12 ||
+        !Number.isInteger(day) ||
+        day < 1
+    ) {
+        throw new Error("Save contains an invalid campaign date.");
     }
 
-    if (!data.status || typeof data.status !== "object") {
-        throw new Error("Save is missing game status.");
+    const leapYear =
+        year % 4 === 0 &&
+        (year % 100 !== 0 || year % 400 === 0);
+
+    const monthLengths = [
+        31, leapYear ? 29 : 28, 31, 30, 31, 30,
+        31, 31, 30, 31, 30, 31
+    ];
+
+    if (day > monthLengths[month - 1]) {
+        throw new Error("Save contains an impossible calendar date.");
+    }
+
+    if (!GAME_CONFIG.time.availableSpeeds.includes(data.clock.speed)) {
+        throw new Error("Save contains an unsupported game speed.");
+    }
+
+    if (
+        !Number.isInteger(data.clock.currentHour) ||
+        data.clock.currentHour < 0 ||
+        data.clock.currentHour > 23
+    ) {
+        throw new Error("Save contains an invalid hour.");
     }
 
     return true;
