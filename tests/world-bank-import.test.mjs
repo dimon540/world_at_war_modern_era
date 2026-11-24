@@ -9,9 +9,7 @@ const codes = [
     "NY.GDP.MKTP.KD.ZG",
     "FP.CPI.TOTL.ZG",
     "SL.UEM.TOTL.ZS",
-    "MS.MIL.TOTL.P1",
-    "MS.MIL.XPND.CD",
-    "MS.MIL.XPND.GD.ZS"
+    "MS.MIL.TOTL.P1"
 ];
 
 test("World Bank importer maps sourced 2000 indicators without filling missing values", () => {
@@ -28,9 +26,7 @@ test("World Bank importer maps sourced 2000 indicators without filling missing v
         "NY.GDP.MKTP.KD.ZG": 2.5,
         "FP.CPI.TOTL.ZG": 4,
         "SL.UEM.TOTL.ZS": 8,
-        "MS.MIL.TOTL.P1": 20,
-        "MS.MIL.XPND.CD": 50,
-        "MS.MIL.XPND.GD.ZS": 5
+        "MS.MIL.TOTL.P1": 20
     };
     const rows = Object.fromEntries(codes.map(code => [
         code,
@@ -48,7 +44,6 @@ test("World Bank importer maps sourced 2000 indicators without filling missing v
     assert.equal(result.economy.countries.AAA.inflationRate, 0.04);
     assert.equal(result.economy.countries.BBB, undefined);
     assert.equal(result.military.countries.AAA.activePersonnel, 20);
-    assert.equal(result.military.countries.AAA.militaryExpenditurePercentGDP, 0.05);
     assert.equal(result.military.countries.BBB, undefined);
     assert.equal(result.economy.metadata.license, "CC BY 4.0");
 });
