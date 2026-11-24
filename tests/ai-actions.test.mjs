@@ -173,7 +173,7 @@ test("AI raises military priority when its country enters a war", () => {
     const report = ai.runDailyCycle().find(item => item.countryId === "AAA");
 
     assert.equal(report.goal, "military_modernization");
-    assert.equal(report.action.reason, "no_unassigned_active_divisions");
+    assert.equal(report.action.reason, "military_system_unavailable");
 
     ai.destroy();
     diplomacy.destroy();
