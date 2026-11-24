@@ -908,6 +908,7 @@ export class Game {
             dataLoader: this.dataLoader,
             saveManager: this.saveManager,
             divisionManager: this.divisionManager,
+            equipmentManager: this.equipmentManager,
             armyManager: this.armyManager,
             commanderManager: this.commanderManager,
             movementManager: this.movementManager,
