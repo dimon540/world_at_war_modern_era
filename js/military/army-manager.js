@@ -311,6 +311,14 @@ export class ArmyManager {
                     division.status = "disbanded";
                     division.manpower = 0;
                     division.armyId = null;
+                    if (division.commanderId) {
+                        const commander = this.state.military.commanders?.[division.commanderId];
+                        if (commander?.assignment?.type === "division"
+                            && commander.assignment.id === division.id) {
+                            commander.assignment = null;
+                        }
+                        division.commanderId = null;
+                    }
                 }
             }
         }
