@@ -20,6 +20,11 @@ export class EconomyManager {
         this.production = new ProductionManager(state, this.resources, this.factories);
         this.construction = new ConstructionManager(state, this.factories, options.construction);
         this.trade = new TradeManager(state, this.resources, options.sanctions ?? null);
+        this.constructionPointsPerCivilianFactory = Number.isFinite(options.constructionPointsPerCivilianFactory)
+            ? Math.max(0, options.constructionPointsPerCivilianFactory) : 5;
+        if (!state.economy.constructionPoints || typeof state.economy.constructionPoints !== "object") {
+            state.economy.constructionPoints = Object.create(null);
+        }
         this.destroyed = false;
     }
     #assertActive() { if (this.destroyed) throw new Error("EconomyManager has been destroyed."); }
@@ -46,7 +51,14 @@ export class EconomyManager {
             }));
         }
         const productionReports = this.production.processMonthly();
-        const constructionReports = this.construction.processMonthly(this.state.economy.constructionPoints ?? {});
+        const constructionPoints = Object.create(null);
+        for (const countryId of Object.keys(this.state.world.countries)) {
+            const civilianLevels = this.factories.list({ countryId, type: "civilian" })
+                .reduce((sum, factory) => sum + factory.level, 0);
+            constructionPoints[countryId] = civilianLevels * this.constructionPointsPerCivilianFactory;
+        }
+        this.state.economy.constructionPoints = constructionPoints;
+        const constructionReports = this.construction.processMonthly(constructionPoints);
         const tradeReports = this.trade.processMonthly();
         const report = {
             countriesWithGDP: gdpReports.length,
