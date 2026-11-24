@@ -45,9 +45,15 @@ export class EconomyManager {
                 reason: "monthly_economic_simulation"
             }));
         }
+        const productionReports = this.production.processMonthly();
+        const constructionReports = this.construction.processMonthly(this.state.economy.constructionPoints ?? {});
+        const tradeReports = this.trade.processMonthly();
         const report = {
             countriesWithGDP: gdpReports.length,
             countriesWithBudgets: budgetReports.length,
+            productionRuns: productionReports.filter(item => item.success).length,
+            completedConstructions: constructionReports.filter(item => item.completed).length,
+            tradeDeliveries: tradeReports.filter(item => item.success).length,
             gdp: this.gdp.getWorldStatistics(),
             budget: this.budgets.getWorldStatistics()
         };
@@ -66,6 +72,11 @@ export class EconomyManager {
     }
     destroy() {
         if (this.destroyed) return;
+        this.trade.destroy();
+        this.construction.destroy();
+        this.production.destroy();
+        this.resources.destroy();
+        this.factories.destroy();
         this.gdp.destroy();
         this.budgets.destroy();
         this.destroyed = true;
