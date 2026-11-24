@@ -4,6 +4,7 @@ import { createInitialGameState } from "../js/core/game-state.js";
 import { EventManager } from "../js/events/event-manager.js";
 import { WorldEventManager } from "../js/events/world-events.js";
 import { CrisisManager } from "../js/events/crisis-manager.js";
+import { HistoricalEventManager } from "../js/events/historical-events.js";
 
 test("scheduled events trigger once and apply explicit national effects",()=>{
  const state=createInitialGameState();state.world.countries.AAA={id:"AAA"};state.politics.governments.AAA={stability:50};
@@ -35,4 +36,31 @@ test("crises can escalate and resolve with accurate active counters",()=>{
  crises.resolve("crisis-1");
  assert.equal(state.events.statistics.activeCrises,0);
  crises.destroy();
+});
+
+test("verified independence events create historical country records", () => {
+ const state=createInitialGameState();
+ state.world.countries.YUG={id:"YUG",name:"Federal Republic of Yugoslavia"};
+ const history=new HistoricalEventManager(state,null);
+ history.load([
+  {id:"MNE_INDEPENDENCE",date:"2006-06-03",status:"verified",historical:true,countries:["MNE","YUG"],changes:{
+   createdCountry:"MNE",
+   createdCountryData:{id:"MNE",name:"Montenegro",officialName:"Republic of Montenegro",capital:"Podgorica",iso2:"ME",iso3:"MNE",region:"Europe"},
+   successorCountry:"SRB",
+   successorCountryData:{id:"SRB",name:"Serbia",officialName:"Republic of Serbia",capital:"Belgrade",iso2:"RS",iso3:"SRB",region:"Europe"}
+  }},
+  {id:"KOSOVO_STATUS",date:"2008-02-17",status:"disputed",historical:true,countries:["XKX","SRB"],changes:{
+   entity:"XKX",
+   entityData:{id:"XKX",name:"Kosovo",capital:"Pristina",iso2:"XK",iso3:"XKX",region:"Europe",status:"disputed_entity"}
+  }}
+ ]);
+ history.processDaily("2006-06-02");
+ assert.equal(state.world.countries.MNE,undefined);
+ history.processDaily("2006-06-03");
+ assert.equal(state.world.countries.MNE.status,"independent");
+ assert.equal(state.world.countries.SRB.status,"independent");
+ history.processDaily("2008-02-17");
+ assert.equal(state.world.countries.XKX.status,"disputed_entity");
+ assert.equal(state.world.statistics.totalCountries,4);
+ history.destroy();
 });
