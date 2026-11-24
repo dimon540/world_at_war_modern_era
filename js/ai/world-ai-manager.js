@@ -98,6 +98,7 @@ export class WorldAIManager {
         const countries = Object.values(this.state.world.countries);
         let created = 0;
         let refreshed = 0;
+        const validIds = new Set(countries.filter(country => country?.id !== undefined && country?.id !== null).map(country => String(country.id)));
         for (const country of countries) {
             if (!country || country.id === undefined || country.id === null) continue;
             const id = String(country.id);
@@ -106,20 +107,32 @@ export class WorldAIManager {
                 created += 1;
             } else {
                 const agent = this.agents[id];
+                const defaults = this.#makeAgent({ ...country, id });
                 agent.countryId = id;
                 agent.enabled = agent.enabled !== false;
-                if (!isRecord(agent.priorities)) agent.priorities = this.#makeAgent({ ...country, id }).priorities;
+                agent.personality = isRecord(agent.personality) ? { ...defaults.personality, ...agent.personality } : defaults.personality;
+                const savedPriorities = isRecord(agent.priorities) ? agent.priorities : {};
+                agent.priorities = Object.fromEntries(GOALS.map(goal => [
+                    goal,
+                    Number.isFinite(savedPriorities[goal]) ? clamp(savedPriorities[goal], 0, 1) : defaults.priorities[goal]
+                ]));
                 if (!Array.isArray(agent.currentPlan)) agent.currentPlan = [];
                 if (!Array.isArray(agent.recentDecisions)) agent.recentDecisions = [];
+                if (!Number.isSafeInteger(agent.decisionCount) || agent.decisionCount < 0) agent.decisionCount = 0;
                 refreshed += 1;
             }
+        }
+        for (const id of Object.keys(this.agents)) {
+            if (!validIds.has(id)) delete this.agents[id];
         }
         this.initialized = true;
         this.state.simulation.worldAI.enabled = this.enabled;
         return { totalCountries: countries.length, created, refreshed, agents: Object.keys(this.agents).length };
     }
     #ensureAgents() {
-        if (!this.initialized || Object.keys(this.agents).length !== Object.keys(this.state.world.countries).length) {
+        const countryIds = Object.keys(this.state.world.countries);
+        if (!this.initialized || countryIds.length !== Object.keys(this.agents).length
+            || countryIds.some(id => !this.agents[id])) {
             this.initializeAgents();
         }
     }
@@ -184,6 +197,10 @@ export class WorldAIManager {
         const reports = [];
         for (const agent of Object.values(this.agents)) {
             if (!agent.enabled || !this.state.world.countries[agent.countryId]) continue;
+            if (!agent.currentGoal || !GOALS.includes(agent.currentGoal)) {
+                const initialGoal = this.#rankGoals(agent)[0]?.goal;
+                if (initialGoal) this.#recordDecision(agent, initialGoal, "weekly_review_initialization");
+            }
             const previous = agent.priorities[agent.currentGoal] ?? 0;
             const risk = agent.personality?.riskTolerance ?? 0.5;
             const adjustment = (risk - 0.5) * 0.01;
