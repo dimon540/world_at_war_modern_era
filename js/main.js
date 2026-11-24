@@ -21,6 +21,7 @@ const elements = {
     countryStatus: $("#country-status"),
     countryCount: $("#country-count"),
     provinceCount: $("#province-count"),
+    aiCount: $("#ai-count"),
     selectedCountry: $("#selected-country"),
     startButton: $("#start-game"),
     pauseButton: $("#pause-game"),
@@ -265,6 +266,9 @@ function populateCountries() {
     if (elements.provinceCount) {
         elements.provinceCount.textContent =
             String(Object.keys(game.state.world.provinces).length);
+    }
+    if (elements.aiCount) {
+        elements.aiCount.textContent = String(game.worldAIManager.getSnapshot().activeAgents);
     }
 }
 
