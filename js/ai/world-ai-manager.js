@@ -188,6 +188,41 @@ export class WorldAIManager {
             const project = research.startResearch(countryId, pool[0].id, { priority: agent.priorities.technological_progress });
             return { executed: true, action: "research_started", technologyId: project.technologyId, cost: project.cost };
         }
+        if (goal === "military_modernization") {
+            const divisions = this.systems.divisionManager;
+            const armies = this.systems.armyManager;
+            if (!divisions || !armies) return { executed: false, reason: "military_system_unavailable" };
+            const unassigned = Object.values(this.state.military.divisions)
+                .filter(item => item.countryId === countryId
+                    && !item.armyId
+                    && !["disbanded", "destroyed"].includes(item.status))
+                .sort((a, b) => a.name.localeCompare(b.name));
+            if (!unassigned.length) return { executed: false, reason: "no_unassigned_active_divisions" };
+            const date = currentDate(this.state);
+            const dateId = date ? `${date.year}-${date.month}-${date.day}` : "undated";
+            const army = armies.createArmy(countryId, "National Reserve Group", {
+                id: `ai-army-${countryId}-${dateId}-${agent.decisionCount}`
+            }).army;
+            const assigned = [];
+            for (const division of unassigned.slice(0, 5)) {
+                armies.assignDivision(army.id, division.id);
+                assigned.push(division.id);
+            }
+            return { executed: true, action: "army_formation_created", armyId: army.id, divisionIds: assigned };
+        }
+        if (goal === "domestic_stability") {
+            const government = this.systems.politicsManager?.governments.getGovernment(countryId);
+            if (!government) return { executed: false, reason: "government_baseline_unavailable" };
+            if (!isRecord(this.state.politics.stabilityModifiers)) {
+                this.state.politics.stabilityModifiers = Object.create(null);
+            }
+            const modifier = government.stability < 35 ? 0.75 : government.stability < 60 ? 0.4 : 0.1;
+            this.state.politics.stabilityModifiers[countryId] = {
+                ...(this.state.politics.stabilityModifiers[countryId] ?? {}),
+                government: modifier
+            };
+            return { executed: true, action: "stability_policy_set", monthlyStabilityModifier: modifier };
+        }
         if (goal === "diplomatic_security") {
             const diplomacy = this.systems.diplomacyManager;
             if (!diplomacy) return { executed: false, reason: "diplomacy_system_unavailable" };
