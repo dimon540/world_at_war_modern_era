@@ -15,6 +15,14 @@ const INDICATORS = Object.freeze({
     activePersonnel: { code: "MS.MIL.TOTL.P1", unit: "persons", kind: "military" },
 });
 
+const FUTURE_COUNTRIES = Object.freeze({
+    TLS: { id: "TLS", iso3: "TLS", name: "Timor-Leste" },
+    MNE: { id: "MNE", iso3: "MNE", name: "Montenegro" },
+    SRB: { id: "SRB", iso3: "SRB", name: "Serbia" },
+    XKX: { id: "XKX", iso3: "XKX", name: "Kosovo" },
+    SSD: { id: "SSD", iso3: "SSD", name: "South Sudan" }
+});
+
 const finiteOrNull = value => Number.isFinite(value) ? value : null;
 
 export function buildWorldBankDatasets(countryDataset, indicatorRows, retrievedAt = new Date().toISOString()) {
@@ -33,7 +41,7 @@ export function buildWorldBankDatasets(countryDataset, indicatorRows, retrievedA
         if (!Array.isArray(rows)) throw new TypeError("Missing World Bank indicator rows: " + definition.code);
         for (const row of rows) {
             const iso3 = String(row.countryiso3code ?? "").toUpperCase();
-            const country = countryByIso3.get(iso3);
+            const country = countryByIso3.get(iso3) ?? FUTURE_COUNTRIES[iso3];
             const value = finiteOrNull(row.value);
             if (!country || value === null) continue;
             if (!valuesByCountry.has(country.id)) {
@@ -117,6 +125,7 @@ export function buildWorldBankDatasets(countryDataset, indicatorRows, retrievedA
                 license: "CC BY 4.0",
                 retrievedAt,
                 missingValues: "Preserved as null; no interpolation or modern-value substitution.",
+                futureCountryRecords: "Selected post-2000 states are retained as pending baselines and activated only by their dated historical events.",
                 indicators: Object.fromEntries(Object.entries(INDICATORS)
                     .filter(([, definition]) => definition.kind === "economy")
                     .map(([key, definition]) => [key, { code: definition.code, unit: definition.unit }]))
