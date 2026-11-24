@@ -75,6 +75,7 @@ try {
     await page.locator("#pause-game").click();
     await page.waitForFunction(
         () => document.querySelector("#game-status")?.textContent === "Paused",
+        undefined,
         { timeout: 5000 }
     );
 
