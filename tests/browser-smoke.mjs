@@ -92,6 +92,14 @@ try {
         { timeout: 5000 }
     );
 
+    await page.locator('[data-panel-tab="economy"]').click();
+    assert.equal(await page.locator("#panel-economy").isVisible(), true);
+    assert.ok((await page.locator("#panel-economy").textContent()).includes("Industrial construction"));
+
+    await page.locator('[data-panel-tab="army"]').click();
+    assert.equal(await page.locator("#panel-army").isVisible(), true);
+    assert.ok((await page.locator("#panel-army").textContent()).includes("Equipment stockpiles"));
+
     await page.locator('[data-panel-tab="research"]').click();
     assert.equal(await page.locator("#panel-research").isVisible(), true);
     assert.deepEqual(pageErrors, [], "The game must not throw uncaught browser errors.");
