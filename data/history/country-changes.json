@@ -1,4 +1,3 @@
-
 {
   "metadata": {
     "id": "country_changes",
@@ -32,7 +31,17 @@
         "createdCountry": "TLS",
         "formerAdministeringPower": "PRT",
         "previousControllingPower": "IDN",
-        "newCountryName": "Timor-Leste"
+        "newCountryName": "Timor-Leste",
+        "createdCountryData": {
+          "id": "TLS",
+          "name": "Timor-Leste",
+          "officialName": "Democratic Republic of Timor-Leste",
+          "capital": "Dili",
+          "iso2": "TL",
+          "iso3": "TLS",
+          "region": "Asia",
+          "status": "sovereign_state"
+        }
       },
       "status": "verified",
       "sources": [
@@ -83,7 +92,27 @@
       "changes": {
         "createdCountry": "MNE",
         "successorCountry": "SRB",
-        "formerStateUnion": "Serbia and Montenegro"
+        "formerStateUnion": "Serbia and Montenegro",
+        "createdCountryData": {
+          "id": "MNE",
+          "name": "Montenegro",
+          "officialName": "Republic of Montenegro",
+          "capital": "Podgorica",
+          "iso2": "ME",
+          "iso3": "MNE",
+          "region": "Europe",
+          "status": "sovereign_state"
+        },
+        "successorCountryData": {
+          "id": "SRB",
+          "name": "Serbia",
+          "officialName": "Republic of Serbia",
+          "capital": "Belgrade",
+          "iso2": "RS",
+          "iso3": "SRB",
+          "region": "Europe",
+          "status": "sovereign_state"
+        }
       },
       "status": "verified",
       "sources": [
@@ -110,7 +139,17 @@
         "entity": "XKX",
         "declaredIndependenceFrom": "SRB",
         "unMembership": false,
-        "internationalStatus": "partially_recognized"
+        "internationalStatus": "partially_recognized",
+        "entityData": {
+          "id": "XKX",
+          "name": "Kosovo",
+          "officialName": "Republic of Kosovo",
+          "capital": "Pristina",
+          "iso2": "XK",
+          "iso3": "XKX",
+          "region": "Europe",
+          "status": "disputed_entity"
+        }
       },
       "status": "disputed",
       "sources": [
@@ -135,7 +174,17 @@
       "description": "South Sudan became independent following the 2011 referendum and separated from Sudan.",
       "changes": {
         "createdCountry": "SSD",
-        "separatedFrom": "SDN"
+        "separatedFrom": "SDN",
+        "createdCountryData": {
+          "id": "SSD",
+          "name": "South Sudan",
+          "officialName": "Republic of South Sudan",
+          "capital": "Juba",
+          "iso2": "SS",
+          "iso3": "SSD",
+          "region": "Africa",
+          "status": "sovereign_state"
+        }
       },
       "status": "verified",
       "sources": [
@@ -160,7 +209,8 @@
       "changes": {
         "previousName": "Republic of Macedonia",
         "newName": "North Macedonia",
-        "newOfficialName": "Republic of North Macedonia"
+        "newOfficialName": "Republic of North Macedonia",
+        "entity": "MKD"
       },
       "status": "verified",
       "sources": [
