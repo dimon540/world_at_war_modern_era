@@ -404,13 +404,7 @@ export class GameLoop {
 
         this.state.simulation.enabled = true;
 
-        this.eventBus.emit(
-            GAME_EVENTS.GAME_STARTED,
-            {
-                timestamp: Date.now(),
-                registeredTasks: this.tasks.size
-            }
-        );
+        this.state.simulation.enabled = true;
     }
 
     stop() {
@@ -423,12 +417,7 @@ export class GameLoop {
 
         this.pendingUnits.length = 0;
 
-        this.eventBus.emit(
-            GAME_EVENTS.GAME_PAUSED,
-            {
-                timestamp: Date.now()
-            }
-        );
+        this.state.simulation.enabled = false;
     }
 
     /* ===============================================
