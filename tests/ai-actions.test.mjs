@@ -8,6 +8,8 @@ import { DiplomacyManager } from "../js/diplomacy/diplomacy-manager.js";
 import { DivisionManager } from "../js/military/divisions.js";
 import { ArmyManager } from "../js/military/army-manager.js";
 import { PoliticsManager } from "../js/politics/politics-manager.js";
+import { EquipmentManager } from "../js/military/equipment.js";
+import { EquipmentProductionManager } from "../js/military/equipment-production.js";
 
 function makeState() {
     const state = createInitialGameState();
@@ -177,4 +179,46 @@ test("AI raises military priority when its country enters a war", () => {
 
     ai.destroy();
     diplomacy.destroy();
+});
+
+test("AI military priority starts equipment production when factories and steel exist", () => {
+    const state = makeState();
+    const ai = new WorldAIManager(state);
+    const economy = new EconomyManager(state);
+    const equipment = new EquipmentManager(state);
+    const divisions = new DivisionManager(state);
+    const armies = new ArmyManager(state);
+    const factory = economy.factories.create({
+        id: "AAA-military-factory",
+        countryId: "AAA",
+        type: "military",
+        level: 2
+    });
+    economy.resources.setStockpile("AAA", "steel", 20);
+    const production = new EquipmentProductionManager(
+        state,
+        equipment,
+        economy.factories,
+        economy.resources
+    );
+    ai.setSystems({
+        economyManager: economy,
+        equipmentProductionManager: production,
+        divisionManager: divisions,
+        armyManager: armies
+    });
+    ai.initializeAgents();
+    forceGoal(ai, "AAA", "military_modernization");
+
+    const report = ai.runDailyCycle()[0];
+
+    assert.equal(report.action.action, "equipment_production_started");
+    assert.equal(production.list({ countryId: "AAA", status: "active" })[0].factoryId, factory.id);
+
+    ai.destroy();
+    production.destroy();
+    armies.destroy();
+    divisions.destroy();
+    equipment.destroy();
+    economy.destroy();
 });
