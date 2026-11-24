@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -52,6 +53,14 @@ jobs:
               sys.exit(1)
           print(f"Validated relative imports in {len(files)} JavaScript files.")
           PY
+
+      - name: Validate game entry point
+        run: |
+          test -f index.html
+          test -f js/main.js
+          grep -q 'js/main.js' index.html
+          grep -q 'military.land_movement' js/core/game.js
+          grep -q 'military.land_combat' js/core/game.js
 
       - name: Validate JSON and map datasets
         run: |
