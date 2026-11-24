@@ -105,24 +105,34 @@ export class ArmyPanel {
         button.className = "action-button action-secondary";
         button.textContent = "Recruit division";
 
-        const canEquip = () => {
+        const recruitmentStatus = () => {
             const type = unitTypes.find(item => item.id === select.value);
-            return Boolean(type && type.equipment.every(equipmentId =>
+            if (!type) return { available: false, reason: "Select a valid division template." };
+            const hasEquipment = type.equipment.every(equipmentId =>
                 this.game.equipmentManager.getStock(countryId, equipmentId) >= 1
-            ));
+            );
+            if (!hasEquipment) return { available: false, reason: "Recruitment requires the full equipment package in the national stockpile." };
+            const personnel = this.game.state.military.nationalPersonnel?.[countryId]?.activePersonnel;
+            if (!Number.isFinite(personnel)) return { available: false, reason: "Recruitment requires a verified 2000 active-personnel baseline." };
+            const allocated = Object.values(this.game.state.military.divisions)
+                .filter(item => item.countryId === countryId && !["disbanded", "destroyed"].includes(item.status))
+                .reduce((sum, item) => sum + (item.manpower ?? 0), 0);
+            const availableManpower = Math.max(0, personnel - allocated);
+            if (availableManpower < type.manpower) {
+                return { available: false, reason: `Insufficient available manpower: ${availableManpower.toLocaleString()} / ${type.manpower.toLocaleString()} required.` };
+            }
+            return { available: true, reason: "Equipment and active personnel are available." };
         };
         const refreshAvailability = () => {
-            const available = canEquip();
-            button.disabled = !available;
-            message.textContent = available
-                ? "Required equipment is available."
-                : "Recruitment unavailable: the national stockpile lacks required equipment.";
+            const status = recruitmentStatus();
+            button.disabled = !status.available;
+            message.textContent = status.reason;
         };
         select.addEventListener("change", refreshAvailability);
         button.addEventListener("click", () => {
             try {
                 const type = unitTypes.find(item => item.id === select.value);
-                if (!type || !canEquip()) {
+                if (!type || !recruitmentStatus().available) {
                     refreshAvailability();
                     return;
                 }
@@ -133,7 +143,7 @@ export class ArmyPanel {
                     countryId,
                     divisionName,
                     { [type.id]: 1 },
-                    { requireEquipment: true }
+                    { requireEquipment: true, requireManpower: true }
                 );
                 if (!result.success) {
                     message.textContent = `Recruitment failed: ${result.reason ?? "equipment unavailable"}.`;
