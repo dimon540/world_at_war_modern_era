@@ -253,6 +253,7 @@ export class CommanderManager {
             return { success: true, changed: false, commander: cloneCommander(commander) };
         }
         this.#detachPreviousAssignment(commander);
+        this.#releaseSlot(army, "army");
         commander.assignment = { type: "army", id: army.id };
         army.commanderId = commander.id;
         this.#record(commander, "assigned_to_army", { armyId: army.id });
@@ -273,6 +274,7 @@ export class CommanderManager {
             return { success: true, changed: false, commander: cloneCommander(commander) };
         }
         this.#detachPreviousAssignment(commander);
+        this.#releaseSlot(division, "division");
         division.commanderId = commander.id;
         commander.assignment = { type: "division", id: division.id };
         this.#record(commander, "assigned_to_division", { divisionId: division.id });
@@ -288,6 +290,20 @@ export class CommanderManager {
         const previous = registry?.[id];
         if (previous?.commanderId === commander.id) previous.commanderId = null;
         commander.assignment = null;
+    }
+
+    #releaseSlot(target, assignmentType) {
+        if (!target.commanderId) return;
+        const previousCommander = this.state.military.commanders[target.commanderId];
+        if (previousCommander?.assignment?.type === assignmentType
+            && previousCommander.assignment.id === target.id) {
+            previousCommander.assignment = null;
+            this.#record(previousCommander, "command_relieved", {
+                assignmentType,
+                assignmentId: target.id
+            });
+        }
+        target.commanderId = null;
     }
 
     unassign(commanderId) {
