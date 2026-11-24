@@ -26,6 +26,7 @@ import { DivisionManager } from "../military/divisions.js";
 import { ArmyManager } from "../military/army-manager.js";
 import { CommanderManager } from "../military/commanders.js";
 import { MovementManager } from "../military/movement.js";
+import { CombatManager } from "../military/combat.js";
 import { SIMULATION_INTERVALS, SIMULATION_PRIORITY } from "./game-loop.js";
 
 /* =========================================================
@@ -77,7 +78,9 @@ export class Game {
         this.armyManager = null;
         this.commanderManager = null;
         this.movementManager = null;
+        this.combatManager = null;
         this.unregisterMovementTask = null;
+        this.unregisterCombatTask = null;
 
         this.initialized = false;
         this.initializationPromise = null;
@@ -136,6 +139,12 @@ export class Game {
             this.eventBus
         );
 
+        this.combatManager = new CombatManager(
+            this.state,
+            this.divisionManager,
+            this.eventBus
+        );
+
         this.unregisterMovementTask = this.loop.registerTask({
             id: "military.land_movement",
             name: "Land division movement",
@@ -143,6 +152,15 @@ export class Game {
             priority: SIMULATION_PRIORITY.HIGH,
             description: "Advances active land movement orders by one simulation hour.",
             execute: () => this.movementManager.advance(1)
+        });
+
+        this.unregisterCombatTask = this.loop.registerTask({
+            id: "military.land_combat",
+            name: "Land battle resolution",
+            interval: SIMULATION_INTERVALS.HOURLY,
+            priority: SIMULATION_PRIORITY.HIGH,
+            description: "Resolves active land battles once per simulation hour.",
+            execute: () => this.combatManager.advanceBattles(1)
         });
     }
 
@@ -674,7 +692,8 @@ export class Game {
             divisionManager: this.divisionManager,
             armyManager: this.armyManager,
             commanderManager: this.commanderManager,
-            movementManager: this.movementManager
+            movementManager: this.movementManager,
+            combatManager: this.combatManager
         };
     }
 
@@ -752,7 +771,12 @@ export class Game {
             this.unregisterMovementTask();
             this.unregisterMovementTask = null;
         }
+        if (this.unregisterCombatTask) {
+            this.unregisterCombatTask();
+            this.unregisterCombatTask = null;
+        }
 
+        if (this.combatManager) this.combatManager.destroy();
         if (this.movementManager) this.movementManager.destroy();
         if (this.commanderManager) this.commanderManager.destroy();
         if (this.armyManager) this.armyManager.destroy();
