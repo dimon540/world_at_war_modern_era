@@ -1,0 +1,117 @@
+
+{
+  "id": "modern_2000",
+  "name": "WORLD AT WAR: MODERN ERA",
+  "version": "1.0.0",
+  "description": "Global grand strategy campaign beginning on 1 January 2000.",
+  "historical": true,
+  "startDate": {
+    "day": 1,
+    "month": 1,
+    "year": 2000
+  },
+  "endDate": null,
+  "calendar": {
+    "type": "gregorian",
+    "hoursPerDay": 24,
+    "daysPerWeek": 7,
+    "monthsPerYear": 12,
+    "daysPerYear": 365,
+    "leapYears": true
+  },
+  "time": {
+    "initialSpeed": 1,
+    "availableSpeeds": [1, 2, 4, 8],
+    "ticksPerDay": 1,
+    "pauseOnEvents": true
+  },
+  "world": {
+    "scope": "global",
+    "historicalBorders": true,
+    "historicalCountryStatus": true,
+    "independentCountryAI": true,
+    "simulateAllCountries": true,
+    "includeDependentTerritories": true,
+    "includeDisputedTerritories": true
+  },
+  "simulation": {
+    "economy": true,
+    "military": true,
+    "diplomacy": true,
+    "politics": true,
+    "technology": true,
+    "trade": true,
+    "construction": true,
+    "research": true,
+    "elections": true,
+    "historicalEvents": true,
+    "dynamicEvents": true,
+    "wars": true,
+    "peaceNegotiations": true,
+    "sanctions": true,
+    "supply": true,
+    "independentAI": true
+  },
+  "player": {
+    "countrySelection": true,
+    "allowCountrySwitching": true,
+    "maximumHumanPlayers": 1,
+    "defaultCountry": null
+  },
+  "ai": {
+    "enabled": true,
+    "allUncontrolledCountries": true,
+    "independentDecisionMaking": true,
+    "economicDevelopment": true,
+    "militaryDevelopment": true,
+    "diplomaticActivity": true,
+    "politicalDevelopment": true,
+    "research": true,
+    "warPlanning": true
+  },
+  "map": {
+    "projection": "naturalEarth",
+    "defaultMode": "political",
+    "provinceSelection": true,
+    "countrySelection": true,
+    "showProvinceBorders": true,
+    "showCountryBorders": true,
+    "historicalOwnership": true,
+    "dataFiles": {
+      "countries": "../../countries/countries.json",
+      "provinces": "../../map/provinces.geojson",
+      "provinceDefinitions": "../../map/province-definitions.json",
+      "states": "../../map/states.json",
+      "strategicRegions": "../../map/strategic-regions.json",
+      "ownership": "./ownership.json"
+    }
+  },
+  "data": {
+    "countries": "../../countries/countries.json",
+    "countryHistory": "../../history/country-changes.json",
+    "military": "../../military/",
+    "economy": "../../economy/",
+    "diplomacy": "../../diplomacy/",
+    "politics": "../../politics/",
+    "technology": "../../technology/",
+    "events": "../../history/"
+  },
+  "historicalRules": {
+    "useScenarioDate": true,
+    "doNotUseModernBorders": true,
+    "doNotUseModernCountryNamesAutomatically": true,
+    "preserveHistoricalCountryIdentities": true,
+    "trackCountryFormationAndDissolution": true,
+    "trackTerritorialChanges": true
+  },
+  "multiplayer": {
+    "enabled": false,
+    "maximumPlayers": 1
+  },
+  "metadata": {
+    "createdFor": "WORLD AT WAR: MODERN ERA",
+    "scenarioDate": "2000-01-01",
+    "dataCompleteness": "in_progress",
+    "requiresHistoricalVerification": true
+  }
+}
