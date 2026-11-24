@@ -1,1 +1,66 @@
-
+/* WORLD AT WAR: MODERN ERA — global foundations */
+:root {
+    color-scheme: dark;
+    font-family: "Inter", system-ui, sans-serif;
+    background: #0b141c;
+    color: #e7edf0;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    --bg: #0b141c;
+    --surface: #14212c;
+    --surface-raised: #192a37;
+    --surface-soft: #1d303e;
+    --line: rgba(173, 194, 205, .13);
+    --text: #e7edf0;
+    --muted: #91a3ad;
+    --gold: #c6a15f;
+    --gold-bright: #e2c17d;
+    --green: #79b89b;
+    --red: #d47d75;
+    --radius: 7px;
+    --shadow: 0 12px 32px rgba(0, 0, 0, .22);
+}
+* { box-sizing: border-box; }
+html { min-width: 320px; min-height: 100%; background: var(--bg); }
+body { margin: 0; min-width: 320px; min-height: 100vh; background: var(--bg); color: var(--text); }
+button, select, input { font: inherit; }
+button { color: inherit; }
+button:focus-visible, select:focus-visible, a:focus-visible {
+    outline: 2px solid var(--gold-bright);
+    outline-offset: 2px;
+}
+button:disabled { cursor: not-allowed; opacity: .42; }
+a { color: inherit; }
+[hidden] { display: none !important; }
+.game-shell { min-height: 100vh; display: flex; flex-direction: column; }
+.eyebrow {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .16em;
+    line-height: 1.2;
+}
+.panel {
+    min-width: 0;
+    padding: 17px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: linear-gradient(145deg, rgba(27, 43, 55, .98), rgba(18, 31, 41, .98));
+    box-shadow: var(--shadow);
+}
+.panel + .panel { margin-top: 13px; }
+.panel-heading { margin-bottom: 15px; }
+.panel-heading h1, .panel-heading h2 {
+    margin: 0;
+    color: var(--text);
+    font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: .025em;
+    line-height: 1.08;
+}
+.panel-heading h1 { font-size: 24px; }
+.panel-note { margin: 13px 0 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
+.field-label, .summary-label { display: block; margin-bottom: 7px; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
