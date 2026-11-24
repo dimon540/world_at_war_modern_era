@@ -1,5 +1,5 @@
 import { markGameStateDirty } from "../core/game-state.js";
-import { GAME_EVENTS, gameEventBus } from "../core/event-bus.js";
+import { gameEventBus } from "../core/event-bus.js";
 import { equipmentCatalog } from "./equipment.js";
 
 const isRecord = value => value !== null && typeof value === "object" && !Array.isArray(value);
@@ -30,9 +30,10 @@ export class EquipmentProductionManager {
         if (this.lines[key]) throw new Error("Production line already exists: " + key);
         if (!equipmentCatalog.has(equipmentId)) throw new RangeError("Unknown equipment type: " + equipmentId);
         const factory = this.factoryManager.get(factoryId);
-        if (!factory || factory.countryId !== owner || !["military", "naval"].includes(factory.type)) {
+        if (!factory || factory.status !== "active" || factory.countryId !== owner || !["military", "naval"].includes(factory.type)) {
             throw new RangeError("Equipment production requires an active national military or naval factory.");
         }
+        if (!["active", "paused"].includes(status)) throw new RangeError("Production status must be active or paused.");
         if (!Number.isSafeInteger(unitsPerFactory) || unitsPerFactory < 1) throw new RangeError("unitsPerFactory must be a positive integer.");
         if (!Number.isFinite(efficiency) || efficiency <= 0 || efficiency > 2) throw new RangeError("Efficiency must be greater than zero and at most two.");
         if (!isRecord(resourceInputs) || !Object.keys(resourceInputs).length ||
@@ -103,12 +104,6 @@ export class EquipmentProductionManager {
                 produced: quantity,
                 totalProduced: line.totalProduced,
                 consumed: required
-            });
-            this.eventBus?.emit?.(GAME_EVENTS.EQUIPMENT_PRODUCED, {
-                countryId: line.countryId,
-                equipmentId: line.equipmentId,
-                quantity,
-                lineId: line.id
             });
         }
         markGameStateDirty(this.state);
