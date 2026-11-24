@@ -33,6 +33,9 @@ jobs:
           done < <(find js -type f -name '*.js' -print0)
           echo "Syntax checked $count JavaScript files."
 
+      - name: Run military system tests
+        run: node --test tests/*.test.mjs
+
       - name: Validate local JavaScript imports
         shell: bash
         run: |
