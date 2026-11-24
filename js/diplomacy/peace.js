@@ -1,1 +1,15 @@
-
+/* WORLD AT WAR: peace agreements and settlement terms. */
+import { markGameStateDirty } from "../core/game-state.js";
+import { GAME_EVENTS, gameEventBus } from "../core/event-bus.js";
+const isRecord=v=>v!==null&&typeof v==="object"&&!Array.isArray(v);
+const req=(v,l)=>{const s=String(v??"").trim();if(!s)throw new TypeError(`${l} is required.`);return s;};
+export class PeaceManager{
+ constructor(state,warManager,eventBus=gameEventBus){if(!state?.diplomacy||!warManager)throw new TypeError("PeaceManager requires diplomacy state and WarManager.");this.state=state;this.warManager=warManager;this.eventBus=eventBus;if(!isRecord(state.diplomacy.treaties))state.diplomacy.treaties=Object.create(null);this.treaties=state.diplomacy.treaties;this.destroyed=false;}
+ #active(){if(this.destroyed)throw new Error("PeaceManager has been destroyed.");}
+ propose({id,warId,proposerId,recipientId,terms=[],date=null}={}){this.#active();const key=req(id,"Treaty ID");if(this.treaties[key])throw new Error(`Treaty already exists: ${key}`);const war=this.warManager.getWar(req(warId,"War ID"));if(!war||war.status!=="active")throw new RangeError("Active war not found.");const p=req(proposerId,"Proposer ID"),r=req(recipientId,"Recipient ID");if(p===r||!war.participants.some(x=>x.countryId===p)||!war.participants.some(x=>x.countryId===r))throw new RangeError("Both parties must be distinct participants in the war.");if(!Array.isArray(terms)||terms.some(x=>!isRecord(x)))throw new TypeError("Peace terms must be an array of objects.");const treaty={id:key,warId,proposerId:p,recipientId:r,terms:structuredClone(terms),status:"proposed",proposedAt:date,acceptedAt:null,rejectedAt:null};this.treaties[key]=treaty;markGameStateDirty(this.state);this.eventBus?.emit?.(GAME_EVENTS.WORLD_UPDATED,{reason:"peace_proposed",treaty:structuredClone(treaty)});return structuredClone(treaty);}
+ accept(id,{date=null,outcome="negotiated_peace"}={}){this.#active();const treaty=this.treaties[req(id,"Treaty ID")];if(!treaty||treaty.status!=="proposed")throw new RangeError("Pending peace proposal not found.");treaty.status="accepted";treaty.acceptedAt=date;const ended=this.warManager.endWar(treaty.warId,{date,outcome,terms:treaty.terms});if(!ended)throw new Error("The associated war could not be ended.");markGameStateDirty(this.state);this.eventBus?.emit?.(GAME_EVENTS.PEACE_SIGNED,{treaty:structuredClone(treaty),war:ended});return structuredClone(treaty);}
+ reject(id,{date=null,reason="rejected"}={}){this.#active();const treaty=this.treaties[req(id,"Treaty ID")];if(!treaty||treaty.status!=="proposed")return false;treaty.status="rejected";treaty.rejectedAt=date;treaty.rejectionReason=reason;markGameStateDirty(this.state);this.eventBus?.emit?.(GAME_EVENTS.WORLD_UPDATED,{reason:"peace_rejected",treatyId:treaty.id});return structuredClone(treaty);}
+ list({status=null,warId=null}={}){this.#active();return Object.values(this.treaties).filter(x=>(!status||x.status===status)&&(!warId||x.warId===warId)).map(x=>structuredClone(x));}
+ destroy(){if(this.destroyed)return;this.destroyed=true;this.state=null;this.warManager=null;this.eventBus=null;this.treaties=null;}
+}
+export default PeaceManager;
