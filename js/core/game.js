@@ -28,6 +28,7 @@ import { CommanderManager } from "../military/commanders.js";
 import { MovementManager } from "../military/movement.js";
 import { CombatManager } from "../military/combat.js";
 import { FrontlineManager } from "../military/frontlines.js";
+import { SupplyManager } from "../military/supply.js";
 import { SIMULATION_INTERVALS, SIMULATION_PRIORITY } from "./game-loop.js";
 
 /* =========================================================
@@ -81,7 +82,9 @@ export class Game {
         this.movementManager = null;
         this.combatManager = null;
         this.frontlineManager = null;
+        this.supplyManager = null;
         this.unregisterMovementTask = null;
+        this.unregisterSupplyTask = null;
         this.unregisterCombatTask = null;
 
         this.initialized = false;
@@ -135,6 +138,12 @@ export class Game {
             this.eventBus
         );
 
+        this.supplyManager = new SupplyManager(
+            this.state,
+            this.divisionManager,
+            this.eventBus
+        );
+
         this.commanderManager = new CommanderManager(
             this.state,
             this.eventBus
@@ -168,6 +177,15 @@ export class Game {
             priority: SIMULATION_PRIORITY.HIGH,
             description: "Resolves active land battles once per simulation hour.",
             execute: () => this.combatManager.advanceBattles(1)
+        });
+
+        this.unregisterSupplyTask = this.loop.registerTask({
+            id: "military.supply",
+            name: "Daily military supply allocation",
+            interval: SIMULATION_INTERVALS.DAILY,
+            priority: SIMULATION_PRIORITY.NORMAL,
+            description: "Allocates stockpiled supplies and fuel to assigned divisions.",
+            execute: () => this.supplyManager.processDaily()
         });
     }
 
@@ -701,7 +719,8 @@ export class Game {
             commanderManager: this.commanderManager,
             movementManager: this.movementManager,
             combatManager: this.combatManager,
-            frontlineManager: this.frontlineManager
+            frontlineManager: this.frontlineManager,
+            supplyManager: this.supplyManager
         };
     }
 
@@ -783,7 +802,12 @@ export class Game {
             this.unregisterCombatTask();
             this.unregisterCombatTask = null;
         }
+        if (this.unregisterSupplyTask) {
+            this.unregisterSupplyTask();
+            this.unregisterSupplyTask = null;
+        }
 
+        if (this.supplyManager) this.supplyManager.destroy();
         if (this.combatManager) this.combatManager.destroy();
         if (this.frontlineManager) this.frontlineManager.destroy();
         if (this.movementManager) this.movementManager.destroy();
