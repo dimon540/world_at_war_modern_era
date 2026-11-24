@@ -248,6 +248,7 @@ function chooseCountry(countryId) {
         return;
     }
     renderCountry(countryId);
+    if (elements.aiCount) elements.aiCount.textContent = String(game.worldAIManager.getSnapshot().activeAgents);
     uiManager?.refreshCountry();
     drawMap();
     game.eventBus.emit(GAME_EVENTS.COUNTRY_SELECTED, {
