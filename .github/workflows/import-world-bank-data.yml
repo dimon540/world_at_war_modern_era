@@ -53,5 +53,6 @@ jobs:
             echo "Historical datasets are already up to date."
           else
             git commit -m "Import World Bank historical baselines for 2000"
-            git push
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
