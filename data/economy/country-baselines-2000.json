@@ -6,8 +6,9 @@
     "source": "World Bank World Development Indicators",
     "sourceUrl": "https://api.worldbank.org/v2/country/all/indicator/",
     "license": "CC BY 4.0",
-    "retrievedAt": "2026-11-24T19:28:39.144Z",
+    "retrievedAt": "2026-11-24T19:29:29.887Z",
     "missingValues": "Preserved as null; no interpolation or modern-value substitution.",
+    "futureCountryRecords": "Selected post-2000 states are retained as pending baselines and activated only by their dated historical events.",
     "indicators": {
       "nominalGDP": {
         "code": "NY.GDP.MKTP.CD",
@@ -3601,6 +3602,37 @@
         "unemploymentRate": true
       }
     },
+    "MNE": {
+      "countryId": "MNE",
+      "iso3": "MNE",
+      "name": "Montenegro",
+      "year": 2000,
+      "nominalGDP": 984293043.811565,
+      "realGDP": 2656557790.7931,
+      "population": 604950,
+      "annualGrowthRate": 0.030999966628024497,
+      "inflationRate": null,
+      "unemploymentRate": 0.30447,
+      "currency": "USD",
+      "source": "World Bank World Development Indicators",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "nominalGDP": "NY.GDP.MKTP.CD",
+        "realGDP": "NY.GDP.MKTP.KD",
+        "population": "SP.POP.TOTL",
+        "annualGrowthRate": "NY.GDP.MKTP.KD.ZG",
+        "inflationRate": "FP.CPI.TOTL.ZG",
+        "unemploymentRate": "SL.UEM.TOTL.ZS"
+      },
+      "coverage": {
+        "nominalGDP": true,
+        "realGDP": true,
+        "population": true,
+        "annualGrowthRate": true,
+        "inflationRate": false,
+        "unemploymentRate": true
+      }
+    },
     "MAR": {
       "countryId": "MAR",
       "iso3": "MAR",
@@ -4593,6 +4625,37 @@
         "unemploymentRate": true
       }
     },
+    "SRB": {
+      "countryId": "SRB",
+      "iso3": "SRB",
+      "name": "Serbia",
+      "year": 2000,
+      "nominalGDP": 7326373882.11044,
+      "realGDP": 26625555756.526,
+      "population": 7516346,
+      "annualGrowthRate": 0.060550897288645,
+      "inflationRate": 0.711206287946541,
+      "unemploymentRate": 0.126,
+      "currency": "USD",
+      "source": "World Bank World Development Indicators",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "nominalGDP": "NY.GDP.MKTP.CD",
+        "realGDP": "NY.GDP.MKTP.KD",
+        "population": "SP.POP.TOTL",
+        "annualGrowthRate": "NY.GDP.MKTP.KD.ZG",
+        "inflationRate": "FP.CPI.TOTL.ZG",
+        "unemploymentRate": "SL.UEM.TOTL.ZS"
+      },
+      "coverage": {
+        "nominalGDP": true,
+        "realGDP": true,
+        "population": true,
+        "annualGrowthRate": true,
+        "inflationRate": true,
+        "unemploymentRate": true
+      }
+    },
     "SYC": {
       "countryId": "SYC",
       "iso3": "SYC",
@@ -5210,6 +5273,37 @@
         "population": true,
         "annualGrowthRate": true,
         "inflationRate": true,
+        "unemploymentRate": true
+      }
+    },
+    "TLS": {
+      "countryId": "TLS",
+      "iso3": "TLS",
+      "name": "Timor-Leste",
+      "year": 2000,
+      "nominalGDP": 366924300,
+      "realGDP": 832683747.639253,
+      "population": 745088,
+      "annualGrowthRate": 0.5807809593345821,
+      "inflationRate": null,
+      "unemploymentRate": 0.03529,
+      "currency": "USD",
+      "source": "World Bank World Development Indicators",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "nominalGDP": "NY.GDP.MKTP.CD",
+        "realGDP": "NY.GDP.MKTP.KD",
+        "population": "SP.POP.TOTL",
+        "annualGrowthRate": "NY.GDP.MKTP.KD.ZG",
+        "inflationRate": "FP.CPI.TOTL.ZG",
+        "unemploymentRate": "SL.UEM.TOTL.ZS"
+      },
+      "coverage": {
+        "nominalGDP": true,
+        "realGDP": true,
+        "population": true,
+        "annualGrowthRate": true,
+        "inflationRate": false,
         "unemploymentRate": true
       }
     },

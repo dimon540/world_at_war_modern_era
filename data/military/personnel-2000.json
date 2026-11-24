@@ -8,7 +8,7 @@
     "militaryPersonnelDefinition": "Active-duty armed forces personnel; the source series may include paramilitary forces and does not represent reserve manpower.",
     "sourceUrl": "https://databank.worldbank.org/metadataglossary/world-development-indicators/series/MS.MIL.TOTL.P1",
     "license": "CC BY 4.0",
-    "retrievedAt": "2026-11-24T19:28:39.144Z",
+    "retrievedAt": "2026-11-24T19:29:29.887Z",
     "missingValues": "Preserved as null; no interpolation or modern-value substitution.",
     "indicators": {
       "activePersonnel": {
@@ -1974,6 +1974,21 @@
       "name": "Senegal",
       "year": 2000,
       "activePersonnel": 15400,
+      "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
+      "asOf": "2000-01-01",
+      "indicatorCodes": {
+        "activePersonnel": "MS.MIL.TOTL.P1"
+      },
+      "coverage": {
+        "activePersonnel": true
+      }
+    },
+    "SRB": {
+      "countryId": "SRB",
+      "iso3": "SRB",
+      "name": "Serbia",
+      "year": 2000,
+      "activePersonnel": 135700,
       "source": "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
       "asOf": "2000-01-01",
       "indicatorCodes": {
