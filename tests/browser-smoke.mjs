@@ -96,7 +96,6 @@ try {
     );
     assert.ok((await page.locator("#panel-province").textContent()).includes("Owner"));
 
-    await page.locator("#start-game").click();
     await page.waitForFunction(
         () => document.querySelector("#game-status")?.textContent === "Simulation running",
         undefined,
