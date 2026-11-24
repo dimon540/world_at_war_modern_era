@@ -67,3 +67,26 @@ test("real GDP growth and inflation compound separately into nominal GDP", () =>
  assert.ok(Math.abs(updated.nominalGDP-112.2)<1e-9);
  gdp.destroy();
 });
+
+test("GDP baselines preserve missing growth and inflation observations", () => {
+ const state=makeState();
+ const gdp=new GDPManager(state);
+ gdp.initializeCountry("AAA",{
+  nominalGDP:100,
+  realGDP:90,
+  population:100,
+  annualGrowthRate:null,
+  inflationRate:null,
+  currency:"USD",
+  source:"World Bank WDI",
+  asOf:"2000-01-01"
+ });
+ const baseline=gdp.getCountryGDP("AAA");
+ assert.equal(baseline.annualGrowthRate,null);
+ assert.equal(baseline.inflationRate,null);
+ const updated=gdp.applyGrowth("AAA",baseline.annualGrowthRate,{days:30});
+ assert.equal(updated.nominalGDP,100);
+ assert.equal(updated.realGDP,90);
+ assert.equal(updated.annualGrowthRate,null);
+ gdp.destroy();
+});
