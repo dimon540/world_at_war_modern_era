@@ -23,6 +23,12 @@ export const EQUIPMENT_CATEGORIES = Object.freeze({
 const DEFINITIONS = [
     // Infantry weapons and support
     ["small_arms", "Small Arms", "small_arms", "equipment", 1, 1, 1, 1, ["infantry"]],
+    ["support_equipment", "General Support Equipment", "support", "equipment", 2, 2, 1, 1, ["support"]],
+    ["airdrop_equipment", "Airborne Assault Equipment", "infantry", "equipment", 3, 3, 1, 1, ["airborne"]],
+    ["mountain_equipment", "Mountain Warfare Equipment", "infantry", "equipment", 2, 2, 0.8, 1, ["mountain"]],
+    ["amphibious_equipment", "Amphibious Assault Equipment", "support", "equipment", 3, 3, 1, 1, ["amphibious"]],
+    ["precision_weapons", "Airborne Precision Weapons", "missiles", "consumable", 6, 7, 0.5, 1, ["precision"]],
+    ["bombs", "Aerial Bombs", "support", "consumable", 2, 2, 0.8, 1, ["aircraft"]],
     ["infantry_support_weapons", "Infantry Support Weapons", "infantry", "equipment", 2, 2, 1.2, 1, ["infantry"]],
     ["man_portable_at", "Man-Portable Anti-Armor Weapons", "infantry", "equipment", 2, 2, 0.8, 1, ["infantry", "anti_armor"]],
     ["manpads", "Man-Portable Air-Defense Systems", "missiles", "equipment", 3, 3, 0.8, 1, ["infantry", "air_defense"]],
@@ -304,8 +310,6 @@ export class EquipmentManager {
 }
 
 export const equipmentCatalog = new EquipmentCatalog();
-export const equipmentManager = null;
-
 export function getEquipment(equipmentId) {
     return equipmentCatalog.get(equipmentId);
 }
