@@ -104,6 +104,25 @@ Current US dollars and constant-price series must not be mixed.
 
 ## 5. Military and international relations
 
+### World Bank — Military indicators
+Website:
+https://data.worldbank.org/indicator/MS.MIL.TOTL.P1
+
+Series:
+- `MS.MIL.TOTL.P1` — Armed forces personnel, total.
+- `MS.MIL.XPND.CD` — Military expenditure, current US dollars.
+- `MS.MIL.XPND.GD.ZS` — Military expenditure as a percentage of GDP.
+
+The armed-forces personnel series is sourced from the International
+Institute for Strategic Studies' *The Military Balance*. It represents
+active-duty personnel and may include paramilitary forces; it does not
+represent reserve manpower. Some observations are estimates or incomplete.
+
+License:
+World Bank indicator data is published under CC BY 4.0. Preserve the
+indicator code, observation year, source attribution and missing-value
+status when using it.
+
 ### Correlates of War
 Website:
 https://correlatesofwar.org/data-sets/
