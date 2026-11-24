@@ -107,6 +107,12 @@ export class ArmyManager {
         this.state.military.statistics.totalArmyDivisions = active.reduce(
             (sum, army) => sum + army.divisionIds.length, 0
         );
+        const activeDivisions = Object.values(this.state.military.divisions)
+            .filter(division => !["disbanded", "destroyed"].includes(division.status));
+        this.state.military.statistics.totalDivisions = activeDivisions.length;
+        this.state.military.statistics.totalPersonnel = activeDivisions.reduce(
+            (sum, division) => sum + (division.manpower ?? 0), 0
+        );
     }
 
     createArmy(countryId, name, options = {}) {
@@ -220,6 +226,9 @@ export class ArmyManager {
     setStatus(armyId, status) {
         this.#assertActive();
         if (!VALID_STATUSES.has(status)) throw new RangeError(`Invalid army status: ${status}`);
+        if (status === ARMY_STATUS.DISBANDED) {
+            throw new Error("Use disbandArmy() to disband an army and safely detach its divisions.");
+        }
         const army = this.#army(armyId);
         const previousStatus = army.status;
         army.status = status;
