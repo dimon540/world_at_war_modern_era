@@ -1,1 +1,12 @@
-
+import { markGameStateDirty } from "../core/game-state.js";
+const rec=v=>v!==null&&typeof v==="object"&&!Array.isArray(v);
+export class FactoryManager{
+ constructor(state){if(!state?.world?.countries||!state?.economy)throw new TypeError("FactoryManager requires world and economy state.");this.state=state;this.factories=state.economy.factories;this.destroyed=false;}
+ create({id,countryId,type="civilian",name=null,level=1,capacity=1,provinceId=null,status="active"}={}){if(this.destroyed)throw new Error("FactoryManager destroyed.");const key=String(id??"").trim(),owner=String(countryId??"").trim();if(!key||!owner)throw new TypeError("Factory and country IDs are required.");if(!this.state.world.countries[owner])throw new RangeError("Unknown country: "+owner);if(this.factories[key])throw new Error("Factory already exists: "+key);if(!["civilian","military","naval","resource"].includes(type))throw new RangeError("Unsupported factory type.");if(!Number.isInteger(level)||level<1||!Number.isFinite(capacity)||capacity<=0)throw new RangeError("Factory level and capacity must be positive.");const f={id:key,countryId:owner,type,name:String(name??key),level,capacity,provinceId,status,createdAt:this.state.clock?.date??null};this.factories[key]=f;this.#sync();return {...f};}
+ get(id){const f=this.factories[String(id)];return f?{...f}:null;}
+ list({countryId=null,type=null,status="active"}={}){return Object.values(this.factories).filter(f=>(!countryId||f.countryId===countryId)&&(!type||f.type===type)&&(!status||f.status===status)).map(f=>({...f}));}
+ setStatus(id,status){const f=this.factories[String(id)];if(!f)throw new RangeError("Unknown factory.");if(!["active","damaged","disabled"].includes(status))throw new RangeError("Invalid factory status.");f.status=status;this.#sync();return {...f};}
+ #sync(){const active=this.list();this.state.economy.statistics.totalCivilianFactories=active.filter(f=>f.type==="civilian").reduce((n,f)=>n+f.level,0);this.state.economy.statistics.totalMilitaryFactories=active.filter(f=>f.type==="military").reduce((n,f)=>n+f.level,0);this.state.economy.statistics.totalNavalFactories=active.filter(f=>f.type==="naval").reduce((n,f)=>n+f.level,0);markGameStateDirty(this.state);}
+ destroy(){this.destroyed=true;this.state=null;this.factories=null;}
+}
+export default FactoryManager;
