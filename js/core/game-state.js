@@ -224,6 +224,8 @@ function createMilitaryState() {
 
         nationalPersonnel: createEmptyRegistry(),
 
+        pendingPersonnelBaselines: createEmptyRegistry(),
+
         commanders: createEmptyRegistry(),
 
         airWings: createEmptyRegistry(),
@@ -266,6 +268,8 @@ function createMilitaryState() {
 function createEconomyState() {
     return {
         countries: createEmptyRegistry(),
+
+        pendingCountryBaselines: createEmptyRegistry(),
 
         factories: createEmptyRegistry(),
 
