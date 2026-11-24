@@ -9,6 +9,7 @@ import { MovementManager } from "../js/military/movement.js";
 import { CombatManager } from "../js/military/combat.js";
 import { FrontlineManager } from "../js/military/frontlines.js";
 import { SupplyManager } from "../js/military/supply.js";
+import { WorldAIManager } from "../js/ai/world-ai-manager.js";
 import { BattlePlanManager } from "../js/military/battle-plans.js";
 
 function makeState() {
@@ -93,11 +94,15 @@ test("game engine wires military systems and hourly simulation tasks", () => {
     assert.equal(typeof systems.frontlineManager.createFrontline, "function");
     assert.equal(typeof systems.supplyManager.processDaily, "function");
     assert.equal(typeof systems.battlePlanManager.createPlan, "function");
+    assert.equal(typeof systems.worldAIManager.runDailyCycle, "function");
 
     const taskIds = systems.loop.getRegisteredTasks().map(task => task.id);
     assert.ok(taskIds.includes("military.land_movement"));
     assert.ok(taskIds.includes("military.land_combat"));
     assert.ok(taskIds.includes("military.supply"));
+    assert.ok(taskIds.includes("ai.country_daily"));
+    assert.ok(taskIds.includes("ai.country_weekly"));
+    assert.ok(taskIds.includes("ai.country_monthly"));
 
     game.destroy();
 });
@@ -195,4 +200,28 @@ test("battle plan cancellation clears active division movement", () => {
     assert.equal(movement.getMoveOrder(division.id), null);
     assert.equal(plans.getPlan(plan.id).status, "cancelled");
     assert.equal(plans.getProgress(plan.id).orders[0].status, "cancelled");
+});
+
+test("independent AI agents make strategic decisions for every country", () => {
+    const state = makeState();
+    const ai = new WorldAIManager(state);
+    const initialized = ai.initializeAgents();
+
+    assert.equal(initialized.totalCountries, 2);
+    assert.equal(ai.getSnapshot().activeAgents, 2);
+    assert.notDeepEqual(
+        ai.getAgent("AAA").personality,
+        ai.getAgent("BBB").personality
+    );
+
+    const daily = ai.runDailyCycle();
+    assert.equal(daily.length, 2);
+    assert.equal(ai.getSnapshot().totalDecisions, 2);
+    assert.ok(ai.getAgent("AAA").currentPlan.length > 0);
+
+    ai.setCountryAI("BBB", false);
+    assert.equal(ai.runDailyCycle().length, 1);
+    assert.equal(ai.runWeeklyReview().length, 1);
+    assert.equal(ai.runMonthlyReview().length, 1);
+    assert.throws(() => ai.setPriority("AAA", "unknown_goal", 0.5), /Unknown strategic goal/);
 });
