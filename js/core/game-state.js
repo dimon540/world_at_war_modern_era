@@ -220,6 +220,10 @@ function createMilitaryState() {
 
         equipment: createEmptyRegistry(),
 
+        equipmentProductionLines: createEmptyRegistry(),
+
+        nationalPersonnel: createEmptyRegistry(),
+
         commanders: createEmptyRegistry(),
 
         airWings: createEmptyRegistry(),
