@@ -67,6 +67,17 @@ try {
     assert.equal(Number(await page.locator("#ai-count").textContent()), countryOptions - 2,
         "The selected player nation must not be counted as AI-controlled.");
 
+    const mapBox = await page.locator("#world-map").boundingBox();
+    const kabulX = mapBox.x + ((69.2 + 180) / 360) * mapBox.width;
+    const kabulY = mapBox.y + ((90 - 34.5) / 180) * mapBox.height;
+    await page.mouse.click(kabulX, kabulY);
+    await page.waitForFunction(
+        () => document.querySelector("#panel-province")?.hidden === false,
+        undefined,
+        { timeout: 5000 }
+    );
+    assert.ok((await page.locator("#panel-province").textContent()).includes("Owner"));
+
     await page.locator("#start-game").click();
     await page.waitForFunction(
         () => document.querySelector("#game-status")?.textContent === "Simulation running",
