@@ -173,3 +173,26 @@ test("battle plans issue explicit routes to divisions in assigned armies", () =>
     movement.advance(24);
     assert.equal(plans.getProgress(plan.id).completedOrders, 1);
 });
+
+test("battle plan cancellation clears active division movement", () => {
+    const state = makeState();
+    const divisions = new DivisionManager(state);
+    const armies = new ArmyManager(state);
+    const fronts = new FrontlineManager(state);
+    const movement = new MovementManager(state, divisions);
+    const plans = new BattlePlanManager(state, armies, fronts, movement);
+    const division = divisions.createDivision("AAA", "Order Infantry", { infantry: 1 }, { provinceId: "P1" }).division;
+    const army = armies.createArmy("AAA", "Order Army").army;
+    armies.assignDivision(army.id, division.id);
+    const plan = plans.createPlan({
+        countryId: "AAA", name: "Hold and advance", armyIds: [army.id], objectiveProvinceIds: ["P2"]
+    }).plan;
+
+    plans.issueDivisionOrder(plan.id, division.id, ["P1", "P2"]);
+    assert.ok(movement.getMoveOrder(division.id));
+    plans.setStatus(plan.id, "cancelled");
+
+    assert.equal(movement.getMoveOrder(division.id), null);
+    assert.equal(plans.getPlan(plan.id).status, "cancelled");
+    assert.equal(plans.getProgress(plan.id).orders[0].status, "cancelled");
+});
