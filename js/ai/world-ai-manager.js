@@ -313,6 +313,7 @@ export class WorldAIManager {
         for (const country of Object.values(this.state.world.countries)) {
             const id = String(country.id);
             const agent = this.agents[id];
+            if (id === this.state.player.countryId) continue;
             if (!agent?.enabled || country.status === "inactive" || country.status === "dissolved") continue;
             const ranking = this.#rankGoals(agent);
             agent.currentPlan = ranking.slice(0, 3).map(item => item.goal);
