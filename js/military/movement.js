@@ -88,7 +88,10 @@ export class MovementManager {
                 const nextProvinceId = order.route[nextIndex];
                 if (!nextProvinceId) { order.status = "completed"; break; }
                 const nextProvince = this.state.world.provinces[nextProvinceId];
-                const ownerId = nextProvince?.ownerId ?? nextProvince?.ownerCountryId ?? null;
+                const ownerId = this.state.world.ownership?.provinceOwners?.[nextProvinceId]
+                    ?? nextProvince?.ownerId
+                    ?? nextProvince?.ownerCountryId
+                    ?? null;
                 if (ownerId && ownerId !== order.countryId && !order.options.allowForeignTerritory) {
                     order.status = "blocked";
                     order.blockedReason = "foreign_territory";
