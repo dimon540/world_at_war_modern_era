@@ -125,7 +125,7 @@ export function buildWorldBankDatasets(countryDataset, indicatorRows, retrievedA
         },
         military: {
             metadata: {
-                dataset: "WORLD AT WAR historical military personnel and expenditure",
+                dataset: "WORLD AT WAR historical military personnel baselines",
                 scenario: "modern_2000",
                 referenceYear: YEAR,
                 source: "World Bank World Development Indicators",
