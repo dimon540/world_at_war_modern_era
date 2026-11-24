@@ -25,7 +25,7 @@ export class EconomyPanel {
             ["Nominal GDP", gdp ? gdp.nominalGDP.toLocaleString() + (gdp.currency ? " " + gdp.currency : "") : "No verified baseline"],
             ["Population", gdp ? gdp.population.toLocaleString() : "Not recorded"],
             ["GDP per capita", gdp ? gdp.gdpPerCapita.toFixed(2) : "—"],
-            ["Annual real growth", gdp ? (gdp.annualGrowthRate * 100).toFixed(2) + "%" : "—"],
+            ["Annual real growth", gdp && Number.isFinite(gdp.annualGrowthRate) ? (gdp.annualGrowthRate * 100).toFixed(2) + "%" : "Not recorded"],
             ["Treasury", budget ? budget.treasury.toLocaleString() : "No verified baseline"],
             ["Public debt", budget ? budget.debt.toLocaleString() : "—"],
             ["Civilian factories", civilianFactories.reduce((sum, item) => sum + item.level, 0)],
