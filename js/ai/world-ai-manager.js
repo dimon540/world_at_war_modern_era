@@ -413,7 +413,7 @@ export class WorldAIManager {
         return {
             enabled: this.enabled,
             totalAgents: agents.length,
-            activeAgents: agents.filter(agent => agent.enabled).length,
+            activeAgents: agents.filter(agent => agent.enabled && agent.countryId !== this.state.player.countryId).length,
             totalDecisions: agents.reduce((sum, agent) => sum + agent.decisionCount, 0),
             goals: [...GOALS]
         };
