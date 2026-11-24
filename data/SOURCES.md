@@ -94,6 +94,14 @@ Intended use:
 - Trade and development indicators.
 - Historical economic comparisons.
 
+Imported World Bank indicators:
+- `NY.GDP.MKTP.CD` — GDP, current US dollars.
+- `NY.GDP.MKTP.KD` — GDP, constant 2015 US dollars.
+- `SP.POP.TOTL` — Population, total.
+- `NY.GDP.MKTP.KD.ZG` — Real GDP growth, annual percent.
+- `FP.CPI.TOTL.ZG` — Consumer price inflation, annual percent.
+- `SL.UEM.TOTL.ZS` — Unemployment, modeled ILO estimate.
+
 Reference year:
 2000, where a valid observation is available.
 
