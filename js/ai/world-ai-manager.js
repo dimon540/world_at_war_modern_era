@@ -189,25 +189,31 @@ export class WorldAIManager {
             return { executed: true, action: "research_started", technologyId: project.technologyId, cost: project.cost };
         }
         if (goal === "economic_development") {
-            const budgets = this.systems.economyManager?.budgets;
-            const budget = budgets?.getBudget(countryId);
-            if (!budget) return { executed: false, reason: "verified_budget_unavailable" };
-            const allocations = { ...budget.allocations };
-            const target = Math.min(0.5, allocations.civilian + 0.02);
-            const delta = target - allocations.civilian;
-            if (delta <= 0.000001) return { executed: false, reason: "civilian_investment_target_reached" };
-            const reducible = ["social", "administration", "diplomacy"].reduce((sum, key) => sum + allocations[key], 0);
-            if (reducible + 0.000001 < delta) return { executed: false, reason: "no_budget_reallocation_capacity" };
-            let remaining = delta;
-            for (const key of ["social", "administration", "diplomacy"]) {
-                const cut = Math.min(allocations[key], remaining);
-                allocations[key] -= cut;
-                remaining -= cut;
-                if (remaining <= 0.000001) break;
-            }
-            allocations.civilian = target;
-            budgets.setAllocations(countryId, allocations, { reason: "autonomous_ai_economic_development" });
             const economy = this.systems.economyManager;
+            const budget = economy?.budgets.getBudget(countryId);
+            if (!economy) return { executed: false, reason: "economy_system_unavailable" };
+            let budgetChanged = false;
+            let civilianAllocation = budget?.allocations.civilian ?? null;
+            if (budget) {
+                const allocations = { ...budget.allocations };
+                const target = Math.min(0.5, allocations.civilian + 0.02);
+                const delta = target - allocations.civilian;
+                const reducible = ["social", "administration", "diplomacy"]
+                    .reduce((sum, key) => sum + allocations[key], 0);
+                if (delta > 0.000001 && reducible + 0.000001 >= delta) {
+                    let remaining = delta;
+                    for (const key of ["social", "administration", "diplomacy"]) {
+                        const cut = Math.min(allocations[key], remaining);
+                        allocations[key] -= cut;
+                        remaining -= cut;
+                        if (remaining <= 0.000001) break;
+                    }
+                    allocations.civilian = target;
+                    economy.budgets.setAllocations(countryId, allocations, { reason: "autonomous_ai_economic_development" });
+                    budgetChanged = true;
+                    civilianAllocation = target;
+                }
+            }
             const factories = economy.factories.list({ countryId });
             const activeProjects = economy.construction.list({ countryId, status: "active" });
             let construction = null;
@@ -225,8 +231,11 @@ export class WorldAIManager {
                     capacity: 1
                 });
             }
-            return { executed: true, action: "budget_reallocated", civilianAllocation: target,
-                constructionStarted: Boolean(construction), constructionProjectId: construction?.id ?? null };
+            if (!budgetChanged && !construction) {
+                return { executed: false, reason: budget ? "economic_targets_reached" : "verified_budget_unavailable" };
+            }
+            return { executed: true, action: construction ? "industrial_expansion_started" : "budget_reallocated",
+                civilianAllocation, constructionStarted: Boolean(construction), constructionProjectId: construction?.id ?? null };
         }
         return { executed: false, reason: "goal_requires_additional_historical_data_or_policy" };
     }
