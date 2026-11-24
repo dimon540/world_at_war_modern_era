@@ -324,6 +324,11 @@ export class ArmyManager {
         }
         const divisionIds = [...army.divisionIds];
         army.divisionIds = [];
+        if (army.frontlineId) {
+            const front = this.state.military.fronts?.[army.frontlineId];
+            if (front) front.armyIds = (front.armyIds ?? []).filter(id => id !== army.id);
+            delete army.frontlineId;
+        }
         army.status = ARMY_STATUS.DISBANDED;
         this.#record(army, "disbanded", { keepDivisions, divisionIds });
         this.#refreshStatistics();
