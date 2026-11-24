@@ -1,1 +1,22 @@
-
+/* WORLD AT WAR: MODERN ERA — global map theater */
+.map-section{display:flex;flex-direction:column;min-width:0;min-height:560px;overflow:hidden;border:1px solid rgba(173,194,205,.16);border-radius:7px;background:linear-gradient(145deg,#172733,#0d1922);box-shadow:0 12px 32px rgba(0,0,0,.25)}
+.map-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:59px;padding:11px 16px;background:linear-gradient(180deg,#203341,#192a36);border-bottom:1px solid rgba(173,194,205,.16)}
+.map-toolbar>div:first-child{display:flex;flex-direction:column;gap:3px;min-width:0}
+.map-toolbar .eyebrow{margin:0;color:#c6a15f}
+.map-toolbar strong{color:#e7edf0;font-family:"Barlow Condensed",sans-serif;font-size:19px;font-weight:700;letter-spacing:.035em}
+.map-legend{display:flex;align-items:center;gap:8px;color:#9eafb8;font-size:10px;white-space:nowrap}
+.legend-swatch{display:inline-block;width:15px;height:11px;border:1px solid rgba(220,231,235,.7);background:rgba(125,151,165,.22);border-radius:2px}
+.map-frame{position:relative;flex:1;min-height:0;overflow:hidden;background-color:#0b1821;background-image:linear-gradient(rgba(130,157,171,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(130,157,171,.045) 1px,transparent 1px),radial-gradient(ellipse at 50% 46%,#1b303d 0%,#10212c 62%,#0b1720 100%);background-size:40px 40px,40px 40px,auto}
+.map-frame:before{position:absolute;inset:0;z-index:0;content:"";pointer-events:none;background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.28) 100%)}
+#world-map{position:absolute;inset:0;z-index:1;display:block;width:100%;height:100%;min-height:420px;cursor:grab;touch-action:pan-y}
+#world-map:active{cursor:grabbing}
+.map-loading{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;padding:20px;color:#c9d4d9;background:rgba(8,17,24,.72);font-family:"Barlow Condensed",sans-serif;font-size:17px;font-weight:700;letter-spacing:.12em;text-align:center;text-transform:uppercase;backdrop-filter:blur(2px)}
+.map-loading[hidden]{display:none}
+.map-loading:before{width:13px;height:13px;margin-right:12px;border:2px solid rgba(214,185,118,.25);border-top-color:#d6b976;border-radius:50%;content:"";animation:map-loading-spin .8s linear infinite}
+@keyframes map-loading-spin{to{transform:rotate(360deg)}}
+.map-hint{position:absolute;right:12px;bottom:12px;z-index:2;max-width:calc(100% - 24px);padding:7px 10px;border:1px solid rgba(173,194,205,.18);border-radius:3px;background:rgba(9,19,27,.78);color:#aab9c1;font-size:9px;font-weight:700;letter-spacing:.1em;text-align:right;pointer-events:none}
+.map-footer{display:flex;justify-content:space-between;gap:12px;padding:9px 13px;border-top:1px solid rgba(173,194,205,.14);background:#111f29;color:#778b96;font-size:9px;font-weight:700;letter-spacing:.12em}
+@media(max-width:1100px){.map-section{min-height:520px}}
+@media(max-width:760px){.map-section{min-height:440px}.map-toolbar{min-height:53px;padding:9px 12px}.map-toolbar strong{font-size:17px}#world-map{min-height:350px}.map-footer{font-size:8px;letter-spacing:.07em}}
+@media(max-width:420px){.map-section{min-height:380px}.map-legend{font-size:9px}.map-hint{right:7px;bottom:7px;padding:6px 7px;font-size:8px}.map-footer{flex-direction:column;gap:5px}}
+@media(prefers-reduced-motion:reduce){.map-loading:before{animation:none}}
