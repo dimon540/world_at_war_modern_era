@@ -79,6 +79,31 @@ try {
         "Launching a campaign must reveal the in-game interface.");
     assert.equal(await page.locator("#main-menu").isVisible(), false);
     assert.equal(await page.locator("#country-select").inputValue(), firstCountry);
+
+    const layoutMetrics = await page.evaluate(() => {
+        const screen = document.querySelector("#game-screen");
+        const map = document.querySelector(".map-section");
+        const shell = document.querySelector(".main-layout");
+        return {
+            viewportHeight: window.innerHeight,
+            documentHeight: document.documentElement.scrollHeight,
+            screenHeight: screen.getBoundingClientRect().height,
+            shellHeight: shell.getBoundingClientRect().height,
+            mapWidth: map.getBoundingClientRect().width,
+            mapHeight: map.getBoundingClientRect().height,
+            mapLeft: map.getBoundingClientRect().left,
+            mapRight: map.getBoundingClientRect().right,
+            viewportWidth: window.innerWidth
+        };
+    });
+    assert.ok(layoutMetrics.documentHeight <= layoutMetrics.viewportHeight + 2,
+        `Desktop gameplay must fit without page scrolling: ${JSON.stringify(layoutMetrics)}`);
+    assert.ok(layoutMetrics.mapWidth > layoutMetrics.viewportWidth * 0.48,
+        `The world map must be the dominant central workspace: ${JSON.stringify(layoutMetrics)}`);
+    assert.ok(layoutMetrics.mapHeight > layoutMetrics.viewportHeight * 0.65,
+        `The map must use most of the available screen height: ${JSON.stringify(layoutMetrics)}`);
+    assert.ok(layoutMetrics.mapLeft > 150 && layoutMetrics.mapRight < layoutMetrics.viewportWidth - 180,
+        `The map must remain framed by the command sidebars: ${JSON.stringify(layoutMetrics)}`);
     
     assert.equal((await page.locator("#selected-country").textContent()).trim(), firstCountryName.trim());
     assert.ok((await page.locator("#panel-country").textContent()).includes(firstCountryName.trim()));
@@ -140,7 +165,7 @@ try {
     assert.equal(await page.locator("#main-menu").isVisible(), true);
 
     assert.deepEqual(pageErrors, [], "The game must not throw uncaught browser errors.");
-    console.log(`Browser smoke test passed: main menu, campaign setup, ${countryOptions - 1} playable countries, campaign start/pause, in-game navigation and settings.`);
+    console.log(`Browser smoke test passed: main menu, campaign setup, ${countryOptions - 1} playable countries, full-screen map layout (${layoutMetrics.mapWidth}x${layoutMetrics.mapHeight}), no desktop page scrolling, campaign start/pause, in-game navigation and settings.`);
 } finally {
     if (browser) await browser.close();
     await new Promise(resolveClose => server.close(resolveClose));
