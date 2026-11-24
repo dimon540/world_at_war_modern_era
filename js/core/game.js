@@ -455,6 +455,34 @@ export class Game {
                 }
 
                 worldLoaded = true;
+
+                const [economyDataset, militaryDataset] = await Promise.all([
+                    this.dataLoader.loadDataset("economyBaselines"),
+                    this.dataLoader.loadDataset("militaryPersonnel")
+                ]);
+
+                for (const [countryId, baseline] of Object.entries(economyDataset?.countries ?? {})) {
+                    if (!this.state.world.countries[countryId] ||
+                        !Number.isFinite(baseline?.nominalGDP) ||
+                        !Number.isFinite(baseline?.population) ||
+                        this.state.economy.countries[countryId]) continue;
+                    this.economyManager.gdp.initializeCountry(countryId, baseline);
+                }
+
+                for (const [countryId, baseline] of Object.entries(militaryDataset?.countries ?? {})) {
+                    if (!this.state.world.countries[countryId] ||
+                        !Number.isFinite(baseline?.activePersonnel) ||
+                        baseline.activePersonnel < 0) continue;
+                    this.state.military.nationalPersonnel[countryId] = {
+                        activePersonnel: baseline.activePersonnel,
+                        source: baseline.source ?? null,
+                        asOf: baseline.asOf ?? null,
+                        indicatorCode: baseline.indicatorCodes?.activePersonnel ?? "MS.MIL.TOTL.P1"
+                    };
+                }
+                this.state.military.statistics.totalPersonnel = Object.values(this.state.military.nationalPersonnel)
+                    .reduce((sum, record) => sum + record.activePersonnel, 0);
+
                 this.worldAIManager.initializeAgents();
 
                 try {
