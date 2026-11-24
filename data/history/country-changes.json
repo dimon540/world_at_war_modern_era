@@ -1,0 +1,174 @@
+
+{
+  "metadata": {
+    "id": "country_changes",
+    "name": "Historical Country Changes",
+    "version": "1.0.0",
+    "scenarioStartDate": "2000-01-01",
+    "description": "Chronological record of major changes in country status, independence and official names.",
+    "completeness": "partial",
+    "requiresFurtherVerification": true
+  },
+  "schema": {
+    "id": "Unique event identifier",
+    "date": "Event date in YYYY-MM-DD format",
+    "type": "independence | dissolution | renaming | succession | international_recognition | membership",
+    "countries": "Country identifiers affected by the event",
+    "description": "Historical explanation",
+    "status": "verified | disputed",
+    "sources": "References supporting the event"
+  },
+  "events": [
+    {
+      "id": "TIMOR_LESTE_INDEPENDENCE",
+      "date": "2002-05-20",
+      "type": "independence",
+      "countries": [
+        "TLS",
+        "IDN"
+      ],
+      "description": "East Timor became independent after the period of United Nations transitional administration. The new state adopted the name Timor-Leste.",
+      "changes": {
+        "createdCountry": "TLS",
+        "formerAdministeringPower": "PRT",
+        "previousControllingPower": "IDN",
+        "newCountryName": "Timor-Leste"
+      },
+      "status": "verified",
+      "sources": [
+        {
+          "name": "United Nations - Former Trust and Non-Self-Governing Territories",
+          "url": "https://www.un.org/dppa/decolonization/en/history/former-trust-and-nsgts"
+        },
+        {
+          "name": "United Nations - Basic Facts about the United Nations",
+          "url": "https://digitallibrary.un.org/nanna/record/765263/files/2f2bf498-en.pdf?registerDownload=1&version=1&withMetadata=0&withWatermark=0"
+        }
+      ]
+    },
+    {
+      "id": "YUGOSLAVIA_RENAMING",
+      "date": "2003-02-04",
+      "type": "renaming",
+      "countries": [
+        "YUG"
+      ],
+      "description": "The Federal Republic of Yugoslavia changed its official name to Serbia and Montenegro and became a state union under a new constitutional framework.",
+      "changes": {
+        "previousName": "Federal Republic of Yugoslavia",
+        "newName": "Serbia and Montenegro",
+        "newOfficialName": "State Union of Serbia and Montenegro"
+      },
+      "status": "verified",
+      "sources": [
+        {
+          "name": "United Nations Treaty Collection - Historical Information",
+          "url": "https://treaties.un.org/Pages/HistoricalInfo.aspx?clang=_en"
+        },
+        {
+          "name": "United Nations Handbook",
+          "url": "https://www.un.org/sexualviolenceinconflict/wp-content/uploads/2023/09/auto-draft/UN-Handbook-2023-24.pdf"
+        }
+      ]
+    },
+    {
+      "id": "MONTENEGRO_INDEPENDENCE",
+      "date": "2006-06-03",
+      "type": "independence",
+      "countries": [
+        "MNE",
+        "YUG"
+      ],
+      "description": "Montenegro declared independence from the State Union of Serbia and Montenegro. Serbia continued the former state union's United Nations membership.",
+      "changes": {
+        "createdCountry": "MNE",
+        "successorCountry": "SRB",
+        "formerStateUnion": "Serbia and Montenegro"
+      },
+      "status": "verified",
+      "sources": [
+        {
+          "name": "United Nations - Member States",
+          "url": "https://www.un.org/about-us/member-states"
+        },
+        {
+          "name": "United Nations Treaty Collection - Historical Information",
+          "url": "https://treaties.un.org/Pages/HistoricalInfo.aspx?clang=_en"
+        }
+      ]
+    },
+    {
+      "id": "KOSOVO_DECLARATION",
+      "date": "2008-02-17",
+      "type": "international_recognition",
+      "countries": [
+        "XKX",
+        "SRB"
+      ],
+      "description": "Kosovo declared independence from Serbia. Its international status remains disputed and it is not a United Nations member state.",
+      "changes": {
+        "entity": "XKX",
+        "declaredIndependenceFrom": "SRB",
+        "unMembership": false,
+        "internationalStatus": "partially_recognized"
+      },
+      "status": "disputed",
+      "sources": [
+        {
+          "name": "United Nations Handbook",
+          "url": "https://www.un.org/sexualviolenceinconflict/wp-content/uploads/2023/09/auto-draft/UN-Handbook-2023-24.pdf"
+        },
+        {
+          "name": "United States Department of State - Appendix A: Notes on Nationality",
+          "url": "https://travel.state.gov/content/dam/visas/Statistics/AnnualReports/FY2011AnnualReport/Appendix-A-Notes-on-Nationality.pdf"
+        }
+      ]
+    },
+    {
+      "id": "SOUTH_SUDAN_INDEPENDENCE",
+      "date": "2011-07-09",
+      "type": "independence",
+      "countries": [
+        "SSD",
+        "SDN"
+      ],
+      "description": "South Sudan became independent following the 2011 referendum and separated from Sudan.",
+      "changes": {
+        "createdCountry": "SSD",
+        "separatedFrom": "SDN"
+      },
+      "status": "verified",
+      "sources": [
+        {
+          "name": "United States Department of State - Appendix A: Notes on Nationality",
+          "url": "https://travel.state.gov/content/dam/visas/Statistics/AnnualReports/FY2011AnnualReport/Appendix-A-Notes-on-Nationality.pdf"
+        },
+        {
+          "name": "United Nations Treaty Collection",
+          "url": "https://treaties.un.org/Pages/HistoricalInfo.aspx?clang=_en"
+        }
+      ]
+    },
+    {
+      "id": "NORTH_MACEDONIA_RENAMING",
+      "date": "2019-02-14",
+      "type": "renaming",
+      "countries": [
+        "MKD"
+      ],
+      "description": "The country's official name changed from the former Yugoslav Republic of Macedonia to the Republic of North Macedonia.",
+      "changes": {
+        "previousName": "Republic of Macedonia",
+        "newName": "North Macedonia",
+        "newOfficialName": "Republic of North Macedonia"
+      },
+      "status": "verified",
+      "sources": [
+        {
+          "name": "United Nations - Member States",
+          "url": "https://www.un.org/sites/un2.un.org/files/un_member_states_2025.pdf"
+        }
+      ]
+    }
+  ]
+}
