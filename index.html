@@ -147,6 +147,27 @@
                     </ul>
                 </section>
 
+                <section class="panel management-panel-shell">
+                    <div class="panel-heading">
+                        <span class="eyebrow">NATIONAL COMMAND</span>
+                        <h2>Operations</h2>
+                    </div>
+                    <div class="panel-tabs" role="tablist" aria-label="National operations">
+                        <button type="button" data-panel-tab="country" aria-selected="true">Nation</button>
+                        <button type="button" data-panel-tab="army" aria-selected="false">Army</button>
+                        <button type="button" data-panel-tab="economy" aria-selected="false">Economy</button>
+                        <button type="button" data-panel-tab="diplomacy" aria-selected="false">Diplomacy</button>
+                        <button type="button" data-panel-tab="research" aria-selected="false">Research</button>
+                        <button type="button" data-panel-tab="province" aria-selected="false">Region</button>
+                    </div>
+                    <div id="panel-country" data-management-panel></div>
+                    <div id="panel-army" data-management-panel hidden></div>
+                    <div id="panel-economy" data-management-panel hidden></div>
+                    <div id="panel-diplomacy" data-management-panel hidden></div>
+                    <div id="panel-research" data-management-panel hidden></div>
+                    <div id="panel-province" data-management-panel hidden></div>
+                </section>
+
                 <section class="panel message-panel" aria-live="polite">
                     <div class="panel-heading">
                         <span class="eyebrow">COMMAND LOG</span>
