@@ -59,6 +59,26 @@ export class ArmyPanel {
             this.container.append(row);
         }
 
+        const productionTitle = document.createElement("h3");
+        productionTitle.textContent = "Military production";
+        this.container.append(productionTitle);
+        const productionLines = this.game.equipmentProductionManager.list({ countryId });
+        if (!productionLines.length) {
+            const empty = document.createElement("p");
+            empty.textContent = "No military equipment production lines are configured.";
+            this.container.append(empty);
+        }
+        for (const line of productionLines) {
+            const row = document.createElement("p");
+            row.className = "management-row";
+            const name = document.createElement("b");
+            name.textContent = line.equipmentId;
+            const output = document.createElement("span");
+            output.textContent = `${line.status} · ${line.totalProduced.toLocaleString()} produced`;
+            row.append(name, output);
+            this.container.append(row);
+        }
+
         this.#renderRecruitment(countryId);
     }
 
