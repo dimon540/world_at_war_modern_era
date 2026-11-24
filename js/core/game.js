@@ -10,6 +10,7 @@ import { GAME_CONFIG } from "../config.js";
 
 import {
     createInitialGameState,
+    markGameStateDirty,
     GAME_PHASES
 } from "./game-state.js";
 
@@ -113,6 +114,7 @@ export class Game {
         this.unregisterDiplomacyTask = null;
         this.unregisterEconomyTask = null;
         this.unregisterEquipmentProductionTask = null;
+        this.unregisterHistoricalCountryData = null;
 
         this.unregisterAITasks = [];
         this.unregisterMovementTask = null;
@@ -251,6 +253,11 @@ export class Game {
         this.historicalEventManager = new HistoricalEventManager(this.state, this.eventBus);
         this.worldEventManager = new WorldEventManager(this.state, this.eventBus);
         this.crisisManager = new CrisisManager(this.state, this.eventBus);
+        this.unregisterHistoricalCountryData = this.eventBus.on(GAME_EVENTS.WORLD_UPDATED, payload => {
+            if (payload?.reason === "historical_country_registry_changed") {
+                this.#applyPendingHistoricalCountryData();
+            }
+        });
 
         this.unregisterEventTasks = [
             this.loop.registerTask({
