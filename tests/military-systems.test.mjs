@@ -7,6 +7,7 @@ import { ArmyManager } from "../js/military/army-manager.js";
 import { CommanderManager } from "../js/military/commanders.js";
 import { MovementManager } from "../js/military/movement.js";
 import { CombatManager } from "../js/military/combat.js";
+import { FrontlineManager } from "../js/military/frontlines.js";
 
 function makeState() {
     const state = createInitialGameState();
@@ -93,4 +94,26 @@ test("game engine wires military systems and hourly simulation tasks", () => {
     assert.ok(taskIds.includes("military.land_combat"));
 
     game.destroy();
+});
+
+test("frontlines track assigned armies and release them when disbanded", () => {
+    const state = makeState();
+    const armies = new ArmyManager(state);
+    const frontlines = new FrontlineManager(state);
+    const army = armies.createArmy("AAA", "Border Army").army;
+    const front = frontlines.createFrontline({
+        countryId: "AAA",
+        enemyCountryId: "BBB",
+        name: "Northern Front",
+        provinceIds: ["P1"],
+        armyIds: [army.id]
+    }).frontline;
+
+    assert.deepEqual(front.armyIds, [army.id]);
+    assert.equal(state.military.armies[army.id].frontlineId, front.id);
+    assert.equal(frontlines.getFrontlineStrength(front.id).armies, 1);
+
+    armies.disbandArmy(army.id);
+    assert.deepEqual(state.military.fronts[front.id].armyIds, []);
+    assert.equal(state.military.armies[army.id].frontlineId, undefined);
 });
