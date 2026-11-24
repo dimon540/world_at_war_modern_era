@@ -186,12 +186,13 @@ function drawMap() {
     const countries = game.state.world.countries;
     const targets = [];
 
-    for (const feature of mapFeatures) {
+    for (let featureIndex = 0; featureIndex < mapFeatures.length; featureIndex += 1) {
+        const feature = mapFeatures[featureIndex];
         const path = createFeaturePath(feature, width, height);
         if (!path) continue;
 
         const code = countryCodeFromFeature(feature);
-        const provinceId = featureProvinceId(feature);
+        const provinceId = featureProvinceId(feature) ?? `province_${featureIndex + 1}`;
         const ownerId = provinceId ? game.state.world.ownership.provinceOwners[provinceId] : null;
         const country = (code && countries[code]) ? countries[code] : ownerId ? countries[ownerId] : null;
         const countryId = country?.id ?? country?.iso3 ?? code;
