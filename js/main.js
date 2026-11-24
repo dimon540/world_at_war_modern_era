@@ -80,6 +80,16 @@ function countryCodeFromFeature(feature) {
     return code ? code.trim().toUpperCase() : null;
 }
 
+function featureProvinceId(feature) {
+    const properties = feature?.properties ?? {};
+    const candidates = [
+        feature?.id, properties.id, properties.ID, properties.adm1_code,
+        properties.iso_3166_2, properties.code, properties.name, properties.NAME_1
+    ];
+    const value = candidates.find(item => item !== undefined && item !== null && String(item).trim());
+    return value === undefined ? null : String(value);
+}
+
 function featureCountryName(feature) {
     const p = feature?.properties ?? {};
     return p.ADMIN || p.NAME || p.name || p.SOVEREIGNT ||
@@ -181,7 +191,9 @@ function drawMap() {
         if (!path) continue;
 
         const code = countryCodeFromFeature(feature);
-        const country = code ? countries[code] : null;
+        const provinceId = featureProvinceId(feature);
+        const ownerId = provinceId ? game.state.world.ownership.provinceOwners[provinceId] : null;
+        const country = (code && countries[code]) ? countries[code] : ownerId ? countries[ownerId] : null;
         const countryId = country?.id ?? country?.iso3 ?? code;
         const inactive = country?.status === "inactive";
         const selected = selectedId && (
@@ -191,7 +203,7 @@ function drawMap() {
 
         context.fillStyle = selected
             ? "#d6ad62"
-            : inactive ? "#35414a" : hashColor(code || featureCountryName(feature));
+            : inactive ? "#35414a" : hashColor(countryId || code || featureCountryName(feature));
         context.fill(path, "evenodd");
         context.strokeStyle = selected
             ? "#fff0bd"
