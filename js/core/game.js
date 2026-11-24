@@ -33,6 +33,7 @@ import { BattlePlanManager } from "../military/battle-plans.js";
 import { WorldAIManager } from "../ai/world-ai-manager.js";
 import { EconomyManager } from "../economy/economy-manager.js";
 import { DiplomacyManager } from "../diplomacy/diplomacy-manager.js";
+import { ResearchManager } from "../technology/research-manager.js";
 import { SIMULATION_INTERVALS, SIMULATION_PRIORITY } from "./game-loop.js";
 
 /* =========================================================
@@ -91,6 +92,8 @@ export class Game {
         this.worldAIManager = null;
         this.economyManager = null;
         this.diplomacyManager = null;
+        this.researchManager = null;
+        this.unregisterResearchTask = null;
         this.unregisterDiplomacyTask = null;
         this.unregisterEconomyTask = null;
 
@@ -190,6 +193,20 @@ export class Game {
             this.state,
             this.eventBus
         );
+
+        this.researchManager = new ResearchManager(
+            this.state,
+            this.eventBus
+        );
+
+        this.unregisterResearchTask = this.loop.registerTask({
+            id: "technology.research_monthly",
+            name: "National research progression",
+            interval: SIMULATION_INTERVALS.MONTHLY,
+            priority: SIMULATION_PRIORITY.NORMAL,
+            description: "Advances active research projects for every country.",
+            execute: () => this.researchManager.processMonthly()
+        });
 
         this.unregisterDiplomacyTask = this.loop.registerTask({
             id: "diplomacy.daily",
@@ -901,10 +918,15 @@ export class Game {
             this.unregisterDiplomacyTask();
             this.unregisterDiplomacyTask = null;
         }
+        if (this.unregisterResearchTask) {
+            this.unregisterResearchTask();
+            this.unregisterResearchTask = null;
+        }
 
         if (this.worldAIManager) this.worldAIManager.destroy();
         if (this.economyManager) this.economyManager.destroy();
         if (this.diplomacyManager) this.diplomacyManager.destroy();
+        if (this.researchManager) this.researchManager.destroy();
         if (this.supplyManager) this.supplyManager.destroy();
         if (this.battlePlanManager) this.battlePlanManager.destroy();
         if (this.combatManager) this.combatManager.destroy();
