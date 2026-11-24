@@ -23,6 +23,7 @@ import { GameLoop } from "./game-loop.js";
 import { DataLoader } from "./data-loader.js";
 import { SaveManager } from "./save-manager.js";
 import { DivisionManager } from "../military/divisions.js";
+import { EquipmentManager } from "../military/equipment.js";
 import { ArmyManager } from "../military/army-manager.js";
 import { CommanderManager } from "../military/commanders.js";
 import { MovementManager } from "../military/movement.js";
@@ -87,6 +88,7 @@ export class Game {
         this.dataLoader = null;
         this.saveManager = null;
         this.divisionManager = null;
+        this.equipmentManager = null;
         this.armyManager = null;
         this.commanderManager = null;
         this.movementManager = null;
@@ -150,9 +152,12 @@ export class Game {
             this.eventBus
         );
 
+        this.equipmentManager = new EquipmentManager(this.state, this.eventBus);
+
         this.divisionManager = new DivisionManager(
             this.state,
-            this.eventBus
+            this.eventBus,
+            { equipmentManager: this.equipmentManager }
         );
 
         this.armyManager = new ArmyManager(
@@ -224,6 +229,7 @@ export class Game {
             diplomacyManager: this.diplomacyManager,
             politicsManager: this.politicsManager,
             divisionManager: this.divisionManager,
+            equipmentManager: this.equipmentManager,
             armyManager: this.armyManager,
             movementManager: this.movementManager,
             battlePlanManager: this.battlePlanManager
@@ -1032,6 +1038,7 @@ export class Game {
         if (this.commanderManager) this.commanderManager.destroy();
         if (this.armyManager) this.armyManager.destroy();
         if (this.divisionManager) this.divisionManager.destroy();
+        if (this.equipmentManager) this.equipmentManager.destroy();
 
         if (this.saveManager) {
             this.saveManager.destroy();
