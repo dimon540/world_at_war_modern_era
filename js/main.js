@@ -183,6 +183,7 @@ function drawMap() {
         const code = countryCodeFromFeature(feature);
         const country = code ? countries[code] : null;
         const countryId = country?.id ?? country?.iso3 ?? code;
+        const inactive = country?.status === "inactive";
         const selected = selectedId && (
             selectedId === countryId ||
             selectedId === country?.iso3
@@ -190,7 +191,7 @@ function drawMap() {
 
         context.fillStyle = selected
             ? "#d6ad62"
-            : hashColor(code || featureCountryName(feature));
+            : inactive ? "#35414a" : hashColor(code || featureCountryName(feature));
         context.fill(path, "evenodd");
         context.strokeStyle = selected
             ? "#fff0bd"
@@ -198,7 +199,7 @@ function drawMap() {
         context.lineWidth = selected ? 1.35 : 0.55;
         context.stroke(path);
 
-        if (country) {
+        if (country && !inactive) {
             targets.push({ path, countryId: country.id ?? code });
         }
     }
