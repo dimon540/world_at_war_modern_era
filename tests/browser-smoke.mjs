@@ -95,10 +95,14 @@ try {
     await page.locator('[data-panel-tab="economy"]').click();
     assert.equal(await page.locator("#panel-economy").isVisible(), true);
     assert.ok((await page.locator("#panel-economy").textContent()).includes("Industrial construction"));
+    assert.equal(await page.locator("#panel-economy button").isDisabled(), true,
+        "Construction must be unavailable without a civilian factory.");
 
     await page.locator('[data-panel-tab="army"]').click();
     assert.equal(await page.locator("#panel-army").isVisible(), true);
     assert.ok((await page.locator("#panel-army").textContent()).includes("Equipment stockpiles"));
+    assert.equal(await page.locator("#panel-army button").isDisabled(), true,
+        "Recruitment must be unavailable without the required equipment.");
 
     await page.locator('[data-panel-tab="research"]').click();
     assert.equal(await page.locator("#panel-research").isVisible(), true);
