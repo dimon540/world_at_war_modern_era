@@ -246,7 +246,7 @@ function chooseCountry(countryId) {
 
 function populateCountries() {
     const countries = Object.values(game.state.world.countries)
-        .filter(country => country && (country.id || country.iso3))
+        .filter(country => country && country.status !== "inactive" && (country.id || country.iso3))
         .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
 
     elements.countrySelect.replaceChildren();
@@ -368,6 +368,11 @@ function bindInterface() {
         game.on(GAME_EVENTS.GAME_STARTED, updateClock),
         game.on(GAME_EVENTS.GAME_PAUSED, updateClock),
         game.on(GAME_EVENTS.GAME_RESUMED, updateClock),
+        game.on(GAME_EVENTS.HISTORICAL_EVENT, () => {
+            populateCountries();
+            uiManager?.refreshCountry();
+            drawMap();
+        }),
         game.on(GAME_EVENTS.SYSTEM_ERROR, payload => {
             if (payload?.message) showMessage(payload.message, "error");
         })
