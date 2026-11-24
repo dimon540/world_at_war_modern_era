@@ -155,3 +155,26 @@ test("AI never issues autonomous orders for the human-controlled country", () =>
     ai.destroy();
     research.destroy();
 });
+
+test("AI raises military priority when its country enters a war", () => {
+    const state = makeState();
+    state.world.countries.BBB = { id: "BBB", name: "Bravo" };
+    const ai = new WorldAIManager(state);
+    const diplomacy = new DiplomacyManager(state);
+    diplomacy.wars.declareWar({ id: "war-1", attackerId: "AAA", defenderId: "BBB" });
+    ai.setSystems({ diplomacyManager: diplomacy });
+    ai.initializeAgents();
+    ai.setPriority("AAA", "economic_development", 0.6);
+    ai.setPriority("AAA", "military_modernization", 0.4);
+    for (const goal of ["diplomatic_security", "domestic_stability", "technological_progress"]) {
+        ai.setPriority("AAA", goal, 0);
+    }
+
+    const report = ai.runDailyCycle().find(item => item.countryId === "AAA");
+
+    assert.equal(report.goal, "military_modernization");
+    assert.equal(report.action.reason, "no_unassigned_active_divisions");
+
+    ai.destroy();
+    diplomacy.destroy();
+});
