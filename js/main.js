@@ -7,6 +7,7 @@ import { createGame } from "./core/game.js";
 import { GAME_CONFIG } from "./config.js";
 import { GAME_EVENTS } from "./core/event-bus.js";
 import { selectPlayerCountry } from "./core/game-state.js";
+import { UIManager } from "./ui/ui-manager.js";
 
 const $ = (selector) => document.querySelector(selector);
 
@@ -33,6 +34,7 @@ const elements = {
 };
 
 let game = null;
+let uiManager = null;
 let mapFeatures = [];
 let mapHitTargets = [];
 let resizeObserver = null;
@@ -233,6 +235,7 @@ function chooseCountry(countryId) {
         return;
     }
     renderCountry(countryId);
+    uiManager?.refreshCountry();
     drawMap();
     game.eventBus.emit(GAME_EVENTS.COUNTRY_SELECTED, {
         countryId,
@@ -338,6 +341,7 @@ function bindInterface() {
         try {
             await game.load(1);
             renderCountry(game.state.player.countryId);
+            uiManager?.refreshCountry();
             drawMap();
             updateClock();
             showMessage("Campaign loaded.", "success");
@@ -388,6 +392,7 @@ async function boot() {
         });
 
         await game.initialize();
+        uiManager = new UIManager(game);
 
         populateCountries();
         mapFeatures = game.state.map.geoJSON?.features ?? [];
@@ -415,6 +420,7 @@ async function boot() {
 
 window.addEventListener("beforeunload", () => {
     if (resizeObserver) resizeObserver.disconnect();
+    if (uiManager) uiManager.destroy();
     for (const unsubscribe of eventUnsubscribers) unsubscribe();
     eventUnsubscribers = [];
     if (game && !game.destroyed) game.destroy();
