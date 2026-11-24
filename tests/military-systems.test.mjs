@@ -9,6 +9,7 @@ import { MovementManager } from "../js/military/movement.js";
 import { CombatManager } from "../js/military/combat.js";
 import { FrontlineManager } from "../js/military/frontlines.js";
 import { SupplyManager } from "../js/military/supply.js";
+import { BattlePlanManager } from "../js/military/battle-plans.js";
 
 function makeState() {
     const state = createInitialGameState();
@@ -91,6 +92,7 @@ test("game engine wires military systems and hourly simulation tasks", () => {
     assert.equal(typeof systems.combatManager.advanceBattles, "function");
     assert.equal(typeof systems.frontlineManager.createFrontline, "function");
     assert.equal(typeof systems.supplyManager.processDaily, "function");
+    assert.equal(typeof systems.battlePlanManager.createPlan, "function");
 
     const taskIds = systems.loop.getRegisteredTasks().map(task => task.id);
     assert.ok(taskIds.includes("military.land_movement"));
@@ -142,4 +144,32 @@ test("supply networks allocate stockpiles to assigned divisions", () => {
     assert.equal(report[0].supplyLevel, 1);
     assert.equal(state.military.divisions[division.id].supplyLevel, 1);
     assert.ok(state.military.supplyNetworks[network.id].stockpiles.supplies < 100);
+});
+
+test("battle plans issue explicit routes to divisions in assigned armies", () => {
+    const state = makeState();
+    const divisions = new DivisionManager(state);
+    const armies = new ArmyManager(state);
+    const fronts = new FrontlineManager(state);
+    const movement = new MovementManager(state, divisions);
+    const plans = new BattlePlanManager(state, armies, fronts, movement);
+    const division = divisions.createDivision("AAA", "Plan Infantry", { infantry: 1 }, { provinceId: "P1" }).division;
+    const army = armies.createArmy("AAA", "Northern Army").army;
+    armies.assignDivision(army.id, division.id);
+    const front = fronts.createFrontline({
+        countryId: "AAA", enemyCountryId: "BBB", name: "Northern Front",
+        provinceIds: ["P1", "P2"], armyIds: [army.id]
+    }).frontline;
+    const plan = plans.createPlan({
+        countryId: "AAA", name: "Advance to P2",
+        frontlineId: front.id, armyIds: [army.id], objectiveProvinceIds: ["P2"]
+    }).plan;
+
+    const issued = plans.issueDivisionOrder(plan.id, division.id, ["P1", "P2"]);
+    assert.equal(issued.success, true);
+    assert.equal(plans.getPlan(plan.id).status, "active");
+    assert.equal(plans.getProgress(plan.id).activeOrders, 1);
+
+    movement.advance(24);
+    assert.equal(plans.getProgress(plan.id).completedOrders, 1);
 });
