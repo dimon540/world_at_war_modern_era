@@ -45,8 +45,8 @@ export class GDPManager {
             realGDP: finite(baseline.realGDP ?? nominalGDP, "Real GDP"),
             population,
             gdpPerCapita: nominalGDP / population,
-            annualGrowthRate: finite(baseline.annualGrowthRate ?? 0, "Annual growth rate", -1),
-            inflationRate: finite(baseline.inflationRate ?? 0, "Inflation rate", -1),
+            annualGrowthRate: baseline.annualGrowthRate == null ? null : finite(baseline.annualGrowthRate, "Annual growth rate", -1),
+            inflationRate: baseline.inflationRate == null ? null : finite(baseline.inflationRate, "Inflation rate", -1),
             unemploymentRate: baseline.unemploymentRate == null ? null : finite(baseline.unemploymentRate, "Unemployment rate"),
             lastUpdated: Date.now(),
             history: []
@@ -65,7 +65,7 @@ export class GDPManager {
         const next = { ...current };
         for (const key of ["nominalGDP", "realGDP", "population", "annualGrowthRate", "inflationRate", "unemploymentRate"]) {
             if (changes[key] === undefined) continue;
-            if (key === "unemploymentRate" && changes[key] === null) next[key] = null;
+            if (["unemploymentRate", "annualGrowthRate", "inflationRate"].includes(key) && changes[key] === null) next[key] = null;
             else next[key] = finite(changes[key], key, ["annualGrowthRate", "inflationRate"].includes(key) ? -1 : 0);
         }
         if (next.nominalGDP <= 0 || next.population <= 0) throw new RangeError("GDP and population must remain greater than zero.");
@@ -89,15 +89,15 @@ export class GDPManager {
         const id = this.#countryId(countryId);
         const current = this.state.economy.countries[id];
         if (!current) throw new Error(`GDP baseline is not initialized for ${id}.`);
-        const rate = finite(annualGrowthRate, "Annual real growth rate", -0.99);
-        const inflation = finite(current.inflationRate ?? 0, "Annual inflation rate", -0.99);
+        const rate = annualGrowthRate == null ? 0 : finite(annualGrowthRate, "Annual real growth rate", -0.99);
+        const inflation = current.inflationRate == null ? 0 : finite(current.inflationRate, "Annual inflation rate", -0.99);
         const realFactor = Math.pow(1 + rate, days / 365);
         const nominalRate = (1 + rate) * (1 + inflation) - 1;
         const nominalFactor = Math.pow(1 + nominalRate, days / 365);
         return this.setIndicators(id, {
             nominalGDP: current.nominalGDP * nominalFactor,
             realGDP: current.realGDP * realFactor,
-            annualGrowthRate: rate
+            annualGrowthRate: annualGrowthRate == null ? null : rate
         }, { reason });
     }
     getCountryGDP(countryId) {
@@ -119,8 +119,10 @@ export class GDPManager {
             realGDP: populated.reduce((sum, item) => sum + (item.realGDP ?? 0), 0),
             population: totalPopulation,
             weightedGDPPerCapita: totalPopulation ? totalGDP / totalPopulation : null,
-            averageAnnualGrowthRate: populated.length
-                ? populated.reduce((sum, item) => sum + item.annualGrowthRate, 0) / populated.length : null
+            averageAnnualGrowthRate: populated.some(item => Number.isFinite(item.annualGrowthRate))
+                ? populated.filter(item => Number.isFinite(item.annualGrowthRate))
+                    .reduce((sum, item) => sum + item.annualGrowthRate, 0)
+                    / populated.filter(item => Number.isFinite(item.annualGrowthRate)).length : null
         };
     }
     #refreshWorldGDP() {
