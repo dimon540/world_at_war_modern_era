@@ -51,6 +51,7 @@ try {
     await page.goto(`http://127.0.0.1:${address.port}/index.html`, { waitUntil: "domcontentloaded" });
     await page.waitForFunction(
         () => document.querySelector("#game-status")?.textContent === "Ready",
+        undefined,
         { timeout: 90000 }
     );
 
@@ -59,14 +60,15 @@ try {
     const firstCountry = await page.locator("#country-select option").nth(1).getAttribute("value");
     assert.ok(firstCountry, "The country selector must contain a playable country.");
 
+    const firstCountryName = await page.locator("#country-select option").nth(1).textContent();
     await page.locator("#country-select").selectOption(firstCountry);
-    assert.notEqual(await page.locator("#selected-country").textContent(), "None");
-    assert.ok((await page.locator("#panel-country").textContent()).includes(firstCountry)
-        || (await page.locator("#panel-country").textContent()).length > 0);
+    assert.equal((await page.locator("#selected-country").textContent()).trim(), firstCountryName.trim());
+    assert.ok((await page.locator("#panel-country").textContent()).includes(firstCountryName.trim()));
 
     await page.locator("#start-game").click();
     await page.waitForFunction(
         () => document.querySelector("#game-status")?.textContent === "Simulation running",
+        undefined,
         { timeout: 5000 }
     );
     await page.waitForTimeout(1200);
