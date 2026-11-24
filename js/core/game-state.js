@@ -248,6 +248,7 @@ function createMilitaryState() {
 
         statistics: {
             totalPersonnel: 0,
+            nationalActivePersonnel: 0,
             totalDivisions: 0,
             totalAircraft: 0,
             totalShips: 0,
