@@ -90,14 +90,6 @@ export class Game {
         this.worldAIManager = null;
         this.economyManager = null;
         this.unregisterEconomyTask = null;
-        this.unregisterEconomyTask = this.loop.registerTask({
-            id: "economy.monthly",
-            name: "National economic update",
-            interval: SIMULATION_INTERVALS.MONTHLY,
-            priority: SIMULATION_PRIORITY.NORMAL,
-            description: "Processes sourced GDP baselines and national budget accounts.",
-            execute: () => this.economyManager.processMonthly()
-        });
 
         this.unregisterAITasks = [];
         this.unregisterMovementTask = null;
@@ -190,6 +182,15 @@ export class Game {
             this.state,
             this.eventBus
         );
+
+        this.unregisterEconomyTask = this.loop.registerTask({
+            id: "economy.monthly",
+            name: "National economic update",
+            interval: SIMULATION_INTERVALS.MONTHLY,
+            priority: SIMULATION_PRIORITY.NORMAL,
+            description: "Processes sourced GDP baselines and national budget accounts.",
+            execute: () => this.economyManager.processMonthly()
+        });
 
         this.combatManager = new CombatManager(
             this.state,
