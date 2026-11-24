@@ -89,11 +89,14 @@ export class GDPManager {
         const id = this.#countryId(countryId);
         const current = this.state.economy.countries[id];
         if (!current) throw new Error(`GDP baseline is not initialized for ${id}.`);
-        const rate = finite(annualGrowthRate, "Annual growth rate", -0.99);
-        const factor = Math.pow(1 + rate, days / 365);
+        const rate = finite(annualGrowthRate, "Annual real growth rate", -0.99);
+        const inflation = finite(current.inflationRate ?? 0, "Annual inflation rate", -0.99);
+        const realFactor = Math.pow(1 + rate, days / 365);
+        const nominalRate = (1 + rate) * (1 + inflation) - 1;
+        const nominalFactor = Math.pow(1 + nominalRate, days / 365);
         return this.setIndicators(id, {
-            nominalGDP: current.nominalGDP * factor,
-            realGDP: current.realGDP * factor,
+            nominalGDP: current.nominalGDP * nominalFactor,
+            realGDP: current.realGDP * realFactor,
             annualGrowthRate: rate
         }, { reason });
     }
