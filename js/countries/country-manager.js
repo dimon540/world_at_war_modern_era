@@ -201,7 +201,7 @@ export class CountryManager {
         return Object.values(this.state.world.countries).filter(country => {
             if (region && country.region !== region) return false;
             if (gameStatus && country.gameStatus !== gameStatus) return false;
-            if (!includeEliminated && country.gameStatus === COUNTRY_STATUS.ELIMINATED) return false;
+            if (!includeEliminated && country.gameStatus === COUNTRY_STATUS.ANNEXED) return false;
             return true;
         });
     }
@@ -319,15 +319,15 @@ export class CountryManager {
         country.updatedAt = new Date().toISOString();
         this.#markDirty();
 
-        if (status === COUNTRY_STATUS.ELIMINATED) {
+        if (status === COUNTRY_STATUS.ANNEXED) {
             this.#emit(GAME_EVENTS.COUNTRY_ELIMINATED, {
                 countryId: id,
                 previousStatus,
                 status,
                 ...options
             });
-        } else if (previousStatus === COUNTRY_STATUS.ELIMINATED &&
-            status !== COUNTRY_STATUS.ELIMINATED) {
+        } else if (previousStatus === COUNTRY_STATUS.ANNEXED &&
+            status === COUNTRY_STATUS.INDEPENDENT) {
             this.#emit(GAME_EVENTS.COUNTRY_INDEPENDENCE, {
                 countryId: id,
                 previousStatus,
@@ -350,17 +350,17 @@ export class CountryManager {
         const id = this.#getOrThrow(countryId);
         const country = this.state.world.countries[id];
 
-        if (country.gameStatus === COUNTRY_STATUS.ELIMINATED ||
-            country.gameStatus === COUNTRY_STATUS.ANNEXED) {
+        if (country.gameStatus === COUNTRY_STATUS.ANNEXED) {
             throw new Error(`Country cannot be selected: ${country.name}`);
         }
 
+        const previousCountryId = this.state.player.countryId ?? null;
         if (!selectPlayerCountry(this.state, id)) return false;
 
         this.#emit(GAME_EVENTS.COUNTRY_SELECTED, {
             countryId: id,
             country,
-            previousCountryId: this.state.player.previousCountryId ?? null
+            previousCountryId
         });
 
         return true;
