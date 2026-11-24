@@ -103,7 +103,7 @@ function resolveCountry(state, feature, featureId) {
 
 function stableColor(value) {
     const input = String(value ?? "unknown");
-    let hash = 216인6136261;
+    let hash = 2166136261;
 
     for (let index = 0; index < input.length; index += 1) {
         hash ^= input.charCodeAt(index);
