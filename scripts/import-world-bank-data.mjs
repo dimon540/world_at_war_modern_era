@@ -13,8 +13,6 @@ const INDICATORS = Object.freeze({
     inflationRate: { code: "FP.CPI.TOTL.ZG", unit: "percent", scale: 0.01, kind: "economy" },
     unemploymentRate: { code: "SL.UEM.TOTL.ZS", unit: "percent", scale: 0.01, kind: "economy" },
     activePersonnel: { code: "MS.MIL.TOTL.P1", unit: "persons", kind: "military" },
-    militaryExpenditure: { code: "MS.MIL.XPND.CD", unit: "current US dollars", kind: "military" },
-    militaryExpenditurePercentGDP: { code: "MS.MIL.XPND.GD.ZS", unit: "percent", scale: 0.01, kind: "military" }
 });
 
 const finiteOrNull = value => Number.isFinite(value) ? value : null;
@@ -86,16 +84,13 @@ export function buildWorldBankDatasets(countryDataset, indicatorRows, retrievedA
             };
         }
 
-        if (record.coverage.activePersonnel || record.coverage.militaryExpenditure ||
-            record.coverage.militaryExpenditurePercentGDP) {
+        if (record.coverage.activePersonnel) {
             militaryCountries[countryId] = {
                 countryId,
                 iso3: record.iso3,
                 name: record.name,
                 year: YEAR,
                 activePersonnel: finiteOrNull(values.activePersonnel),
-                militaryExpenditure: finiteOrNull(values.militaryExpenditure),
-                militaryExpenditurePercentGDP: finiteOrNull(values.militaryExpenditurePercentGDP),
                 source: "World Bank World Development Indicators; military personnel series sourced from IISS The Military Balance",
                 asOf: `${YEAR}-01-01`,
                 indicatorCodes: Object.fromEntries(
@@ -104,7 +99,7 @@ export function buildWorldBankDatasets(countryDataset, indicatorRows, retrievedA
                         .map(([key, definition]) => [key, definition.code])
                 ),
                 coverage: Object.fromEntries(
-                    ["activePersonnel", "militaryExpenditure", "militaryExpenditurePercentGDP"]
+                    ["activePersonnel"]
                         .map(key => [key, record.coverage[key] === true])
                 )
             };
